@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  tv_station_id: 1
+  tv_program_id: 1
+  begin: 2013-01-02 15:41:18
+  end: 2013-01-02 15:41:18
+  duration: 1
+  is_alive: false
+
+two:
+  tv_station_id: 1
+  tv_program_id: 1
+  begin: 2013-01-02 15:41:18
+  end: 2013-01-02 15:41:18
+  duration: 1
+  is_alive: false
