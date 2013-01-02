@@ -1,14 +1,18 @@
 class CreateTvProgramships < ActiveRecord::Migration
-  def change
+  def self.up
     create_table :tv_programships do |t|
-      t.integer :tv_station_id
-      t.integer :tv_program_id
-      t.time :begin
-      t.time :end
-      t.integer :duration
-      t.boolean :is_alive
+      t.column :tv_station_id, :integer, :null => false
+      t.column :tv_program_id, :integer, :null => false
+      t.column :begin, :datatime
+      t.column :end, :datatime
+      t.column :duration, :integer
+      t.column :is_alive, :boolean
 
       t.timestamps
     end
+  end
+  
+  def self.down
+    drop_table :tv_programships
   end
 end

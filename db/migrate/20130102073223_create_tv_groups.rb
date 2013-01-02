@@ -1,11 +1,15 @@
 class CreateTvGroups < ActiveRecord::Migration
-  def change
+  def self.up
     create_table :tv_groups do |t|
-      t.string :name
-      t.string :description
-      t.binary :image
+      t.column :name, :string, :null => false
+      t.column :description, :text
+      t.column :image, :binary
 
       t.timestamps
     end
+  end
+
+  def self.down
+    drop_table :tv_groups
   end
 end
