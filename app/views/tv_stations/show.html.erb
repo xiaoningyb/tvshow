@@ -1,0 +1,12 @@
+<%= @station.name %>
+<%= simple_format(@station.description) %> 
+<% @programs.each do |program| %>
+  <li>
+    <%= link_to program.name, tv_program_path(program) %>
+    <%= link_to 'edit', edit_tv_program_path(program) %>
+    <%= button_to 'delete', tv_program_path(program), :method => :delete %>
+  </li>
+<% end %>
+<p>
+  <%= link_to 'back to index', tv_station_path %>
+</p>

@@ -1,0 +1,11 @@
+<ul>
+<% @stations.each do |station| %>
+  <li>
+    <%= link_to station.name, tv_station_path(station) %>
+    <%= link_to 'edit', edit_tv_station_path(station) %>
+    <%= button_to 'delete', tv_station_path(station), :method => :delete %>
+  </li>
+<% end %>
+</ul>
+<%= link_to 'new tv station', new_tv_station_path %>
+
