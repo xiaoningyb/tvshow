@@ -1,0 +1,11 @@
+<ul>
+<% @groups.each do |group| %>
+  <li>
+    <%= link_to group.name, tv_group_path(group) %>
+    <%= link_to 'edit', edit_tv_group_path(group) %>
+    <%= button_to 'delete', tv_group_path(group), :method => :delete %>
+  </li>
+<% end %>
+</ul>
+<%= link_to 'new tv group', new_tv_group_path %>
+

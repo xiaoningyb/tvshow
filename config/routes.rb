@@ -13,6 +13,10 @@ Tvshow::Application.routes.draw do
   # Sample resource route (maps HTTP verbs to controller actions automatically):
   #   resources :products
 
+  resources :tv_groups
+  resources :tv_stations
+  resources :tv_programs
+
   # Sample resource route with options:
   #   resources :products do
   #     member do
