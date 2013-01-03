@@ -11,6 +11,8 @@
 TvGroup.delete_all
 TvStation.delete_all
 TvProgram.delete_all
+TvGroupship.delete_all
+TvProgramship.delete_all
 
 #====================== create the test data ==================== 
 
@@ -30,6 +32,9 @@ cctv.tv_stations << cctv3
 cctv.tv_stations << cctv4
 cctv.tv_stations << cctv5
 cctv.tv_stations << cctv6
+
+nba_heat_bull = TvProgram.create(:name => "NBA常规赛:热火vs公牛", :description => "北京时间2013年1月5日常规赛，早上9点至11点")
+TvProgramship.create(:tv_station => cctv5, :tv_program => nba_heat_bull, :begin => Time.now, :end => Time.now, :duration => 120, :is_alive => true)
 
 # for local 
 local = TvGroup.create(:name => "地方电视台", :description => "各级省市电视台")
