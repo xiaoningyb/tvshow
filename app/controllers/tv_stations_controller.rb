@@ -27,12 +27,20 @@ class TvStationsController < ApplicationController
   #show tv group info
   def show
     @station = TvStation.find(params[:id])
-    @programs = @station.tv_programs
+    @programs = {}
+    @station.tv_programs.each do |program|
+      @station.tv_programships.each do |programship|
+        if program.id == programship.tv_program_id
+            @programs[programship] = program
+        end
+      end
+    end
 
+    @programs_format = self.format_show(@programs)
     respond_to do |format|
       format.html # show.html.erb
-      format.xml { render :xml => @programs.to_xml }
-      format.json { render :json => @programs.to_json }
+      format.xml { render :xml => @programs_format.to_xml }
+      format.json { render :json => @programs_format.to_json }
     end
   end
 
@@ -56,5 +64,18 @@ class TvStationsController < ApplicationController
     
     redirect_to :action => :index
   end
+
+  #format function
+
+  def format_show(programs_info)
+    programs_format = []
+    programs_info.each do |programship, program|
+      program_format = { :program_id => program.id, :name => program.name, :description => program.description, :episode => program.episode, 
+                         :image => program.image, :key_word => program.key_word, :begin => programship.begin, :end => programship.end, 
+                         :duration => programship.duration, :is_alive => programship.is_alive }
+      programs_format << program_format
+    end
+    return programs_format
+  end  
 
 end

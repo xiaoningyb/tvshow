@@ -7,6 +7,8 @@
 #   cities = City.create([{ :name => 'Chicago' }, { :name => 'Copenhagen' }])
 #   Mayor.create(:name => 'Emanuel', :city => cities.first)
 
+# encoding: utf-8
+
 #====================== clear the database ==================== 
 TvGroup.delete_all
 TvStation.delete_all
@@ -34,7 +36,11 @@ cctv.tv_stations << cctv5
 cctv.tv_stations << cctv6
 
 nba_heat_bull = TvProgram.create(:name => "NBA常规赛:热火vs公牛", :description => "北京时间2013年1月5日常规赛，早上9点至11点")
-TvProgramship.create(:tv_station => cctv5, :tv_program => nba_heat_bull, :begin => Time.now, :end => Time.now, :duration => 120, :is_alive => true)
+nba_spurs_knicks = TvProgram.create(:name => "NBA常规赛:马刺vs尼克斯", :description => "北京时间2013年1月5日常规赛，早上10点至12点")
+
+TvProgramship.create(:tv_station => cctv5, :tv_program => nba_heat_bull, :begin => Time.local(2013,1,4,11), :end =>  Time.local(2013,1,4,11), :duration => 120, :is_alive => true)
+TvProgramship.create(:tv_station => cctv5, :tv_program => nba_heat_bull, :begin => Time.local(2013,1,4,19), :end =>  Time.local(2013,1,4,21), :duration => 120, :is_alive => false)
+TvProgramship.create(:tv_station => cctv5, :tv_program => nba_spurs_knicks, :begin => Time.mktime(2013,1,4,21), :end => Time.mktime(2013,1,4,23), :duration => 120, :is_alive => false)
 
 # for local 
 local = TvGroup.create(:name => "地方电视台", :description => "各级省市电视台")
@@ -56,7 +62,13 @@ local.tv_stations << gdsport
 # for local
 sport = TvGroup.create(:name => "体育频道", :description => "体育相关频道")
 
+sport.tv_stations << cctv5
 sport.tv_stations << wxsport
 sport.tv_stations << gdsport
+
+
+TvProgramship.create(:tv_station => wxsport, :tv_program => nba_heat_bull, :begin => Time.mktime(2013,1,4,9), :end => Time.mktime(2013,1,4,11), :duration => 120, :is_alive => true)
+
+TvProgramship.create(:tv_station => gdsport, :tv_program => nba_heat_bull, :begin => Time.mktime(2013,1,4,21), :end => Time.mktime(2013,1,4,23), :duration => 120, :is_alive => false)
 
 

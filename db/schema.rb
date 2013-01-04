@@ -40,8 +40,8 @@ ActiveRecord::Schema.define(:version => 20130102074118) do
   create_table "tv_programships", :force => true do |t|
     t.integer  "tv_station_id", :null => false
     t.integer  "tv_program_id", :null => false
-    t.time     "begin"
-    t.time     "end"
+    t.datetime "begin"
+    t.datetime "end"
     t.integer  "duration"
     t.boolean  "is_alive"
     t.datetime "created_at",    :null => false

@@ -1,8 +1,11 @@
 <%= @station.name %>
-<%= simple_format(@station.description) %> 
-<% @programs.each do |program| %>
+<%= simple_format(@station.description) %>
+<% @programs.each do |programship, program| %>
   <li>
     <%= link_to program.name, tv_program_path(program) %>
+    <br>
+    <%= "(" + programship[:begin].to_s + "~" + programship[:end].to_s + ")" %>
+    <br>
     <%= link_to 'edit', edit_tv_program_path(program) %>
     <%= button_to 'delete', tv_program_path(program), :method => :delete %>
   </li>

@@ -3,8 +3,8 @@ class CreateTvProgramships < ActiveRecord::Migration
     create_table :tv_programships do |t|
       t.column :tv_station_id, :integer, :null => false
       t.column :tv_program_id, :integer, :null => false
-      t.column :begin, :datatime
-      t.column :end, :datatime
+      t.column :begin, :datetime
+      t.column :end, :datetime
       t.column :duration, :integer
       t.column :is_alive, :boolean
 
