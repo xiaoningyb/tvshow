@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  user_id: 1
+  follow_id: 1
+  type: 1
+  time: 2013-01-08 15:44:26
+
+two:
+  user_id: 1
+  follow_id: 1
+  type: 1
+  time: 2013-01-08 15:44:26

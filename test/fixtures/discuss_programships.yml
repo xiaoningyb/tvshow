@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  discuss_id: 1
+  tv_group_id: 1
+  tv_station_id: 1
+  tv_programs_id: 1
+
+two:
+  discuss_id: 1
+  tv_group_id: 1
+  tv_station_id: 1
+  tv_programs_id: 1

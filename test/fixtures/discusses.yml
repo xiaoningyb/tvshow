@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  topic: MyString
+  host: 1
+  type: 1
+  content: MyString
+  time: 2013-01-08 15:44:19
+  image: 
+  commit_count: 1
+
+two:
+  topic: MyString
+  host: 1
+  type: 1
+  content: MyString
+  time: 2013-01-08 15:44:19
+  image: 
+  commit_count: 1
