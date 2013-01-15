@@ -15,6 +15,11 @@ TvStation.delete_all
 TvProgram.delete_all
 TvGroupship.delete_all
 TvProgramship.delete_all
+User.delete_all
+Discuss.delete_all
+UserRelationship.delete_all
+DiscussRelationship.delete_all
+DiscussProgramship.delete_all
 
 #====================== create the test data ==================== 
 
@@ -59,7 +64,7 @@ local.tv_stations << sgtv
 local.tv_stations << wxsport
 local.tv_stations << gdsport
 
-# for local
+# for sports
 sport = TvGroup.create(:name => "体育频道", :description => "体育相关频道")
 
 sport.tv_stations << cctv5
@@ -71,4 +76,16 @@ TvProgramship.create(:tv_station => wxsport, :tv_program => nba_heat_bull, :begi
 
 TvProgramship.create(:tv_station => gdsport, :tv_program => nba_heat_bull, :begin => Time.mktime(2013,1,4,21), :end => Time.mktime(2013,1,4,23), :duration => 120, :is_alive => false)
 
+
+# for user
+
+user_ning = User.create(:name => "xiaoningyb", :password => "123456", :email => "xiaoningyb@gmail.com", :msg_count => 0, :discuss_count => 0, :followee_count => 0, :follower_count => 0, :version => 0)
+
+user_bill = User.create(:name => "bill_tang", :password => "123456", :email => "bill.tang@nebutown.com", :msg_count => 0, :discuss_count => 0, :followee_count => 0, :follower_count => 0, :version => 0)
+
+user_sun = User.create(:name => "孙大发", :password => "123456", :email => "2358340741@qq.com", :msg_count => 0, :discuss_count => 0, :followee_count => 0, :follower_count => 0, :version => 0)
+
+
+UserRelationship.create(:user => user_ning, :follower => user_bill, :type => 0, :time => Time.now)
+#user_ning.fans_relationships.build(:follower => user_bill, :type => 0, :time => Time.now)
 

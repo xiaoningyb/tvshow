@@ -72,10 +72,10 @@ ActiveRecord::Schema.define(:version => 20130108074438) do
   create_table "tv_programships", :force => true do |t|
     t.integer  "tv_station_id", :null => false
     t.integer  "tv_program_id", :null => false
-    t.datetime "begin"
-    t.datetime "end"
-    t.integer  "duration"
-    t.boolean  "is_alive"
+    t.datetime "begin",         :null => false
+    t.datetime "end",           :null => false
+    t.integer  "duration",      :null => false
+    t.boolean  "is_alive",      :null => false
     t.datetime "created_at",    :null => false
     t.datetime "updated_at",    :null => false
   end
@@ -89,18 +89,18 @@ ActiveRecord::Schema.define(:version => 20130108074438) do
   end
 
   create_table "user_relationships", :force => true do |t|
-    t.integer  "user_id"
-    t.integer  "follow_id"
-    t.integer  "type"
-    t.time     "time"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.integer  "user_id",     :null => false
+    t.integer  "follower_id", :null => false
+    t.integer  "type",        :null => false
+    t.time     "time",        :null => false
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
   end
 
   create_table "users", :force => true do |t|
-    t.string   "name",          :null => false
-    t.string   "password",      :null => false
-    t.string   "email",         :null => false
+    t.string   "name",           :null => false
+    t.string   "password",       :null => false
+    t.string   "email",          :null => false
     t.string   "backup_email"
     t.string   "id_card"
     t.integer  "age"
@@ -109,13 +109,13 @@ ActiveRecord::Schema.define(:version => 20130108074438) do
     t.binary   "image"
     t.string   "weibo"
     t.integer  "qq"
-    t.integer  "msg_count",     :null => false
-    t.integer  "discuss_count", :null => false
-    t.integer  "fans_count",    :null => false
-    t.integer  "follow_count",  :null => false
-    t.integer  "version",       :null => false
-    t.datetime "created_at",    :null => false
-    t.datetime "updated_at",    :null => false
+    t.integer  "msg_count",      :null => false
+    t.integer  "discuss_count",  :null => false
+    t.integer  "followee_count", :null => false
+    t.integer  "follower_count", :null => false
+    t.integer  "version",        :null => false
+    t.datetime "created_at",     :null => false
+    t.datetime "updated_at",     :null => false
   end
 
 end

@@ -14,8 +14,8 @@ class CreateUsers < ActiveRecord::Migration
       t.integer :qq
       t.integer :msg_count, :null => false 
       t.integer :discuss_count, :null => false 
-      t.integer :fans_count, :null => false 
-      t.integer :follow_count, :null => false 
+      t.integer :followee_count, :null => false 
+      t.integer :follower_count, :null => false 
       t.integer :version, :null => false 
 
       t.timestamps

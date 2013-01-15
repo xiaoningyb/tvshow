@@ -1,0 +1,28 @@
+<%= @user.name %>
+<br>
+<%= "email : " + @user.email %>
+<%= simple_format(@user.address) %>
+
+<%= link_to "followee(" + @user.followee_count.to_s + ") : ", user_path(@user) %>
+<% @user.get_followees().each do |followee| %>
+  <li>
+    <%= link_to followee.name, user_path(followee) %>
+  </li>
+<% end %>
+<br>
+
+<%= link_to "follower(" + @user.follower_count.to_s + ")", user_path(@user) %>
+<% @user.get_followers().each do |follower| %>
+  <li>
+    <%= link_to follower.name, user_path(follower) %>
+  </li>
+<% end %>
+<br>
+
+<%= link_to "discuss(" + @user.discuss_count.to_s + ")", user_path(@user) %>
+<br>
+
+<%= link_to "message(" + @user.msg_count.to_s + ")", user_path(@user) %>
+<br>
+
+<%= link_to "version(" + @user.version.to_s + ")", user_path(@user) %>
