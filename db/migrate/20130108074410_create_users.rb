@@ -12,11 +12,12 @@ class CreateUsers < ActiveRecord::Migration
       t.binary :image
       t.string :weibo
       t.integer :qq
-      t.integer :msg_count, :null => false 
-      t.integer :discuss_count, :null => false 
-      t.integer :followee_count, :null => false 
-      t.integer :follower_count, :null => false 
-      t.integer :version, :null => false 
+
+      t.integer :msg_count,        :null => false, :default => 0
+      t.integer :discuss_count,    :null => false, :default => 0
+      t.integer :followee_count,   :null => false, :default => 0
+      t.integer :follower_count,   :null => false, :default => 0
+      t.integer :version,          :null => false, :default => 0
 
       t.timestamps
     end

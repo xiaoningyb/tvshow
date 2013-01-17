@@ -33,15 +33,20 @@ ActiveRecord::Schema.define(:version => 20130108074438) do
   end
 
   create_table "discusses", :force => true do |t|
-    t.string   "topic",        :null => false
-    t.integer  "host",         :null => false
-    t.integer  "type",         :null => false
-    t.string   "content",      :null => false
-    t.time     "time",         :null => false
+    t.string   "topic",                       :null => false
+    t.integer  "host",                        :null => false
+    t.integer  "type",                        :null => false
+    t.text     "content",                     :null => false
+    t.time     "time",                        :null => false
+    t.string   "location"
     t.binary   "image"
-    t.integer  "commit_count", :null => false
-    t.datetime "created_at",   :null => false
-    t.datetime "updated_at",   :null => false
+    t.integer  "like",         :default => 0
+    t.integer  "dislike",      :default => 0
+    t.integer  "neutrality",   :default => 0
+    t.integer  "quoted_id"
+    t.integer  "quoted_count", :default => 0
+    t.datetime "created_at",                  :null => false
+    t.datetime "updated_at",                  :null => false
   end
 
   create_table "tv_groups", :force => true do |t|
@@ -98,9 +103,9 @@ ActiveRecord::Schema.define(:version => 20130108074438) do
   end
 
   create_table "users", :force => true do |t|
-    t.string   "name",           :null => false
-    t.string   "password",       :null => false
-    t.string   "email",          :null => false
+    t.string   "name",                          :null => false
+    t.string   "password",                      :null => false
+    t.string   "email",                         :null => false
     t.string   "backup_email"
     t.string   "id_card"
     t.integer  "age"
@@ -109,13 +114,13 @@ ActiveRecord::Schema.define(:version => 20130108074438) do
     t.binary   "image"
     t.string   "weibo"
     t.integer  "qq"
-    t.integer  "msg_count",      :null => false
-    t.integer  "discuss_count",  :null => false
-    t.integer  "followee_count", :null => false
-    t.integer  "follower_count", :null => false
-    t.integer  "version",        :null => false
-    t.datetime "created_at",     :null => false
-    t.datetime "updated_at",     :null => false
+    t.integer  "msg_count",      :default => 0, :null => false
+    t.integer  "discuss_count",  :default => 0, :null => false
+    t.integer  "followee_count", :default => 0, :null => false
+    t.integer  "follower_count", :default => 0, :null => false
+    t.integer  "version",        :default => 0, :null => false
+    t.datetime "created_at",                    :null => false
+    t.datetime "updated_at",                    :null => false
   end
 
 end

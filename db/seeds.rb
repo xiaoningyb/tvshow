@@ -79,11 +79,9 @@ TvProgramship.create(:tv_station => gdsport, :tv_program => nba_heat_bull, :begi
 
 # for user
 
-user_ning = User.create(:name => "xiaoningyb", :password => "123456", :email => "xiaoningyb@gmail.com", :msg_count => 0, :discuss_count => 0, :followee_count => 0, :follower_count => 0, :version => 0)
-
-user_bill = User.create(:name => "bill_tang", :password => "123456", :email => "bill.tang@nebutown.com", :msg_count => 0, :discuss_count => 0, :followee_count => 0, :follower_count => 0, :version => 0)
-
-user_sun = User.create(:name => "孙大发", :password => "123456", :email => "2358340741@qq.com", :msg_count => 0, :discuss_count => 0, :followee_count => 0, :follower_count => 0, :version => 0)
+user_ning = User.create(:name => "xiaoningyb", :password => "123456", :email => "xiaoningyb@gmail.com")
+user_bill = User.create(:name => "bill_tang", :password => "123456", :email => "bill.tang@nebutown.com")
+user_sun = User.create(:name => "孙大发", :password => "123456", :email => "2358340741@qq.com")
 
 UserRelationshipController.create_relationship(user_ning, user_bill)
 UserRelationshipController.create_relationship(user_bill, user_ning)
