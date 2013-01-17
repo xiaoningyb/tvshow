@@ -88,3 +88,10 @@ UserRelationshipController.create_relationship(user_bill, user_ning)
 UserRelationshipController.create_relationship(user_bill, user_sun)
 UserRelationshipController.create_relationship(user_ning, user_sun)
 
+
+# for discuss
+
+discuss1 = Discuss.create(:topic => "太垃圾了!", :content => "这个节目太垃圾了，浪费时间!", :user_id => user_ning.id, :time => Time.now)
+discuss2 = Discuss.create(:topic => "awesome", :content => "Incredible!", :user_id => user_bill.id, :time => Time.now)
+
+

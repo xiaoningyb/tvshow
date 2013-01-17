@@ -1,0 +1,10 @@
+<ul>
+<% @discusses.each do |discuss| %>
+  <li>
+    <%= link_to discuss.topic, discuss_path(discuss) %>
+    <%= link_to 'edit', edit_discuss_path(discuss) %>
+    <%= button_to 'delete', discuss_path(discuss), :method => :delete %>
+  </li>
+<% end %>
+</ul>
+<%= link_to 'new discuss', new_discuss_path %>

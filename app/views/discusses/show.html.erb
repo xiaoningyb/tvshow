@@ -1,0 +1,8 @@
+<%= @discuss.topic %>
+<br>
+<%= "time : " + @discuss.time.to_s %>
+<br>
+<%= link_to @user.name, user_path(@user) %>
+<br>
+<%= simple_format(@discuss.content) %>
+

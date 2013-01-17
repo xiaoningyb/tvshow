@@ -2,12 +2,12 @@ class DiscussesController < ApplicationController
   
   #show discusses index page
   def index
-    @discuss = Discuss.all
+    @discusses = Discuss.all
 
     respond_to do |format|
       format.html # index.html.erb
-      format.xml { render; :xml => @discuss.to_xml }
-      format.json { render :json => @discuss.to_json }
+      format.xml { render :xml => @discusses.to_xml }
+      format.json { render :json => @discusses.to_json }
     end
   end
 
@@ -27,6 +27,7 @@ class DiscussesController < ApplicationController
   #show discuss info
   def show
     @discuss = Discuss.find(params[:id])
+    @user = User.find(@discuss.user_id)
 
     respond_to do |format|
       format.html # show.html.erb
