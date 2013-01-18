@@ -93,5 +93,9 @@ UserRelationshipController.create_relationship(user_ning, user_sun)
 
 discuss1 = Discuss.create(:topic => "太垃圾了!", :content => "这个节目太垃圾了，浪费时间!", :user_id => user_ning.id, :time => Time.now)
 discuss2 = Discuss.create(:topic => "awesome", :content => "Incredible!", :user_id => user_bill.id, :time => Time.now)
+discuss3 = Discuss.create(:topic => "我觉得挺好的", :content => "节目不好，妹子漂亮!", :user_id => user_sun.id, :time => Time.now)
+
+DiscussRelationshipsController.create_relationship(discuss1, discuss2)
+DiscussRelationshipsController.create_relationship(discuss1, discuss3)
 
 

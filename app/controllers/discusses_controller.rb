@@ -28,6 +28,9 @@ class DiscussesController < ApplicationController
   def show
     @discuss = Discuss.find(params[:id])
     @user = User.find(@discuss.user_id)
+    if @discuss.discuss_type == 1
+      @src_discuss = Discuss.find(@discuss.src_id)
+    end
 
     respond_to do |format|
       format.html # show.html.erb

@@ -6,3 +6,12 @@
 <br>
 <%= simple_format(@discuss.content) %>
 
+<% if (@discuss.discuss_type == 1) %>
+<%= link_to "RE: " + @src_discuss.topic, discuss_path(@src_discuss) %>
+<% end %>
+
+<% @discuss.quotes.each do |quote| %>
+  <li>
+    <%= link_to quote.topic, discuss_path(quote) %>
+  </li>
+<% end %>
