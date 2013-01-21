@@ -1,5 +1,16 @@
-<%= @program.name (@program.episode) %>
+<% if @program.episode = 0 %>
+  <%= @program.name %>
+<% else %>
+  <%= @program.name + "(" +  @program.episode.to_s + ")" %>
+<% end %>
 <%= simple_format(@program.description) %> 
+<br>
+<%= "讨论条数:" + @program.discusses.size.to_s %>
+<% @program.discusses.each do |discuss| %>
+  <li>
+    <%= link_to discuss.topic, discuss_path(discuss) %>
+  </li>
+<% end %>
 <p>
   <%= link_to 'back to index', tv_program_path %>
 </p>
