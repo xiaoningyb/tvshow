@@ -38,7 +38,7 @@ ActiveRecord::Schema.define(:version => 20130108074438) do
     t.time     "time",                         :null => false
     t.string   "location"
     t.binary   "image"
-    t.integer  "tv_program_id",                :null => false
+    t.integer  "tv_program_id"
     t.integer  "like",          :default => 0
     t.integer  "dislike",       :default => 0
     t.integer  "neutrality",    :default => 0
@@ -69,9 +69,9 @@ ActiveRecord::Schema.define(:version => 20130108074438) do
     t.binary   "image"
     t.string   "key_word"
     t.integer  "episode"
-    t.integer  "subscriber_count", :default => 0, :null => false
-    t.integer  "discuss_count",    :default => 0, :null => false
-    t.integer  "checkin_count",    :default => 0, :null => false
+    t.integer  "subscriber_count", :default => 0
+    t.integer  "discuss_count",    :default => 0
+    t.integer  "checkin_count",    :default => 0
     t.datetime "created_at",                      :null => false
     t.datetime "updated_at",                      :null => false
   end

@@ -18,7 +18,7 @@ class TvGroupsController < ApplicationController
   
   #new tv group using POST method
   def create
-    @group = TvGroup.new(params[:group])
+    @group = TvGroup.new(params[:tv_group])
     @group.save
     
     redirect_to :action => :index
@@ -26,14 +26,11 @@ class TvGroupsController < ApplicationController
 
   #show tv group info
   def show
-    @group = TvGroup.find(params[:id])
-    @stations = @group.tv_stations
-
-    respond_to do |format|
-      format.html # show.html.erb
-      format.xml { render :xml => @stations.to_xml }
-      format.json { render :json => @stations.to_json }
-    end
+    if (params[:cmd] != nil) && (params[:cmd] == "detail")
+      show_detail(params)
+    elsif
+      show_simple(params)
+    end      
   end
 
   #edit tv group, it will be deprecated
@@ -56,4 +53,33 @@ class TvGroupsController < ApplicationController
     
     redirect_to :action => :index
   end
+
+  #show simple 
+  def show_simple(params)
+    @group = TvGroup.find(params[:id])
+    @stations = @group.tv_stations
+
+    respond_to do |format|
+      format.html # show.html.erb
+      format.xml { render :xml => @stations.to_xml }
+      format.json { render :json => @stations.to_json }
+    end
+  end
+
+  #show detail
+  def show_detail(params)
+    @group = TvGroup.find(params[:id])
+    @stations = @group.tv_stations
+    @station_cur_programs = {}
+    @stations.each do |station|      
+      @station_cur_programs[station] = station.get_programs_by_time(Time.now)
+    end
+
+    respond_to do |format|
+      format.html # show.html.erb
+      format.xml { render :xml => @stations.to_xml }
+      format.json { render :json => @stations.to_json }
+    end
+  end
+
 end

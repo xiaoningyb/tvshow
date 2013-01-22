@@ -27,7 +27,6 @@ class TvProgramsController < ApplicationController
   #show tv group info
   def show
     @program = TvProgram.find(params[:id])
-    logger.info(@program.to_s)
 
     respond_to do |format|
       format.html # show.html.erb

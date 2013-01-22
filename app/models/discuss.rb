@@ -11,4 +11,5 @@ class Discuss < ActiveRecord::Base
 
   #for relationship with tv_program
   belongs_to :tv_program
+
 end

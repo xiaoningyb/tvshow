@@ -1,0 +1,9 @@
+<%= form_for @group, :url => tv_groups_path do |f| %>
+    <%= f.label :name, "Name" %>
+    <%= f.text_field :name %>    
+    <%= f.label :description, "Description" %>
+    <br>
+    <%= f.text_area :description %>
+    
+    <%= f.submit "Create" %>
+<% end %>

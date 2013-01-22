@@ -1,0 +1,12 @@
+<%= form_for @station, :url => tv_stations_path do |f| %>
+  <%= f.label :group, "Group" %>    
+  <%= collection_select(:group, :group_id, TvGroup.all, :id, :name) %>
+  <br>
+  <%= f.label :name, "Name" %>    
+  <%= f.text_field :name %>
+  <br>
+  <%= f.label :description, "Description" %>
+  <br>
+  <%= f.text_area :description %>    
+  <%= f.submit "Create" %>
+<% end %>

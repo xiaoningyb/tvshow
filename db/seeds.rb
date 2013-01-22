@@ -43,7 +43,7 @@ cctv.tv_stations << cctv6
 nba_heat_bull = TvProgram.create(:name => "NBA常规赛:热火vs公牛", :description => "北京时间2013年1月5日常规赛，早上9点至11点")
 nba_spurs_knicks = TvProgram.create(:name => "NBA常规赛:马刺vs尼克斯", :description => "北京时间2013年1月5日常规赛，早上10点至12点")
 
-TvProgramship.create(:tv_station => cctv5, :tv_program => nba_heat_bull, :begin => Time.local(2013,1,4,11), :end =>  Time.local(2013,1,4,11), :duration => 120, :is_alive => true)
+TvProgramship.create(:tv_station => cctv5, :tv_program => nba_heat_bull, :begin => Time.local(2013,1,4,11), :end =>  Time.local(2014,1,4,11), :duration => 120, :is_alive => true)
 TvProgramship.create(:tv_station => cctv5, :tv_program => nba_heat_bull, :begin => Time.local(2013,1,4,19), :end =>  Time.local(2013,1,4,21), :duration => 120, :is_alive => false)
 TvProgramship.create(:tv_station => cctv5, :tv_program => nba_spurs_knicks, :begin => Time.mktime(2013,1,4,21), :end => Time.mktime(2013,1,4,23), :duration => 120, :is_alive => false)
 
@@ -72,7 +72,7 @@ sport.tv_stations << wxsport
 sport.tv_stations << gdsport
 
 
-TvProgramship.create(:tv_station => wxsport, :tv_program => nba_heat_bull, :begin => Time.mktime(2013,1,4,9), :end => Time.mktime(2013,1,4,11), :duration => 120, :is_alive => true)
+TvProgramship.create(:tv_station => wxsport, :tv_program => nba_heat_bull, :begin => Time.mktime(2013,1,4,9), :end => Time.mktime(2014,1,4,11), :duration => 120, :is_alive => true)
 
 TvProgramship.create(:tv_station => gdsport, :tv_program => nba_heat_bull, :begin => Time.mktime(2013,1,4,21), :end => Time.mktime(2013,1,4,23), :duration => 120, :is_alive => false)
 
@@ -91,11 +91,12 @@ UserRelationshipController.create_relationship(user_ning, user_sun)
 
 # for discuss
 
-discuss1 = Discuss.create(:topic => "太垃圾了!", :content => "这个节目太垃圾了，浪费时间!", :user_id => user_ning.id, :time => Time.now, :tv_program => nba_heat_bull)
-discuss2 = Discuss.create(:topic => "awesome", :content => "Incredible!", :user_id => user_bill.id, :time => Time.now, :tv_program => nba_heat_bull)
-discuss3 = Discuss.create(:topic => "我觉得挺好的", :content => "节目不好，妹子漂亮!", :user_id => user_sun.id, :time => Time.now, :tv_program => nba_heat_bull)
+discuss1 = Discuss.create(:topic => "太垃圾了!", :content => "这个节目太垃圾了，浪费时间!", :user_id => user_ning.id, :time => Time.now)
+discuss2 = Discuss.create(:topic => "awesome", :content => "Incredible!", :user_id => user_bill.id, :time => Time.now)
+discuss3 = Discuss.create(:topic => "我觉得挺好的", :content => "节目不好，妹子漂亮!", :user_id => user_sun.id, :time => Time.now)
 
-DiscussRelationshipsController.create_relationship(discuss1, discuss2)
-DiscussRelationshipsController.create_relationship(discuss1, discuss3)
+DiscussRelationshipsController.create_relationship(discuss1, nil, nba_heat_bull)
+DiscussRelationshipsController.create_relationship(discuss1, discuss2, nba_heat_bull)
+DiscussRelationshipsController.create_relationship(discuss1, discuss3, nba_heat_bull)
 
 

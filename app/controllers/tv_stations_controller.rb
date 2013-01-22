@@ -18,8 +18,7 @@ class TvStationsController < ApplicationController
   
   #new tv station using POST method
   def create
-    @station = TvStation.new(params[:station])
-    @station.save
+    create_station_in_group(params)
     
     redirect_to :action => :index
   end
@@ -27,14 +26,7 @@ class TvStationsController < ApplicationController
   #show tv group info
   def show
     @station = TvStation.find(params[:id])
-    @programs = {}
-    @station.tv_programs.each do |program|
-      @station.tv_programships.each do |programship|
-        if program.id == programship.tv_program_id
-            @programs[programship] = program
-        end
-      end
-    end
+    @programs = @station.get_programs()
 
     @programs_format = self.format_show(@programs)
     respond_to do |format|
@@ -66,7 +58,6 @@ class TvStationsController < ApplicationController
   end
 
   #format function
-
   def format_show(programs_info)
     programs_format = []
     programs_info.each do |programship, program|
@@ -76,6 +67,20 @@ class TvStationsController < ApplicationController
       programs_format << program_format
     end
     return programs_format
+  end
+
+  #create the station with group
+  def create_station_in_group(params)
+    TvStation.transaction do
+      @station = TvStation.new(params[:tv_station])
+      @station.save      
+      if (params[:group] != nil) and (params[:group][:group_id] != nil)
+        group = TvGroup.find(params[:group][:group_id])
+        if group != nil
+          TvGroupship.create(:tv_group => group, :tv_station => @station)
+        end
+      end
+    end
   end  
 
 end

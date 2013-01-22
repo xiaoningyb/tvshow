@@ -4,7 +4,15 @@
   <li>
     <%= link_to station.name, tv_station_path(station) %>
     <%= link_to 'edit', edit_tv_station_path(station) %>
-    <%= button_to 'delete', tv_station_path(station), :method => :delete %>
+    <% if (@station_cur_programs != nil) and (@station_cur_programs[station] != nil) and (not @station_cur_programs[station].empty?) %>
+      <br>
+      <% @station_cur_programs[station].each do |programship, program| %>
+        <%= link_to program.name, tv_program_path(program) %>
+	<%= "subscriber(" + program.subscriber_count.to_s + "), discuss(" + program.discuss_count.to_s + "), checkin(" + program.checkin_count.to_s + "), " %>
+	<%= "time(" + programship.begin.to_s + "~" + programship.end.to_s + ")" %>
+	<br>
+      <% end %>      
+    <% end %>
   </li>
 <% end %>
 <p><%= link_to 'back to index', tv_groups_path %></p>

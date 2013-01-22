@@ -8,12 +8,12 @@ class CreateDiscusses < ActiveRecord::Migration
       t.time :time,            :null => false 
       t.string :location
       t.binary :image
-      t.column :tv_program_id, :integer, :null => false
+      t.column :tv_program_id, :integer
 
       t.column "like",         :integer,   :default => 0
       t.column "dislike",      :integer,   :default => 0
       t.column "neutrality",   :integer,   :default => 0 
-      t.column "src_id",    :integer
+      t.column "src_id",       :integer
       t.column "quote_count",  :integer,   :default => 0      
 
       t.timestamps
