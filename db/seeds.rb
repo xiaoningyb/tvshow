@@ -42,10 +42,21 @@ cctv.tv_stations << cctv6
 
 nba_heat_bull = TvProgram.create(:name => "NBA常规赛:热火vs公牛", :description => "北京时间2013年1月5日常规赛，早上9点至11点")
 nba_spurs_knicks = TvProgram.create(:name => "NBA常规赛:马刺vs尼克斯", :description => "北京时间2013年1月5日常规赛，早上10点至12点")
+xwlb = TvProgram.create(:name => "新闻联播", :description => "新闻联播: 每天晚上7点")
+jjbxs = TvProgram.create(:name => "经济半小时", :description => "经济半小时")
+wyscw = TvProgram.create(:name => "我要上春晚", :description => "我要上春晚")
+gjxw = TvProgram.create(:name => "国际新闻", :description => "国际新闻")
+bxjg = TvProgram.create(:name => "变形金刚3", :description => "电影")
+
 
 TvProgramship.create(:tv_station => cctv5, :tv_program => nba_heat_bull, :begin => Time.local(2013,1,4,11), :end =>  Time.local(2014,1,4,11), :duration => 120, :is_alive => true)
 TvProgramship.create(:tv_station => cctv5, :tv_program => nba_heat_bull, :begin => Time.local(2013,1,4,19), :end =>  Time.local(2013,1,4,21), :duration => 120, :is_alive => false)
 TvProgramship.create(:tv_station => cctv5, :tv_program => nba_spurs_knicks, :begin => Time.mktime(2013,1,4,21), :end => Time.mktime(2013,1,4,23), :duration => 120, :is_alive => false)
+TvProgramship.create(:tv_station => cctv1, :tv_program => xwlb, :begin => Time.local(2013,1,4,11), :end =>  Time.local(2014,1,4,11), :duration => 120, :is_alive => true)
+TvProgramship.create(:tv_station => cctv2, :tv_program => jjbxs, :begin => Time.local(2013,1,4,11), :end =>  Time.local(2014,1,4,11), :duration => 120, :is_alive => true)
+TvProgramship.create(:tv_station => cctv3, :tv_program => wyscw, :begin => Time.local(2013,1,4,11), :end =>  Time.local(2014,1,4,11), :duration => 120, :is_alive => true)
+TvProgramship.create(:tv_station => cctv4, :tv_program => gjxw, :begin => Time.local(2013,1,4,11), :end =>  Time.local(2014,1,4,11), :duration => 120, :is_alive => true)
+TvProgramship.create(:tv_station => cctv6, :tv_program => bxjg, :begin => Time.local(2013,1,4,11), :end =>  Time.local(2014,1,4,11), :duration => 120, :is_alive => true)
 
 # for local 
 local = TvGroup.create(:name => "地方电视台", :description => "各级省市电视台")
