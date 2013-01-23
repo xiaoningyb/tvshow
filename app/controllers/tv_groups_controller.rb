@@ -77,9 +77,29 @@ class TvGroupsController < ApplicationController
 
     respond_to do |format|
       format.html # show.html.erb
-      format.xml { render :xml => @stations.to_xml }
-      format.json { render :json => @stations.to_json }
+      format.xml { render :xml => format_json(@station_cur_programs).to_xml }
+      format.json { render :json => format_json(@station_cur_programs).to_json }
     end
+  end
+
+  #format json output function
+  def format_json(station_cur_programs)    
+    group_format = []
+    station_cur_programs.each do |station, program_infos|
+      station_format = {}
+      station_format[:station_name] = station.name
+      station_format[:station_id] = station.id
+      programs_format = []
+      program_infos.each do |programship, program|
+        program_format = { :program_id => program.id, :name => program.name, :description => program.description, :episode => program.episode, 
+                           :image => program.image, :key_word => program.key_word, :begin => programship.begin, :end => programship.end, 
+                           :duration => programship.duration, :is_alive => programship.is_alive }
+        programs_format << program_format
+      end
+      station_format[:programs] = programs_format
+      group_format << station_format
+    end
+    return group_format
   end
 
 end
