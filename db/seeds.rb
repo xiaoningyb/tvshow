@@ -50,10 +50,10 @@ bxjg = TvProgram.create(:name => "变形金刚3", :description => "电影")
 
 
 TvProgramship.create(:tv_station => cctv5, :tv_program => nba_heat_bull, :begin => Time.local(2013,1,4,11), :end =>  Time.local(2014,1,4,11), :duration => 120, :is_alive => true)
-TvProgramship.create(:tv_station => cctv5, :tv_program => nba_heat_bull, :begin => Time.local(2013,1,4,19), :end =>  Time.local(2013,1,4,21), :duration => 120, :is_alive => false)
-TvProgramship.create(:tv_station => cctv5, :tv_program => nba_spurs_knicks, :begin => Time.mktime(2013,1,4,21), :end => Time.mktime(2013,1,4,23), :duration => 120, :is_alive => false)
+TvProgramship.create(:tv_station => cctv5, :tv_program => nba_heat_bull, :begin => Time.local(2013,1,5,19), :end =>  Time.local(2013,1,5,21), :duration => 120, :is_alive => false)
+TvProgramship.create(:tv_station => cctv5, :tv_program => nba_spurs_knicks, :begin => Time.mktime(2013,1,6,21), :end => Time.mktime(2013,1,6,23), :duration => 120, :is_alive => false)
 TvProgramship.create(:tv_station => cctv1, :tv_program => xwlb, :begin => Time.local(2013,1,4,11), :end =>  Time.local(2014,1,4,11), :duration => 120, :is_alive => true)
-TvProgramship.create(:tv_station => cctv2, :tv_program => jjbxs, :begin => Time.local(2013,1,4,11), :end =>  Time.local(2014,1,4,11), :duration => 120, :is_alive => true)
+TvProgramship.create(:tv_station => cctv2, :tv_program => jjbxs, :begin => Time.local(2013,1,5,11), :end =>  Time.local(2014,1,5,11), :duration => 120, :is_alive => true)
 TvProgramship.create(:tv_station => cctv3, :tv_program => wyscw, :begin => Time.local(2013,1,4,11), :end =>  Time.local(2014,1,4,11), :duration => 120, :is_alive => true)
 TvProgramship.create(:tv_station => cctv4, :tv_program => gjxw, :begin => Time.local(2013,1,4,11), :end =>  Time.local(2014,1,4,11), :duration => 120, :is_alive => true)
 TvProgramship.create(:tv_station => cctv6, :tv_program => bxjg, :begin => Time.local(2013,1,4,11), :end =>  Time.local(2014,1,4,11), :duration => 120, :is_alive => true)

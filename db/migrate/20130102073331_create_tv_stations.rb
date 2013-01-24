@@ -4,6 +4,7 @@ class CreateTvStations < ActiveRecord::Migration
       t.column :name, :string, :null => false
       t.column :description, :text
       t.column :image, :binary
+      t.column :banner, :binary
 
       t.timestamps
     end

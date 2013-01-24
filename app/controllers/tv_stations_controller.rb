@@ -25,10 +25,48 @@ class TvStationsController < ApplicationController
 
   #show tv group info
   def show
+    if (params[:date] != nil)
+      show_one_day(params)
+    elsif ((params[:begin] != nil) && (params[:end] != nil))
+      show_time_interval(params)
+    else
+      show_simple(params)
+    end
+  end    
+
+  def show_simple(params)
     @station = TvStation.find(params[:id])
     @programs = @station.get_programs()
 
-    @programs_format = self.format_show(@programs)
+    @programs_format = self.format_json(@station, @programs)
+    respond_to do |format|
+      format.html # show.html.erb
+      format.xml { render :xml => @programs_format.to_xml }
+      format.json { render :json => @programs_format.to_json }
+    end
+  end
+
+  def show_one_day(params)
+    @station = TvStation.find(params[:id])
+    start_time = DateTime.parse(params[:date])
+    end_time = 1.days.since(start_time)
+    @programs = @station.get_programs_by_interval(start_time, end_time)
+
+    @programs_format = self.format_json(@station, @programs)
+    respond_to do |format|
+      format.html # show.html.erb
+      format.xml { render :xml => @programs_format.to_xml }
+      format.json { render :json => @programs_format.to_json }
+    end
+  end
+
+  def show_time_interval(params)
+    @station = TvStation.find(params[:id])
+    start_time = DateTime.parse(params[:begin])
+    end_time = DateTime.parse(params[:end])
+    @programs = @station.get_programs_by_interval(start_time, end_time)
+
+    @programs_format = self.format_json(@station, @programs)
     respond_to do |format|
       format.html # show.html.erb
       format.xml { render :xml => @programs_format.to_xml }
@@ -58,7 +96,12 @@ class TvStationsController < ApplicationController
   end
 
   #format function
-  def format_show(programs_info)
+  def format_json(station, programs_info)
+    station_format = {}
+    station_format[:station_name] = station.name
+    station_format[:station_id] = station.id
+    station_format[:image] = station.image
+    station_format[:banner] = station.banner
     programs_format = []
     programs_info.each do |programship, program|
       program_format = { :program_id => program.id, :name => program.name, :description => program.description, :episode => program.episode, 
@@ -66,7 +109,8 @@ class TvStationsController < ApplicationController
                          :duration => programship.duration, :is_alive => programship.is_alive }
       programs_format << program_format
     end
-    return programs_format
+    station_format[:programs] = programs_format
+    return station_format
   end
 
   #create the station with group

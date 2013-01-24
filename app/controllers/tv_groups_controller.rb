@@ -89,6 +89,7 @@ class TvGroupsController < ApplicationController
       station_format = {}
       station_format[:station_name] = station.name
       station_format[:station_id] = station.id
+      station_format[:image] = station.image
       programs_format = []
       program_infos.each do |programship, program|
         program_format = { :program_id => program.id, :name => program.name, :description => program.description, :episode => program.episode, 

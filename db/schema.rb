@@ -91,6 +91,7 @@ ActiveRecord::Schema.define(:version => 20130108074438) do
     t.string   "name",        :null => false
     t.text     "description"
     t.binary   "image"
+    t.binary   "banner"
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
   end
