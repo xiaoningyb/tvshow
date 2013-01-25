@@ -1,5 +1,6 @@
 class TvProgramsController < ApplicationController
- 
+  before_filter :authenticate_user!
+
   #show index page
   def index
     @programs = TvProgram.all

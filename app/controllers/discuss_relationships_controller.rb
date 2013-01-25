@@ -1,4 +1,5 @@
 class DiscussRelationshipsController < ApplicationController
+  before_filter :authenticate_user!
 
   def create
     src = User.find(params[:src])

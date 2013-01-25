@@ -1,4 +1,5 @@
 class TvGroupsController < ApplicationController
+  before_filter :authenticate_user!
 
   #show index page
   def index
