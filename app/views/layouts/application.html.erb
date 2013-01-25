@@ -8,6 +8,20 @@
 </head>
 <body>
 
+<p class="notice"><%= notice %></p>
+<p class="alert"><%= alert %></p>
+
+<div>
+<h1>
+<% if user_signed_in? %>
+  <%= link_to current_user.name, user_path(current_user)%>
+  <%= link_to 'sign_out', destroy_user_session_path(current_user), :method => :delete %>
+<% else %>
+  <%= link_to 'sign_in', new_user_session_path() %>
+<% end %>
+</h1>
+</div>
+
 <%= yield %>
 
 </body>
