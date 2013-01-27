@@ -14,7 +14,7 @@ class DiscussRelationshipsController < ApplicationController
       @quote = Discuss.find(params[:quote])
     end
     @program = TvProgram.find(params[:program_id])
-    DiscussRelationshipsController.create_relationship(@discuss, @quote, @program)
+    DiscussRelationshipsController.create_relationship(current_user, @discuss, @quote, @program)
 
     redirect_to :controller => "tv_programs", :action => :show, :id => @program
   end
@@ -26,12 +26,13 @@ class DiscussRelationshipsController < ApplicationController
     DiscussRelationshipsController.destory_relationsip(@discuss, @quote, @program)
   end
 
-  def self.create_relationship(src, quote, program)
-    if src == nil || program == nil
+  def self.create_relationship(user, src, quote, program)
+    if user == nil || src == nil || program == nil
       return
     end
 
     src.transaction do 
+      user.update_attributes(:discuss_count => user.discuss_count.next)
       src.update_attributes(:tv_program => program)     
       program.update_attributes(:discuss_count => program.discuss_count.next)
       if quote != nil
@@ -45,12 +46,13 @@ class DiscussRelationshipsController < ApplicationController
     end
   end
 
-  def self.destory_relationship(src, quote, program)
-    if src == nil || program == nil
+  def self.destory_relationship(user, src, quote, program)
+    if user == nil || src == nil || program == nil
       return
     end
 
     src.transaction do
+      user.update_attributes(:discuss_count => (user.discuss_count-1) )
       src.update_attributes(:tv_program => nil)
       program.update_attributes(:discuss_count => (program.discuss_count-1) ) 
       if quote != nil
