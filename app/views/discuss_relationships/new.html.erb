@@ -3,6 +3,9 @@
   <%= hidden_field_tag :program_id, @program.id %>
   <%= hidden_field_tag 'discuss[user_id]', current_user.id %>
   <%= hidden_field_tag 'discuss[time]', Time.now %>
+  <% if @src != nil %>
+    <%= hidden_field_tag :src, @src.id %>
+  <% end %>
   <br/>
   <%= f.label :topic, "Topic" %>
   <br/>

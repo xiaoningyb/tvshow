@@ -15,3 +15,7 @@
     <%= link_to quote.topic, discuss_path(quote) %>
   </li>
 <% end %>
+
+<p>
+  <%= link_to 'reply discuss', {:controller =>'discuss_relationships', :action => 'new', :src => @discuss, :program => @discuss.tv_program} %>
+</p>
