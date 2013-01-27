@@ -12,5 +12,5 @@
   </li>
 <% end %>
 <p>
-  <%= link_to 'back to index', tv_program_path %>
+  <%= link_to 'new discuss', {:controller =>'discuss_relationships', :action => 'new', :program => @program.id} %>
 </p>

@@ -1,16 +1,29 @@
 class DiscussRelationshipsController < ApplicationController
   before_filter :authenticate_user!
 
+  #new discuss, it will be deprecated
+  def new
+    @discuss = Discuss.new(:user_id => current_user.id, :time => Time.now)
+    @program = TvProgram.find(params[:program])
+  end
+
   def create
-    src = User.find(params[:src])
-    quote = User.find(params[:quote])
-    self.create_relationsip(src, quote)
+    @discuss = Discuss.new(params[:discuss])
+    @quote = nil
+    if params[:quote] != nil
+      @quote = Discuss.find(params[:quote])
+    end
+    @program = TvProgram.find(params[:program_id])
+    DiscussRelationshipsController.create_relationship(@discuss, @quote, @program)
+
+    redirect_to :controller => "tv_programs", :action => :show, :id => @program
   end
 
   def destory
-    src = User.find(params[:src])
-    quote = User.find(params[:quote])
-    self.destory_relationsip(user, quote)
+    @discuss = Discuss.find(params[:src])
+    @quote = Discuss.find(params[:quote])
+    @program = TvProgram.find(params[:program])
+    DiscussRelationshipsController.destory_relationsip(@discuss, @quote, @program)
   end
 
   def self.create_relationship(src, quote, program)
@@ -28,6 +41,7 @@ class DiscussRelationshipsController < ApplicationController
         quote.update_attributes(:src_id => src.id)
         DiscussRelationship.create(:src => src, :quote => quote, :time => Time.now)
       end
+      src.save
     end
   end
 

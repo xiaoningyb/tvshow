@@ -20,6 +20,7 @@ Tvshow::Application.routes.draw do
   resources :tv_programs
   resources :users
   resources :discusses
+  resources :discuss_relationships
 
   # Sample resource route with options:
   #   resources :products do
