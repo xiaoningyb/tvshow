@@ -1,4 +1,4 @@
-class UserRelationshipsController < ApplicationController
+class UserRelationshipsController < ApplicationController      
   #before_filter :authenticate_user!
 
   def create
@@ -9,10 +9,12 @@ class UserRelationshipsController < ApplicationController
     redirect_to :controller => "users", :action => :show, :id => user
   end
 
-  def destory
+  def destroy
     user = User.find(params[:user])
     follower = User.find(params[:follower])
-    UserRelationshipsController.destory_relationship(user, follower)
+    UserRelationshipsController.destroy_relationship(user, follower)
+
+    redirect_to :controller => "users", :action => :show, :id => user
   end
 
   def self.create_relationship(user, follower)
@@ -25,13 +27,13 @@ class UserRelationshipsController < ApplicationController
     end
   end
 
-  def self.destory_relationship(user, follower)
+  def self.destroy_relationship(user, follower)
     user.transaction do 
       user.update_attributes(:follower_count => (user.follower_count-1) )
       user.update_attributes(:version => user.version.next)
       follower.update_attributes(:followee_count => (follower.followee_count-1) )
       follower.update_attributes(:version => follower.version.next)
-      UserRelationship.destory(:user => user, :follower => follower)
+      user.followers.delete(follower)
     end
   end
   
