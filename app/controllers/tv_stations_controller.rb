@@ -1,5 +1,5 @@
 class TvStationsController < ApplicationController
-  before_filter :authenticate_user!
+  #before_filter :authenticate_user!
 
   #show index page
   def index
