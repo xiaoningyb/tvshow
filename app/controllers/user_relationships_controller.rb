@@ -1,16 +1,18 @@
-class UserRelationshipController < ApplicationController
+class UserRelationshipsController < ApplicationController
   before_filter :authenticate_user!
 
   def create
     user = User.find(params[:user])
     follower = User.find(params[:follower])
-    self.create_relationsip(user, follower)
+    UserRelationshipsController.create_relationship(user, follower)
+
+    redirect_to :controller => "users", :action => :show, :id => user
   end
 
   def destory
     user = User.find(params[:user])
     follower = User.find(params[:follower])
-    self.destory_relationsip(user, follower)
+    UserRelationshipsController.destory_relationship(user, follower)
   end
 
   def self.create_relationship(user, follower)

@@ -2,6 +2,16 @@
 <br>
 <%= "email : " + @user.email %>
 <%= simple_format(@user.address) %>
+<%= form_tag(user_relationships_path, :method => "post") do %>
+<%= hidden_field_tag 'user', @user.id %>
+<%= hidden_field_tag 'follower', current_user.id %>
+<% if @user.has_follower(current_user) %>
+  <%= submit_tag("unfollow") %>
+<% else %>
+  <%= submit_tag("follow") %>
+<% end %>
+<% end %>
+<br/>
 
 <%= link_to "followee(" + @user.followee_count.to_s + ") : ", user_path(@user) %>
 <% @user.get_followees().each do |followee| %>
@@ -9,7 +19,7 @@
     <%= link_to followee.name, user_path(followee) %>
   </li>
 <% end %>
-<br>
+<br/>
 
 <%= link_to "follower(" + @user.follower_count.to_s + ")", user_path(@user) %>
 <% @user.get_followers().each do |follower| %>
@@ -17,13 +27,13 @@
     <%= link_to follower.name, user_path(follower) %>
   </li>
 <% end %>
-<br>
+<br/>
 
 <%= link_to "discuss(" + @user.discuss_count.to_s + ")", user_path(@user) %>
-<br>
+<br/>
 
 <%= link_to "message(" + @user.msg_count.to_s + ")", user_path(@user) %>
-<br>
+<br/>
 
 <%= link_to "version(" + @user.version.to_s + ")", user_path(@user) %>
 

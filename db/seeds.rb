@@ -94,10 +94,10 @@ user_ning = User.create(:name => "xiaoningyb", :password => "123456", :email => 
 user_bill = User.create(:name => "bill_tang", :password => "123456", :email => "bill.tang@nebutown.com")
 user_sun = User.create(:name => "孙大发", :password => "123456", :email => "2358340741@qq.com")
 
-UserRelationshipController.create_relationship(user_ning, user_bill)
-UserRelationshipController.create_relationship(user_bill, user_ning)
-UserRelationshipController.create_relationship(user_bill, user_sun)
-UserRelationshipController.create_relationship(user_ning, user_sun)
+UserRelationshipsController.create_relationship(user_ning, user_bill)
+UserRelationshipsController.create_relationship(user_bill, user_ning)
+UserRelationshipsController.create_relationship(user_bill, user_sun)
+UserRelationshipsController.create_relationship(user_ning, user_sun)
 
 
 # for discuss
