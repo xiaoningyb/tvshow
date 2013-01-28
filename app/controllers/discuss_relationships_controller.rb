@@ -3,7 +3,7 @@ class DiscussRelationshipsController < ApplicationController
 
   #new discuss, it will be deprecated
   def new
-    @discuss = Discuss.new(:user_id => current_user.id, :time => Time.now)
+    @discuss = Discuss.new(:user => current_user, :time => Time.now)
     @src = nil
     if params[:src] != nil
       @src = Discuss.find(params[:src])
@@ -37,7 +37,8 @@ class DiscussRelationshipsController < ApplicationController
 
     discuss.transaction do 
       user.update_attributes(:discuss_count => user.discuss_count.next)
-      discuss.update_attributes(:tv_program => program)     
+      discuss.update_attributes(:tv_program => program)
+      discuss.update_attributes(:user => user)  
       program.update_attributes(:discuss_count => program.discuss_count.next)
       if source != nil
         source.update_attributes(:quote_count => discuss.quote_count.next)      
@@ -57,6 +58,7 @@ class DiscussRelationshipsController < ApplicationController
     discuss.transaction do
       user.update_attributes(:discuss_count => (user.discuss_count-1) )
       discuss.update_attributes(:tv_program => nil)
+      discuss.update_attributes(:user => nil)
       program.update_attributes(:discuss_count => (program.discuss_count-1) ) 
       if source != nil
         source.update_attributes(:quote_count => (souce.quote_count-1) )

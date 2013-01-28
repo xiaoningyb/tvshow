@@ -35,6 +35,11 @@
 <br/>
 
 <%= "discuss(" + @user.discuss_count.to_s + ")" %>
+<% @user.discusses.each do |discuss| %>
+  <li>
+    <%= link_to discuss.topic, discuss_path(discuss) %>
+  </li>
+<% end %>
 <br/>
 
 <%= "message(" + @user.msg_count.to_s + ")" %>

@@ -1,14 +1,18 @@
-<%= @discuss.topic %>
-<br>
-<%= "time : " + @discuss.time.to_s %>
-<br>
-<%= link_to @user.name, user_path(@user) %>
-<br>
-<%= simple_format(@discuss.content) %>
+<%= "tv_program(" + @discuss.tv_program.name + ")" %>
+<br/>
 
 <% if (@discuss.discuss_type == 1) %>
-<%= link_to "RE: " + @src_discuss.topic, discuss_path(@src_discuss) %>
+  <%= link_to "RE: " + @src_discuss.topic, discuss_path(@src_discuss) %>
+  <br/>
 <% end %>
+
+<%= "topic : " + @discuss.topic %>
+<br/>
+<%= "time : " + @discuss.time.to_s %>
+<br/>
+<%= link_to @user.name, user_path(@user) %>
+<br/>
+<%= simple_format(@discuss.content) %>
 
 <% @discuss.quotes.each do |quote| %>
   <li>

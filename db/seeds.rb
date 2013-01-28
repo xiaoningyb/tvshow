@@ -107,7 +107,7 @@ discuss2 = Discuss.create(:topic => "awesome", :content => "Incredible!", :user_
 discuss3 = Discuss.create(:topic => "我觉得挺好的", :content => "节目不好，妹子漂亮!", :user_id => user_sun.id, :time => Time.now)
 
 DiscussRelationshipsController.create_relationship(user_ning, discuss1, nil, nba_heat_bull)
-DiscussRelationshipsController.create_relationship(user_ning, discuss1, discuss2, nba_heat_bull)
-DiscussRelationshipsController.create_relationship(user_ning, discuss1, discuss3, nba_heat_bull)
+DiscussRelationshipsController.create_relationship(user_bill, discuss1, discuss2, nba_heat_bull)
+DiscussRelationshipsController.create_relationship(user_sun, discuss1, discuss3, nba_heat_bull)
 
 
