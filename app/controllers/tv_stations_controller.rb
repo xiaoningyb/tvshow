@@ -1,15 +1,13 @@
 class TvStationsController < ApplicationController
   before_filter :authenticate_user!
 
- #show index page
+  #show index page
   def index
-    @stations = TvStation.all
-
-    respond_to do |format|
-      format.html # index.html.erb
-      format.xml { render :xml => @stations.to_xml }
-      format.json { render :json => @stations.to_json }
-    end
+    if (params[:cmd] != nil) && (params[:cmd] == "detail")
+      index_detail(params)
+    elsif
+      index_simple
+    end     
   end
 
   #new tv station, it will be deprecated
@@ -22,6 +20,28 @@ class TvStationsController < ApplicationController
     create_station_in_group(params)
     
     redirect_to :action => :index
+  end
+
+  def index_simple
+    @stations = TvStation.all
+
+    respond_to do |format|
+      format.html # index.html.erb
+      format.xml { render :xml => @stations.to_xml }
+      format.json { render :json => @stations.to_json }
+    end
+  end
+
+  def index_detail(params)
+    @stations = TvStation.all
+    @station_infos = []
+    @stations.each do |station|
+      @station_infos << self.get_program_now(station)
+    end
+    respond_to do |format|
+      format.xml { render :xml => @station_infos.to_xml }
+      format.json { render :json => @station_infos.to_json }
+    end
   end
 
   #show tv group info
@@ -73,6 +93,11 @@ class TvStationsController < ApplicationController
       format.xml { render :xml => @programs_format.to_xml }
       format.json { render :json => @programs_format.to_json }
     end
+  end
+
+  def get_program_now(station)
+    programs = station.get_programs_now()    
+    return self.format_json(station, programs)
   end
 
   #edit tv group, it will be deprecated

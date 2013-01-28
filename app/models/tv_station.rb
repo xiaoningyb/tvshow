@@ -51,5 +51,20 @@ class TvStation < ActiveRecord::Base
     return programs
   end
 
+  #get programs
+  def get_programs_now()
+    programs = {}
+    self.tv_programs.each do |program|
+      self.tv_programships.each do |programship|
+        if program.id == programship.tv_program_id
+          if programship.begin <= Time.now and Time.now <= programship.end
+            programs[programship] = program
+          end
+        end
+      end
+    end
+    return programs
+  end
+
 
 end

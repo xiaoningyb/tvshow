@@ -2,14 +2,18 @@
 <br>
 <%= "email : " + @user.email %>
 <%= simple_format(@user.address) %>
-<%= form_tag(user_relationships_path, :method => "post") do %>
-<%= hidden_field_tag 'user', @user.id %>
-<%= hidden_field_tag 'follower', current_user.id %>
 <% if @user.has_follower(current_user) %>
-  <%= submit_tag("unfollow") %>
+  <%= form_tag(user_relationships_path, :method => 'delete') do %>
+    <%= hidden_field_tag 'user', @user.id %>
+    <%= hidden_field_tag 'follower', current_user.id %>
+    <%= submit_tag("unfollow") %>
+  <% end %>
 <% else %>
-  <%= submit_tag("follow") %>
-<% end %>
+  <%= form_tag(user_relationships_path(@user.followers.find(current_user)), :method => 'post') do %>
+    <%= hidden_field_tag 'user', @user.id %>
+    <%= hidden_field_tag 'follower', current_user.id %>
+    <%= submit_tag("follow") %>
+  <% end %>
 <% end %>
 <br/>
 

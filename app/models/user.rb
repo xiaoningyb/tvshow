@@ -28,8 +28,8 @@ class User < ActiveRecord::Base
     return self.followees.include?(user)
   end
 
- def has_follower(user)
-   return self.followers.include?(user)
+  def has_follower(user)
+    return self.followers.include?(user)
   end
-
+  
 end
