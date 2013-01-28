@@ -2,7 +2,8 @@
 <br>
 <%= "email : " + @user.email %>
 <%= simple_format(@user.address) %>
-<% if @user.has_follower(current_user) %>
+<% if @user == current_user %>
+<% elsif @user.has_follower(current_user) %>
   <%= form_tag(user_relationship_path, :method => 'delete') do %>
     <%= hidden_field_tag 'user', @user.id %>
     <%= hidden_field_tag 'follower', current_user.id %>
@@ -17,7 +18,7 @@
 <% end %>
 <br/>
 
-<%= link_to "followee(" + @user.followee_count.to_s + ") : ", user_path(@user) %>
+<%= "followee(" + @user.followee_count.to_s + ") : " %>
 <% @user.get_followees().each do |followee| %>
   <li>
     <%= link_to followee.name, user_path(followee) %>
@@ -25,7 +26,7 @@
 <% end %>
 <br/>
 
-<%= link_to "follower(" + @user.follower_count.to_s + ")", user_path(@user) %>
+<%= "follower(" + @user.follower_count.to_s + ")" %>
 <% @user.get_followers().each do |follower| %>
   <li>
     <%= link_to follower.name, user_path(follower) %>
@@ -33,20 +34,16 @@
 <% end %>
 <br/>
 
-<%= link_to "discuss(" + @user.discuss_count.to_s + ")", user_path(@user) %>
+<%= "discuss(" + @user.discuss_count.to_s + ")" %>
 <br/>
 
-<%= link_to "message(" + @user.msg_count.to_s + ")", user_path(@user) %>
+<%= "message(" + @user.msg_count.to_s + ")" %>
 <br/>
 
-<%= link_to "version(" + @user.version.to_s + ")", user_path(@user) %>
+<%= "version(" + @user.version.to_s + ")" %>
 
-<% if user_signed_in? %>
+<% if user_signed_in? and @user == current_user %>
   <li>
   <%= link_to('Edit registration', edit_user_registration_path) %>
-  </li>
-<% else %>
-  <li>
-  <%= link_to('Register', new_user_registration_path)  %>
   </li>
 <% end %>
