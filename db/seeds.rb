@@ -73,9 +73,9 @@ cctv.tv_stations << cctv6
   spurs_knicks = TvProgram.create(:name => "NBA常规赛:马刺vs尼克斯(" + i.to_s + ")", :description => "北京时间2013年1月5日常规赛，早上10点至12点")
   TvProgramship.create(:tv_station => cctv5, :tv_program => heat_bull, :begin => Time.now + i * 1200, :end =>  Time.now + (i + 1) *1200, 
                        :duration => 20, :is_alive => true)
-  TvProgramship.create(:tv_station => cctv5, :tv_program => heat_bull_re, :begin => Time.now + i * 1200, :end =>  Time.now + (i + 1) *1200, 
+  TvProgramship.create(:tv_station => cctv5, :tv_program => heat_bull_re, :begin => Time.now + (i+1) * 1200, :end =>  Time.now + (i + 2) *1200, 
                        :duration => 20, :is_alive => false)
-  TvProgramship.create(:tv_station => cctv5, :tv_program => spurs_knicks, :begin => Time.now + i * 1200, :end =>  Time.now + (i + 1) *1200, 
+  TvProgramship.create(:tv_station => cctv5, :tv_program => spurs_knicks, :begin => Time.now + (i+2) * 1200, :end =>  Time.now + (i + 3) *1200, 
                        :duration => 20, :is_alive => false)
 end
 
