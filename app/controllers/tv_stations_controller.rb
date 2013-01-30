@@ -76,6 +76,7 @@ class TvStationsController < ApplicationController
     @programs = @station.get_programs_by_interval(start_time, end_time)
 
     @programs_format = self.format_json(@station, @programs)
+    @programs_format[:date] = start_time.to_date
     respond_to do |format|
       format.html # show.html.erb
       format.xml { render :xml => @programs_format.to_xml }
@@ -102,7 +103,9 @@ class TvStationsController < ApplicationController
     date_offset = params[:offset].to_i
     @programs = @station.get_programs_by_offset(date_offset)
 
-    @programs_format = self.format_json(@station, @programs)
+    @programs_format = self.format_json(@station, @programs)    
+    @programs_format[:date] = Date.today
+
     respond_to do |format|
       format.html # show.html.erb
       format.xml { render :xml => @programs_format.to_xml }
@@ -138,11 +141,14 @@ class TvStationsController < ApplicationController
 
   #format function
   def format_json(station, programs_info)
+    #format station info
     station_format = {}
     station_format[:station_name] = station.name
     station_format[:station_id] = station.id
     station_format[:image] = station.image
-    station_format[:banner] = station.banner
+    station_format[:banner] = station.banner    
+
+    #format programs info
     programs_format = []
     programs_info.each do |programship, program|
       program_format = { :program_id => program.id, :name => program.name, :description => program.description, :episode => program.episode, 
@@ -152,6 +158,7 @@ class TvStationsController < ApplicationController
       programs_format << program_format
     end
     station_format[:programs] = programs_format
+
     return station_format
   end
 
