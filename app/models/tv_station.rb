@@ -52,18 +52,23 @@ class TvStation < ActiveRecord::Base
   end
 
   #get programs
-  def get_programs_now()
+  def get_programs_by_offset(date_offset)
     programs = {}
     self.tv_programs.each do |program|
       self.tv_programships.each do |programship|
         if program.id == programship.tv_program_id
-          if programship.begin <= Time.now and Time.now <= programship.end
+          if programship.begin >= (Date.today + date_offset).to_time and programship.begin <= (Date.today + date_offset + 1).to_time
             programs[programship] = program
           end
         end
       end
     end
     return programs
+  end
+
+  #get programs
+  def get_programs_now()
+    return get_programs_by_time(Time.now)
   end
 
 

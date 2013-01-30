@@ -50,6 +50,8 @@ class TvStationsController < ApplicationController
       show_one_day(params)
     elsif ((params[:begin] != nil) && (params[:end] != nil))
       show_time_interval(params)
+    elsif (params[:offset] != nil)
+      show_date_offset(params)
     else
       show_simple(params)
     end
@@ -86,6 +88,19 @@ class TvStationsController < ApplicationController
     start_time = DateTime.parse(params[:begin])
     end_time = DateTime.parse(params[:end])
     @programs = @station.get_programs_by_interval(start_time, end_time)
+
+    @programs_format = self.format_json(@station, @programs)
+    respond_to do |format|
+      format.html # show.html.erb
+      format.xml { render :xml => @programs_format.to_xml }
+      format.json { render :json => @programs_format.to_json }
+    end
+  end
+
+  def show_date_offset(params)
+    @station = TvStation.find(params[:id])
+    date_offset = params[:offset].to_i
+    @programs = @station.get_programs_by_offset(date_offset)
 
     @programs_format = self.format_json(@station, @programs)
     respond_to do |format|
