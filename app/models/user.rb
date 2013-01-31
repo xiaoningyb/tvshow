@@ -3,11 +3,14 @@ class User < ActiveRecord::Base
   # :token_authenticatable, :confirmable,
   # :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable
+         :recoverable, :rememberable, :trackable, :token_authenticatable
 
-  # Setup accessible (or protected) attributes for your model
-  attr_accessible :email, :password, :password_confirmation, :remember_me
-  attr_accessible :name, :address, :age, :id_card, :image,  :qq, :telephone, :version, :weibo, :discuss_count, :followee_count, :follower_count, :msg_count, :discusses
+  before_save :ensure_authentication_token
+
+  # accessible (or protected) attributes
+  attr_accessible :email, :password, :password_confirmation, :remember_me, :authentication_token
+  attr_accessible :name, :address, :age, :id_card, :image,  :qq, :telephone, :version, 
+                  :weibo, :discuss_count, :followee_count, :follower_count, :msg_count, :discusses
 
   #for relationship with user  
   has_many :follower_relationships, :class_name => "UserRelationship"

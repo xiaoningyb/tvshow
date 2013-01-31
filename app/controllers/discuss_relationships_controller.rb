@@ -1,5 +1,5 @@
 class DiscussRelationshipsController < ApplicationController
-  #before_filter :authenticate_user!
+  #before_filter :authenticate_user!, :except => [:index, :show]
 
   #new discuss, it will be deprecated
   def new

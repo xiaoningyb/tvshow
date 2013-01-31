@@ -20,8 +20,14 @@ Tvshow::Application.routes.draw do
   resources :tv_programs
   resources :users
   resources :discusses
-  resources :discuss_relationships
-  resources :user_relationships
+  resources :discuss_relationships, :only => [:new, :create, :destroy]
+  resources :user_relationships,    :only => [:create, :destroy]
+  resources :token_authentications, :only => [:create, :destroy]
+
+  devise_for :users, :controllers => { :sessions => "sessions" }
+  devise_scope :user do
+    resources :sessions, :only => [:create, :destroy]
+  end
 
   # Sample resource route with options:
   #   resources :products do

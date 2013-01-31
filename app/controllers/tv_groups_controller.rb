@@ -1,5 +1,5 @@
 class TvGroupsController < ApplicationController
-  before_filter :authenticate_user!
+  #before_filter :authenticate_user!, :except => [:index, :show]
 
   #show index page
   def index

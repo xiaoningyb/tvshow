@@ -9,10 +9,10 @@
     <%= hidden_field_tag 'follower', current_user.id %>
     <%= submit_tag("unfollow") %>
   <% end %>
-<% else %>
+<% elsif current_user != nil %>
   <%= form_tag(user_relationships_path, :method => 'post') do %>
     <%= hidden_field_tag 'user', @user.id %>
-    <%= hidden_field_tag 'follower', current_user.id %>
+      <%= hidden_field_tag 'follower', current_user.id %>
     <%= submit_tag("follow") %>
   <% end %>
 <% end %>
