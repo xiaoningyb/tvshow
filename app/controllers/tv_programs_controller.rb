@@ -94,17 +94,13 @@ class TvProgramsController < ApplicationController
 
   #format json output function
   def format_detail_json(program, discusses)    
-    program_format = { :program_id => program.id, :name => program.name, :description => program.description, :episode => program.episode, 
-                       :image => program.image, :key_word => program.key_word, :subscriber_count => program.subscriber_count,
-                       :discuss_count => program.discuss_count, :checkin_count => program.checkin_count }
-    
     discusses_format = []
     discusses.each do |discuss|
       discuss_format = discuss.to_json
       discusses_format << discuss_format
     end
-    program_format[:discusses] = discusses_format
-    return program_format
+    program[:discusses] = discusses_format
+    return program
   end
 
   #format json output function
@@ -116,6 +112,5 @@ class TvProgramsController < ApplicationController
     end
     return discusses_format
   end
-
 
 end
