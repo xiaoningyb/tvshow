@@ -12,6 +12,7 @@ class DiscussRelationshipsController < ApplicationController
   end
 
   def create
+    params[:discuss][:time] = Time.now
     @discuss = Discuss.new(params[:discuss])
     @src = nil
     if params[:src] != nil
@@ -38,7 +39,7 @@ class DiscussRelationshipsController < ApplicationController
     discuss.transaction do 
       user.update_attributes(:discuss_count => user.discuss_count.next)
       discuss.update_attributes(:tv_program => program)
-      discuss.update_attributes(:user => user)  
+      discuss.update_attributes(:user => user)
       program.update_attributes(:discuss_count => program.discuss_count.next)
       if source != nil
         source.update_attributes(:quote_count => discuss.quote_count.next)      
