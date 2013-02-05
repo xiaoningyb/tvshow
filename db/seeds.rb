@@ -50,7 +50,7 @@ cctv.tv_stations << cctv5
 cctv.tv_stations << cctv6
 
 #add the program for yestday
--24.step(-1, 1).to_a.each do |i|
+-24.step(-3, 1).to_a.each do |i|
   #for cctv1
   tv = TvProgram.create(:name => "春节联合晚会(" + i.to_s + ")", :description => "春节联欢晚会")
   TvProgramship.create(:tv_station => cctv1, :tv_program => tv, :begin => Time.now + i * 3600, 
