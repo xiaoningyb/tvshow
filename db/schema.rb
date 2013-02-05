@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130125061110) do
+ActiveRecord::Schema.define(:version => 20130204094304) do
 
   create_table "discuss_programships", :force => true do |t|
     t.integer  "discuss_id",     :null => false
@@ -64,16 +64,16 @@ ActiveRecord::Schema.define(:version => 20130125061110) do
   end
 
   create_table "tv_programs", :force => true do |t|
-    t.string   "name",                            :null => false
+    t.string   "name",                         :null => false
     t.text     "description"
     t.binary   "image"
     t.string   "key_word"
     t.integer  "episode"
-    t.integer  "subscriber_count", :default => 0
-    t.integer  "discuss_count",    :default => 0
-    t.integer  "checkin_count",    :default => 0
-    t.datetime "created_at",                      :null => false
-    t.datetime "updated_at",                      :null => false
+    t.integer  "watch_count",   :default => 0
+    t.integer  "discuss_count", :default => 0
+    t.integer  "checkin_count", :default => 0
+    t.datetime "created_at",                   :null => false
+    t.datetime "updated_at",                   :null => false
   end
 
   create_table "tv_programships", :force => true do |t|
@@ -96,6 +96,15 @@ ActiveRecord::Schema.define(:version => 20130125061110) do
     t.datetime "updated_at",  :null => false
   end
 
+  create_table "user_programships", :force => true do |t|
+    t.integer  "user_id",       :null => false
+    t.integer  "tv_program_id", :null => false
+    t.integer  "type",          :null => false
+    t.time     "time",          :null => false
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
+  end
+
   create_table "user_relationships", :force => true do |t|
     t.integer  "user_id",     :null => false
     t.integer  "follower_id", :null => false
@@ -116,6 +125,7 @@ ActiveRecord::Schema.define(:version => 20130125061110) do
     t.integer  "qq"
     t.integer  "msg_count",              :default => 0,  :null => false
     t.integer  "discuss_count",          :default => 0,  :null => false
+    t.integer  "watch_count",            :default => 0,  :null => false
     t.integer  "followee_count",         :default => 0,  :null => false
     t.integer  "follower_count",         :default => 0,  :null => false
     t.integer  "version",                :default => 0,  :null => false

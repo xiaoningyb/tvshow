@@ -4,6 +4,24 @@
   <%= @program.name + "(" +  @program.episode.to_s + ")" %>
 <% end %>
 <%= simple_format(@program.description) %> 
+
+<% if current_user != nil %>
+  <% if current_user.has_watch(@program) %>
+    <%= form_tag(user_programship_path, :method => 'delete') do %>
+      <%= hidden_field_tag 'user', current_user.id %>
+      <%= hidden_field_tag 'program', @program.id %>
+      <%= submit_tag("unwatch") %>
+    <% end %>
+  <% else %>
+    <%= form_tag(user_programships_path, :method => 'post') do %>
+      <%= hidden_field_tag 'user', current_user.id %>
+      <%= hidden_field_tag 'program', @program.id %>
+      <%= submit_tag("watch") %>
+    <% end %>
+  <% end %>
+<% end %>
+<br/>
+
 <br>
 <%= "讨论条数:" + @program.discusses.size.to_s %>
 <% @program.discusses.each do |discuss| %>
@@ -14,3 +32,11 @@
 <p>
   <%= link_to 'new discuss', {:controller => 'discuss_relationships', :action => 'new', :program => @program.id} %>
 </p>
+
+<br>
+<%= "watch:" + @program.watch_count.to_s %>
+<% @program.users.each do |user| %>
+  <li>
+    <%= link_to user.name, user_path(user) %>
+  </li>
+<% end %>

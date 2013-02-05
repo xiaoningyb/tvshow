@@ -6,7 +6,7 @@ class CreateTvPrograms < ActiveRecord::Migration
       t.column :image,            :binary
       t.column :key_word,         :string
       t.column :episode,          :integer
-      t.column :subscriber_count, :integer, :default => 0
+      t.column :watch_count,      :integer, :default => 0
       t.column :discuss_count,    :integer, :default => 0
       t.column :checkin_count,    :integer, :default => 0
 

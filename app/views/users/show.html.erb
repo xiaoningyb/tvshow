@@ -18,6 +18,14 @@
 <% end %>
 <br/>
 
+<%= "watch(" + @user.tv_programs.size.to_s + ") : " %>
+<% @user.tv_programs.each do |program| %>
+  <li>
+    <%= link_to program.name, tv_program_path(program) %>
+  </li>
+<% end %>
+<br/>
+
 <%= "followee(" + @user.followee_count.to_s + ") : " %>
 <% @user.get_followees().each do |followee| %>
   <li>

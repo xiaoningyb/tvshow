@@ -10,7 +10,7 @@ class User < ActiveRecord::Base
   # accessible (or protected) attributes
   attr_accessible :email, :password, :password_confirmation, :remember_me, :authentication_token
   attr_accessible :name, :address, :age, :id_card, :image,  :qq, :telephone, :version, 
-                  :weibo, :discuss_count, :followee_count, :follower_count, :msg_count, :discusses
+                  :weibo, :watch_count, :discuss_count, :followee_count, :follower_count, :msg_count, :discusses
 
   #for relationship with user  
   has_many :follower_relationships, :class_name => "UserRelationship"
@@ -18,6 +18,10 @@ class User < ActiveRecord::Base
 
   has_many :followee_relationships, :class_name => "UserRelationship", :foreign_key => "follower_id"
   has_many :followees, :through => :followee_relationships, :source => :user, :uniq => true  
+
+  #for relationship with tv_program
+  has_many :user_programships, :dependent => :destroy
+  has_many :tv_programs, :through => :user_programships, :uniq => true
 
   #for relationship with discuss
   has_many :discusses
@@ -36,6 +40,10 @@ class User < ActiveRecord::Base
 
   def has_follower(user)
     return self.followers.include?(user)
+  end
+
+  def has_watch(program)
+    return self.tv_programs.include?(program)
   end
   
 end
