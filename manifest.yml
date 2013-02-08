@@ -1,0 +1,17 @@
+--- 
+applications: 
+  .: 
+    instances: 1
+    services: 
+      postgresql-tvshow: 
+        type: postgresql
+    mem: 1G
+    infra: ap-aws
+    framework: 
+      info: 
+        exec: 
+        mem: 256M
+        description: Rails Application
+      name: rails3
+    name: tvshow
+    url: ${name}.${target-base}
