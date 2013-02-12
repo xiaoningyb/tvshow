@@ -96,6 +96,9 @@ class TvProgramsController < ApplicationController
   def format_detail_json(program, discusses)    
     discusses_format = []
     discusses.each do |discuss|
+      user = discuss.user
+      discuss[:user_name] = user.name
+      discuss[:user_img] = user.image
       discuss_format = discuss.to_json
       discusses_format << discuss_format
     end
