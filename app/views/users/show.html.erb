@@ -45,7 +45,7 @@
 <%= "discuss(" + @user.discuss_count.to_s + ")" %>
 <% @user.discusses.each do |discuss| %>
   <li>
-    <%= link_to discuss.topic, discuss_path(discuss) %>
+    <%= link_to discuss.content, discuss_path(discuss) %>
   </li>
 <% end %>
 <br/>

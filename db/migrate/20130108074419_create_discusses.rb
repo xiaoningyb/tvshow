@@ -5,7 +5,7 @@ class CreateDiscusses < ActiveRecord::Migration
       t.integer :user_id,      :null => false
       t.integer :discuss_type, :default => 0
       t.text :content,         :null => false
-      t.time :time,            :null => false 
+      t.datetime :time,        :null => false 
       t.string :location
       t.binary :image
       t.column :tv_program_id, :integer

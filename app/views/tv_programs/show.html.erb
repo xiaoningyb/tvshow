@@ -24,9 +24,12 @@
 
 <br>
 <%= "讨论条数:" + @program.discusses.size.to_s %>
+<% @program.discusses.sort!{|x, y| y.time <=> x.time} %>
 <% @program.discusses.each do |discuss| %>
   <li>
-    <%= link_to discuss.topic, discuss_path(discuss) %>
+    <%= link_to discuss.content, discuss_path(discuss) %>
+    <%= " by " %>
+    <%= link_to discuss.user.name, user_path(discuss.user) %>
   </li>
 <% end %>
 <p>

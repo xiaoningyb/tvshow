@@ -93,23 +93,27 @@ class TvProgramsController < ApplicationController
   end
 
   #format json output function
-  def format_detail_json(program, discusses)    
-    discusses_format = []
+  def format_detail_json(program, discusses)   
+    program[:discusses] = []
+    discusses.sort!{|x, y| y.time <=> x.time}
     discusses.each do |discuss|
-      user = discuss.user
-      discuss[:user_name] = user.name
-      discuss[:user_img] = user.image
-      discuss_format = discuss.to_json
-      discusses_format << discuss_format
+      discuss[:user_name] = discuss.user.name
+      discuss[:user_img] = discuss.user.image
+      program[:discusses] << discuss.to_json
+      puts discuss.content
     end
-    program[:discusses] = discusses_format
+    
+    puts program[:discusses].to_json
     return program
   end
 
   #format json output function
   def format_discusses_json(discusses)    
     discusses_format = []
+    discusses.sort!{|x, y| y.time <=> x.time}
     discusses.each do |discuss|
+      discuss[:user_name] = discuss.user.name
+      discuss[:user_img] = discuss.user.image
       discuss_format = discuss.to_json
       discusses_format << discuss_format
     end
