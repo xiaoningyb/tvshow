@@ -1,0 +1,2 @@
+module ShakeHelper
+end
