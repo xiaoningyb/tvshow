@@ -45,5 +45,13 @@ class User < ActiveRecord::Base
   def has_watch(program)
     return self.tv_programs.include?(program)
   end
+
+  def get_watch_programs
+    return self.tv_programs
+  end
+
+  def get_discusses
+    return self.discusses
+  end
   
 end

@@ -27,7 +27,83 @@ class UsersController < ApplicationController
 
   #show user info
   def show
+    if (params[:cmd] != nil) && (params[:cmd] == "detail")
+      show_detail(params)
+    elsif ((params[:cmd] != nil) && (params[:cmd] == "followers"))
+      show_followers(params)
+    elsif ((params[:cmd] != nil) && (params[:cmd] == "followees"))
+      show_followees(params)
+    elsif ((params[:cmd] != nil) && (params[:cmd] == "discusses"))
+      show_discusses(params)
+    elsif ((params[:cmd] != nil) && (params[:cmd] == "watch_programs"))
+      show_watch_programs(params)
+    else
+      show_simple(params)
+    end
+  end
+
+  #show simple user info
+  def show_simple(params)
     @user = User.find(params[:id])
+
+    respond_to do |format|
+      format.html # show.html.erb
+      format.xml { render :xml => @user.to_xml }
+      format.json { render :json => @user.to_json }
+    end
+  end
+
+  #show user followers
+  def show_followers(params)
+    @user = User.find(params[:id])
+
+    respond_to do |format|
+      format.html # show.html.erb
+      format.xml { render :xml => @user.get_followers.to_xml }
+      format.json { render :json => @user.get_followers.to_json }
+    end
+  end
+
+  #show user followees
+  def show_followees(params)
+    @user = User.find(params[:id])
+
+    respond_to do |format|
+      format.html # show.html.erb
+      format.xml { render :xml => @user.get_followees.to_xml }
+      format.json { render :json => @user.get_followees.to_json }
+    end
+  end
+
+  #show user discusses
+  def show_discusses(params)
+    @user = User.find(params[:id])
+
+    respond_to do |format|
+      format.html # show.html.erb
+      format.xml { render :xml => @user.get_discusses.to_xml }
+      format.json { render :json => @user.get_discusses.to_json }
+    end
+  end
+
+  #show user watch programs
+  def show_watch_programs(params)
+    @user = User.find(params[:id])
+
+    respond_to do |format|
+      format.html # show.html.erb
+      format.xml { render :xml => @user.get_watch_programs.to_xml }
+      format.json { render :json => @user.get_watch_programs.to_json }
+    end
+  end
+
+  #show user detail information
+  def show_detail(params)
+    @user = User.find(params[:id])
+    @user[:followers] = @user.get_followers
+    @user[:followees] = @user.get_followees
+    @user[:discusses] = @user.get_discusses
+    @user[:watch_programs] = @user.get_watch_programs
 
     respond_to do |format|
       format.html # show.html.erb
