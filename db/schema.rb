@@ -10,7 +10,22 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130204094304) do
+ActiveRecord::Schema.define(:version => 20130226091143) do
+
+  create_table "crawler_infos", :force => true do |t|
+    t.datetime "begin"
+    t.datetime "end"
+    t.integer  "group_counter"
+    t.integer  "new_group_counter"
+    t.integer  "station_counter"
+    t.integer  "new_station_counter"
+    t.integer  "program_counter"
+    t.integer  "new_program_counter"
+    t.integer  "crawl_page_counter"
+    t.integer  "crawl_link_counter"
+    t.datetime "created_at",          :null => false
+    t.datetime "updated_at",          :null => false
+  end
 
   create_table "discuss_programships", :force => true do |t|
     t.integer  "discuss_id",     :null => false
@@ -50,8 +65,10 @@ ActiveRecord::Schema.define(:version => 20130204094304) do
 
   create_table "tv_groups", :force => true do |t|
     t.string   "name",        :null => false
+    t.string   "en_name",     :null => false
     t.text     "description"
     t.binary   "image"
+    t.string   "image_url"
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
   end
@@ -89,9 +106,12 @@ ActiveRecord::Schema.define(:version => 20130204094304) do
 
   create_table "tv_stations", :force => true do |t|
     t.string   "name",        :null => false
+    t.string   "en_name",     :null => false
     t.text     "description"
     t.binary   "image"
+    t.string   "image_url"
     t.binary   "banner"
+    t.string   "banner_url"
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
   end

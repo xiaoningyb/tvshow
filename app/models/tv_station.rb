@@ -1,5 +1,5 @@
 class TvStation < ActiveRecord::Base
-  attr_accessible :description, :image, :name, :banner
+  attr_accessible :name, :en_name, :banner, :description, :image, :image_url 
 
   #for relationship with tv_group
   has_many :tv_groupships, :dependent => :destroy

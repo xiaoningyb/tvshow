@@ -3,7 +3,6 @@
 <% @stations.each do |station| %>
   <li>
     <%= link_to station.name, tv_station_path(station) %>
-    <%= link_to 'edit', edit_tv_station_path(station) %>
     <% if (@station_cur_programs != nil) and (@station_cur_programs[station] != nil) and (not @station_cur_programs[station].empty?) %>
       <br>
       <% @station_cur_programs[station].each do |programship, program| %>
