@@ -41,3 +41,7 @@ gem 'jquery-rails'
 # gem 'ruby-debug'
 
 gem 'devise'
+
+gem 'rufus-scheduler'
+
+gem 'mechanize'

@@ -1,0 +1,25 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  begin: 2013-02-26 17:11:43
+  end: 2013-02-26 17:11:43
+  group_counter: 1
+  new_group_counter: 1
+  station_counter: 1
+  new_station_counter: 1
+  program_counter: 1
+  new_program_counter: MyString
+  crawl_page_counter: 1
+  crawl_link_counter: 1
+
+two:
+  begin: 2013-02-26 17:11:43
+  end: 2013-02-26 17:11:43
+  group_counter: 1
+  new_group_counter: 1
+  station_counter: 1
+  new_station_counter: 1
+  program_counter: 1
+  new_program_counter: MyString
+  crawl_page_counter: 1
+  crawl_link_counter: 1
