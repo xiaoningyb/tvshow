@@ -26,11 +26,11 @@ class CrawlerInfo < ActiveRecord::Base
       if CCTV_KEY_WORDS.include?(classic.content)
         self.crawl_station_classic(classic, 'cctv')
       elsif HMT_KEY_WORDS.include?(classic.content)
-        #self.crawl_station_classic(classic, 'hmt_tv')
+        self.crawl_station_classic(classic, 'hmt_tv')
       elsif OVERSEA_KEY_WORDS.include?(classic.content)
-        #self.crawl_station_classic(classic, 'oversea_tv')
+        self.crawl_station_classic(classic, 'oversea_tv')
       else
-        #self.crawl_station_classic(classic, 'local_tv')
+        self.crawl_station_classic(classic, 'local_tv')
       end
     end
 
