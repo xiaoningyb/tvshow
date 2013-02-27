@@ -105,15 +105,16 @@ ActiveRecord::Schema.define(:version => 20130226091143) do
   end
 
   create_table "tv_stations", :force => true do |t|
-    t.string   "name",        :null => false
-    t.string   "en_name",     :null => false
+    t.string   "name",         :null => false
+    t.string   "en_name",      :null => false
     t.text     "description"
     t.binary   "image"
     t.string   "image_url"
     t.binary   "banner"
     t.string   "banner_url"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
+    t.date     "updated_date"
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
   end
 
   create_table "user_programships", :force => true do |t|

@@ -8,6 +8,7 @@ class CreateTvStations < ActiveRecord::Migration
       t.column :image_url,    :string
       t.column :banner,       :binary
       t.column :banner_url,   :string
+      t.column :updated_date, :date
 
       t.timestamps
     end

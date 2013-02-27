@@ -3,12 +3,10 @@ BASE_URL = 'http://www.tvmao.com'
 TV_STATIONS_URL = 'http://tvmao.com/help/tvstation_list.jsp'
 START_URL = "#{BASE_URL}/xiaoi/"
 
-SPORTS_TV_STATIONS = Set["CCTV5", "CCTVPAYFEE13", "CCTVPAYFEE22", "TIANYUANWEIQI", "CCTVPAYFEE36", "WUSHUSHIJIE",
-                         "KUAILECHUIDIAO", "XFBY"]
-
 CCTV_KEY_WORDS = Set["CCTV"]
 HMT_KEY_WORDS = Set["香港", "澳门", "台湾"]
 OVERSEA_KEY_WORDS = Set["海外"]
+
 SPORTS_KEY_WORDS = Set["体育", "足球", "篮球", "赛车", "车迷", "高尔夫", "网球", "汽摩", "围棋", "台球", "武术", "垂钓", 
                        "ESPN", "钓鱼", "球王", "球迷", "Sports", "板球", "运动", "網球", "高球"]
 MOVIES_KEY_WORDS = Set["电影", "剧场", "HBO", "CINEMAX", "Movie", "電影", "影剧", "影视"]
@@ -28,11 +26,11 @@ class CrawlerInfo < ActiveRecord::Base
       if CCTV_KEY_WORDS.include?(classic.content)
         self.crawl_station_classic(classic, 'cctv')
       elsif HMT_KEY_WORDS.include?(classic.content)
-        self.crawl_station_classic(classic, 'hmt_tv')
+        #self.crawl_station_classic(classic, 'hmt_tv')
       elsif OVERSEA_KEY_WORDS.include?(classic.content)
-        self.crawl_station_classic(classic, 'oversea_tv')
+        #self.crawl_station_classic(classic, 'oversea_tv')
       else
-        self.crawl_station_classic(classic, 'local_tv')
+        #self.crawl_station_classic(classic, 'local_tv')
       end
     end
 
@@ -50,17 +48,23 @@ class CrawlerInfo < ActiveRecord::Base
     self.crawl_sub_classic!(stations, page, href)
     
     self.add_new_station_to_group(stations, group_name)
+
+    self.update_program_schedule(stations)
   end
  
   def self.crawl_sub_classic!(stations, page, href)
     #push first station in sub classic
-    stations << {:name => page.search('/html/body/div/div/ul/li/b')[0].content, :en_name => href[href.index('-')+1 .. href.rindex('-')-1], :url => href}
+    stations << {:name => page.search('/html/body/div/div/ul/li/b')[0].content, 
+                 :en_name => href[href.index('-')+1 .. href.rindex('-')-1], 
+                 :url => href}
     @station_find_num = @station_find_num + 1
 
     #find first class stations
     page.search('/html/body/div/div/ul/li/a').each do |station|
       href = station['href']
-      stations << {:name => station.ancestors[0].content, :en_name => href[href.index('-')+1 .. href.rindex('-')-1], :url => href}
+      stations << {:name => station.ancestors[0].content, 
+                   :en_name => href[href.index('-')+1 .. href.rindex('-')-1], 
+                   :url => href}
       @station_find_num = @station_find_num + 1
     end
 
@@ -71,11 +75,15 @@ class CrawlerInfo < ActiveRecord::Base
 
       #add the first element
       href = sub.to_s
-      stations << {:name => group_page.search('/html/body/div/div/ul/li/b')[0].content, :en_name => href[href.index('-')+1 .. href.rindex('-')-1], :url => sub}
+      stations << {:name => group_page.search('/html/body/div/div/ul/li/b')[0].content, 
+                   :en_name => href[href.index('-')+1 .. href.rindex('-')-1], 
+                   :url => sub}
       #add the others
       group_page.search('/html/body/div/div/ul/li/a').each do |station|
         href = station['href']
-        stations << {:name => station.ancestors[0].content, :en_name => href[href.index('-')+1 .. href.rindex('-')-1], :url => href}
+        stations << {:name => station.ancestors[0].content, 
+                     :en_name => href[href.index('-')+1 .. href.rindex('-')-1], 
+                     :url => href}
         @station_find_num = @station_find_num + 1
       end
     end
@@ -123,5 +131,35 @@ class CrawlerInfo < ActiveRecord::Base
     end
     return false
   end 
+
+  def self.update_program_schedule(stations)
+    stations.each do |station|
+      page = @agent.get(station[:url])
+
+      #get the base href
+      href = page.search('/html/body/div/div/nav/a/@href')[0].to_s
+      base_href = href[0 .. href.rindex('-')]
+      
+      #get the begin date in web
+      str = page.search('/html/body/div/div/nav/a')[0]['title'].delete("节目表")
+      begin_date = Date.parse(str.gsub("年", "-").gsub("月", "-").gsub("日", ""))
+      end_date = begin_date + 6
+
+      #compute the range for geting programg schedule
+      begin_idx = 1 
+      st = TvStation.where(:en_name => station[:en_name]).all[0]
+      st.updated_date =  Date.parse('2013-03-14')
+      if st.updated_date != nil
+        begin_idx = st.updated_date - begin_date + 2
+      end
+      end_idx = Time.now.to_date + 8 - begin_date
+      
+      #get program schedule by href
+      begin_idx.step(end_idx, 1).each do |idx|
+        puts base_href + "w" + idx.to_s + ".html"
+      end
+      
+    end
+  end
 
 end
