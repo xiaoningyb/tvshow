@@ -6,61 +6,122 @@ START_URL = "#{BASE_URL}/xiaoi/"
 SPORTS_TV_STATIONS = Set["CCTV5", "CCTVPAYFEE13", "CCTVPAYFEE22", "TIANYUANWEIQI", "CCTVPAYFEE36", "WUSHUSHIJIE",
                          "KUAILECHUIDIAO", "XFBY"]
 
+CCTV_KEY_WORDS = Set["CCTV"]
+HMT_KEY_WORDS = Set["香港", "澳门", "台湾"]
+OVERSEA_KEY_WORDS = Set["海外"]
+SPORTS_KEY_WORDS = Set["体育", "足球", "篮球", "赛车", "车迷", "高尔夫", "网球", "汽摩", "围棋", "台球", "武术", "垂钓", 
+                       "ESPN", "钓鱼", "球王", "球迷", "Sports", "板球", "运动", "網球", "高球"]
+MOVIES_KEY_WORDS = Set["电影", "剧场", "HBO", "CINEMAX", "Movie", "電影", "影剧", "影视"]
+
 class CrawlerInfo < ActiveRecord::Base
   attr_accessible :begin, :crawl_link_counter, :crawl_page_counter, :end, :group_counter, :new_group_counter, 
                   :new_program_counter, :new_station_counter, :program_counter, :station_counter
 
   def self.start_crawl
     @agent = Mechanize.new
+    @station_find_num = 0
+    @station_add_num = 0
 
-    #start crawl the tv station
-    self.crawl_tv_station
-
-    #start crawl the tv program
     page = @agent.get(START_URL)
-    puts page.title
-  end
-
-  def self.crawl_tv_station
-    page = @agent.get(START_URL)
-    num = 0
-    
-    stations = []
-    stations << {:name => "CCTV-1综合频道", :en_name => "CCTV1", :url => "/xiaoi/program/CCTV-CCTV1-w1.html"}
-
-    #find cctv stations
-    page.search('/html/body/div/div/ul/li/a').each do |station|
-      href = station['href']
-      stations << {:name => station.content, :en_name => href[href.index('-')+1 .. href.rindex('-')-1], :url => href}
-    end
-
-    #find other group
-    page.search('/html/body/div/div/a/@href').each do |group|
-      group_page = @agent.get(BASE_URL + group)
-      group_page.search('/html/body/div/div/ul/li/a').each do |station|
-        href = station['href']
-        stations << {:name => station.content, :en_name => href[href.index('-')+1 .. href.rindex('-')-1], :url => href}
+    page.search('html/body/div.clear/table/tr/td/a').each do |classic|
+      puts classic.content
+      if CCTV_KEY_WORDS.include?(classic.content)
+        self.crawl_station_classic(classic, 'cctv')
+      elsif HMT_KEY_WORDS.include?(classic.content)
+        self.crawl_station_classic(classic, 'hmt_tv')
+      elsif OVERSEA_KEY_WORDS.include?(classic.content)
+        self.crawl_station_classic(classic, 'oversea_tv')
+      else
+        self.crawl_station_classic(classic, 'local_tv')
       end
     end
 
+    #print the crawl info
+    puts "find " + @station_find_num.to_s + " station, and added " + @station_add_num.to_s + " station."
+  end
+
+  def self.crawl_station_classic(classic, group_name)
+    href = classic['href']
+    sleep(1)
+    page = @agent.get(href)            
+    stations = []
+
+    #crawl sub classic
+    self.crawl_sub_classic!(stations, page, href)
+    
+    self.add_new_station_to_group(stations, group_name)
+  end
+ 
+  def self.crawl_sub_classic!(stations, page, href)
+    #push first station in sub classic
+    stations << {:name => page.search('/html/body/div/div/ul/li/b')[0].content, :en_name => href[href.index('-')+1 .. href.rindex('-')-1], :url => href}
+    @station_find_num = @station_find_num + 1
+
+    #find first class stations
+    page.search('/html/body/div/div/ul/li/a').each do |station|
+      href = station['href']
+      stations << {:name => station.ancestors[0].content, :en_name => href[href.index('-')+1 .. href.rindex('-')-1], :url => href}
+      @station_find_num = @station_find_num + 1
+    end
+
+    #find other group
+    page.search('/html/body/div/div/a/@href').each do |sub|
+      sleep(1)
+      group_page = @agent.get(BASE_URL + sub)
+
+      #add the first element
+      href = sub.to_s
+      stations << {:name => group_page.search('/html/body/div/div/ul/li/b')[0].content, :en_name => href[href.index('-')+1 .. href.rindex('-')-1], :url => sub}
+      #add the others
+      group_page.search('/html/body/div/div/ul/li/a').each do |station|
+        href = station['href']
+        stations << {:name => station.ancestors[0].content, :en_name => href[href.index('-')+1 .. href.rindex('-')-1], :url => href}
+        @station_find_num = @station_find_num + 1
+      end
+    end
+
+  end
+
+  def self.add_new_station_to_group(stations, group_name)
     stations.each do |station|
       if TvStation.where(:en_name => station[:en_name]).all.empty?
         puts station[:name] + ", en_name = " + station[:en_name] + ", url = " +  station[:url]
         station = TvStation.create(:name => station[:name], :en_name => station[:en_name], :description => station[:name])
-        num = num + 1
+        @station_add_num = @station_add_num + 1
         
-        group = TvGroup.where(:en_name => "cctv")[0]
+        group = TvGroup.where(:en_name => group_name)[0]
         group.tv_stations << station
         
-        if SPORTS_TV_STATIONS.include?(station[:en_name])
+        if self.is_sports_tv?(station[:name])
           group = TvGroup.where(:en_name => "sports_tv")[0]
           group.tv_stations << station
+        elsif self.is_movie_tv?(station[:name])
+          group = TvGroup.where(:en_name => "movie_tv")[0]
+          group.tv_stations << station
         end
-        
+      else
+        #puts station[:en_name] + " has been added."
+      end
+
+    end
+  end
+
+  def self.is_sports_tv?(name)
+    SPORTS_KEY_WORDS.each do |key|
+      if name.include?(key)
+        return true
       end
     end
-    puts "find " + stations.size.to_s + " station, and added " + num.to_s + " station."
+    return false
+  end 
 
-  end
+  def self.is_movie_tv?(name)
+    MOVIES_KEY_WORDS.each do |key|
+      if name.include?(key)
+        return true
+      end
+    end
+    return false
+  end 
 
 end

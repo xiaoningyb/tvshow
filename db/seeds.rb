@@ -38,4 +38,5 @@ local_tv = TvGroup.create(:name => "地方电视台", :en_name => "local_tv", :d
 hmt_tv = TvGroup.create(:name => "港澳台电视台", :en_name => "hmt_tv", :description => "香港，澳门，台湾电视台")
 oversea_tv = TvGroup.create(:name => "海外电视台", :en_name => "oversea_tv", :description => "海外电视台")
 sports_tv = TvGroup.create(:name => "体育电视台", :en_name => "sports_tv", :description => "体育电视台")
+movie_tv = TvGroup.create(:name => "电影电视台", :en_name => "movie_tv", :description => "电影电视台")
 internet_tv = TvGroup.create(:name => "网络电视台", :en_name => "internet_tv", :description => "网络电视台")
