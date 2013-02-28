@@ -26,11 +26,11 @@ class CrawlerInfo < ActiveRecord::Base
       if CCTV_KEY_WORDS.include?(classic.content)
         self.crawl_station_classic(classic, 'cctv')
       elsif HMT_KEY_WORDS.include?(classic.content)
-        self.crawl_station_classic(classic, 'hmt_tv')
+        #self.crawl_station_classic(classic, 'hmt_tv')
       elsif OVERSEA_KEY_WORDS.include?(classic.content)
-        self.crawl_station_classic(classic, 'oversea_tv')
+        #self.crawl_station_classic(classic, 'oversea_tv')
       else
-        self.crawl_station_classic(classic, 'local_tv')
+        #self.crawl_station_classic(classic, 'local_tv')
       end
     end
 
@@ -49,7 +49,7 @@ class CrawlerInfo < ActiveRecord::Base
     
     self.add_new_station_to_group(stations, group_name)
 
-    self.update_program_schedule(stations)
+    self.update_stations_schedule(stations)
   end
  
   def self.crawl_sub_classic!(stations, page, href)
@@ -132,34 +132,64 @@ class CrawlerInfo < ActiveRecord::Base
     return false
   end 
 
-  def self.update_program_schedule(stations)
+  def self.update_stations_schedule(stations)
     stations.each do |station|
-      page = @agent.get(station[:url])
+      #get tv station info
+      st_data = TvStation.where(:en_name => station[:en_name]).all[0]
 
-      #get the base href
-      href = page.search('/html/body/div/div/nav/a/@href')[0].to_s
-      base_href = href[0 .. href.rindex('-')]
-      
-      #get the begin date in web
-      str = page.search('/html/body/div/div/nav/a')[0]['title'].delete("节目表")
-      begin_date = Date.parse(str.gsub("年", "-").gsub("月", "-").gsub("日", ""))
-      end_date = begin_date + 6
-
-      #compute the range for geting programg schedule
-      begin_idx = 1 
-      st = TvStation.where(:en_name => station[:en_name]).all[0]
-      st.updated_date =  Date.parse('2013-03-14')
-      if st.updated_date != nil
-        begin_idx = st.updated_date - begin_date + 2
+      #check if need to updated the programs
+      if not (st_data.updated_date != nil) && (st_data.updated_date >= Time.now.to_date + 7)
+        self.update_station_schedule(station, st_data)        
       end
-      end_idx = Time.now.to_date + 8 - begin_date
-      
-      #get program schedule by href
-      begin_idx.step(end_idx, 1).each do |idx|
-        puts base_href + "w" + idx.to_s + ".html"
-      end
-      
     end
   end
+  
+  def self.update_station_schedule(station, st_data)
+    page = @agent.get(station[:url])
 
+    #get the base href
+    href = page.search('/html/body/div/div/nav/a/@href')[0].to_s
+    base_href = href[0 .. href.rindex('-')]
+      
+    #get the begin date in web
+    str = page.search('/html/body/div/div/nav/a')[0]['title'].delete("节目表")
+    begin_date = Date.parse(str.gsub("年", "-").gsub("月", "-").gsub("日", ""))
+    
+    #compute the range for geting programg schedule
+    begin_idx = 1 
+    if st_data.updated_date != nil
+      begin_idx = st.updated_date - begin_date + 2
+    end
+    end_idx = Time.now.to_date + 8 - begin_date
+    
+    #get program schedule by href
+    begin_idx.step(end_idx, 1).each do |idx|
+       update_station_schedule_by_date(station, begin_date+idx-1,  base_href + "w" + idx.to_s + ".html")
+    end
+    
+    #update the st info
+    st_data.updated_date = Time.now.to_date + 7
+    st_data.save    
+  end
+
+  def self.update_station_schedule_by_date(station, date, href)
+    puts "++++++++++++++start crawl " + href
+    page = @agent.get(href)
+
+    page.search('/html/body/div/div/div/ul/li').each do |program|
+      puts '===================================================================='
+      puts program
+      puts program.search('/li')[0]
+      
+      #sub_page = Nokogiri::HTML(program.to_s)
+      #time = date.to_s + sub_page.search('/li/span')[0].to_s
+      #name = sub_page.search('/li/a')[0]
+      #text = sub_page.text
+      #puts time
+      #puts name 
+      #puts text
+    end
+
+  end
+  
 end
