@@ -71,7 +71,7 @@ class TvStationsController < ApplicationController
 
   def show_one_day(params)
     @station = TvStation.find(params[:id])
-    start_time = DateTime.parse(params[:date])
+    start_time = DateTime.parse(params[:date] + " 00:00:00 +0800")
     end_time = 1.days.since(start_time)
     @programs = @station.get_programs_by_interval(start_time, end_time)
 
@@ -153,10 +153,10 @@ class TvStationsController < ApplicationController
     programs_info.each do |programship, program|
       program_format = { :program_id => program.id, :name => program.name, :description => program.description, :episode => program.episode, 
                          :image => program.image, :key_word => program.key_word, :begin => programship.begin, :end => programship.end, 
-                         :duration => programship.duration, :is_alive => programship.is_alive, :watch_count => program.watch_count,
-                         :discuss_count => program.discuss_count, :checkin_count => program.checkin_count}
+                         :watch_count => program.watch_count, :discuss_count => program.discuss_count, :checkin_count => program.checkin_count}
       programs_format << program_format
     end
+
     station_format[:programs] = programs_format
 
     return station_format

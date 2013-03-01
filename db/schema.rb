@@ -98,8 +98,6 @@ ActiveRecord::Schema.define(:version => 20130226091143) do
     t.integer  "tv_program_id", :null => false
     t.datetime "begin",         :null => false
     t.datetime "end",           :null => false
-    t.integer  "duration",      :null => false
-    t.boolean  "is_alive",      :null => false
     t.datetime "created_at",    :null => false
     t.datetime "updated_at",    :null => false
   end

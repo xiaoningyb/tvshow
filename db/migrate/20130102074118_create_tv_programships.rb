@@ -5,8 +5,6 @@ class CreateTvProgramships < ActiveRecord::Migration
       t.column :tv_program_id, :integer, :null => false
       t.column :begin, :datetime, :null => false 
       t.column :end, :datetime, :null => false 
-      t.column :duration, :integer, :null => false 
-      t.column :is_alive, :boolean, :null => false 
 
       t.timestamps
     end

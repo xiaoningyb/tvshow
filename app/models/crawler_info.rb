@@ -11,6 +11,8 @@ SPORTS_KEY_WORDS = Set["体育", "足球", "篮球", "赛车", "车迷", "高尔
                        "ESPN", "钓鱼", "球王", "球迷", "Sports", "板球", "运动", "網球", "高球"]
 MOVIES_KEY_WORDS = Set["电影", "剧场", "HBO", "CINEMAX", "Movie", "電影", "影剧", "影视"]
 
+PROGRAM_NAME_CHOP_NAME = Set["译制片:", "故事片:", "电视剧:"]
+
 class CrawlerInfo < ActiveRecord::Base
   attr_accessible :begin, :crawl_link_counter, :crawl_page_counter, :end, :group_counter, :new_group_counter, 
                   :new_program_counter, :new_station_counter, :program_counter, :station_counter
@@ -26,11 +28,11 @@ class CrawlerInfo < ActiveRecord::Base
       if CCTV_KEY_WORDS.include?(classic.content)
         self.crawl_station_classic(classic, 'cctv')
       elsif HMT_KEY_WORDS.include?(classic.content)
-        #self.crawl_station_classic(classic, 'hmt_tv')
+        self.crawl_station_classic(classic, 'hmt_tv')
       elsif OVERSEA_KEY_WORDS.include?(classic.content)
-        #self.crawl_station_classic(classic, 'oversea_tv')
+        self.crawl_station_classic(classic, 'oversea_tv')
       else
-        #self.crawl_station_classic(classic, 'local_tv')
+        self.crawl_station_classic(classic, 'local_tv')
       end
     end
 
@@ -145,6 +147,7 @@ class CrawlerInfo < ActiveRecord::Base
   end
   
   def self.update_station_schedule(station, st_data)
+    sleep(1)
     page = @agent.get(station[:url])
 
     #get the base href
@@ -164,32 +167,65 @@ class CrawlerInfo < ActiveRecord::Base
     
     #get program schedule by href
     begin_idx.step(end_idx, 1).each do |idx|
-       update_station_schedule_by_date(station, begin_date+idx-1,  base_href + "w" + idx.to_s + ".html")
+       update_station_schedule_by_date(station, st_data, begin_date+idx-1,  base_href + "w" + idx.to_s + ".html")
     end
     
     #update the st info
-    st_data.updated_date = Time.now.to_date + 7
+    #st_data.updated_date = Time.now.to_date + 7
     st_data.save    
   end
 
-  def self.update_station_schedule_by_date(station, date, href)
-    puts "++++++++++++++start crawl " + href
+  def self.update_station_schedule_by_date(station, st_data, date, href)
     page = @agent.get(href)
 
     page.search('/html/body/div/div/div/ul/li').each do |program|
-      puts '===================================================================='
-      puts program
-      puts program.search('/li')[0]
-      
-      #sub_page = Nokogiri::HTML(program.to_s)
-      #time = date.to_s + sub_page.search('/li/span')[0].to_s
-      #name = sub_page.search('/li/a')[0]
-      #text = sub_page.text
-      #puts time
-      #puts name 
-      #puts text
+      name = ""
+      next_name = ""
+      begin_time_str = ""
+      end_time_str = ""
+      episode = ""
+      next_episode = ""
+
+      if program.children.size != 1
+        self.get_program_info!(program, name, begin_time_str, episode)
+        if (program.next_sibling != nil)
+          self.get_program_info!(program.next_sibling, next_name, end_time_str, next_episode)
+        else
+          end_time_str = '23:59'
+        end
+        begin_time = Time.parse(date.to_s + " " + begin_time_str + ":00 +0800")
+        end_time = Time.parse(date.to_s + " " + end_time_str + ":00 +0800")
+        pro = TvProgram.create(:name => name, :description => name)
+        TvProgramship.create(:tv_station => st_data, :tv_program => pro, :begin => begin_time, :end => end_time)
+        puts name + " : " + begin_time_str + "~" + end_time_str
+      end
+
+    end
+  end
+
+  def self.get_program_info!(program, name, time, episode)
+    #program
+    if program == nil
+      name.replace("")
+      time.replace("23:59")
+      episode.replace("")
+      return
     end
 
+    #parse the tv program info 
+    if program.children.size == 1
+       self.get_program_info!(program.next_sibling, name, time, episode)
+    elsif program.children.size == 2
+      time.replace(program.children[0].content.strip)
+      name.replace(program.children[1].content.strip)
+    elsif (program.children.size == 11) || (program.children.size == 10)
+      time.replace(program.children[0].text.strip)
+      name.replace(program.children[2].text.strip)
+      episode = program.children[4].content.strip
+    else
+      time.replace(program.children[0].content.strip)
+      name.replace(program.children[2].content.strip)
+    end 
   end
   
 end
