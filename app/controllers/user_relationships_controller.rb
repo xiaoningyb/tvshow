@@ -4,7 +4,11 @@ class UserRelationshipsController < ApplicationController
   def create
     user = User.find(params[:user])
     follower = User.find(params[:follower])
-    UserRelationshipsController.create_relationship(user, follower)
+    if (params["_method"] != nil) && (params["_method"] == "delete")
+      UserRelationshipsController.destroy_relationship(user, follower)
+    else
+      UserRelationshipsController.create_relationship(user, follower)
+    end    
 
     redirect_to :controller => "users", :action => :show, :id => user
   end

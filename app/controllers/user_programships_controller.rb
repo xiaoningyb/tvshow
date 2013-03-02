@@ -3,7 +3,11 @@ class UserProgramshipsController < ApplicationController
   def create
     user = User.find(params[:user])
     program = TvProgram.find(params[:program])
-    UserProgramshipsController.create_relationship(user, program)
+    if (params["_method"] != nil) && (params["_method"] == "delete")
+      UserProgramshipsController.destroy_relationship(user, program)
+    else
+      UserProgramshipsController.create_relationship(user, program)
+    end
 
     redirect_to :controller => "tv_programs", :action => :show, :id => program
   end
