@@ -161,7 +161,7 @@ class CrawlerInfo < ActiveRecord::Base
     #compute the range for geting programg schedule
     begin_idx = 1 
     if st_data.updated_date != nil
-      begin_idx = st.updated_date - begin_date + 2
+      begin_idx = st_data.updated_date - begin_date + 2
     end
     end_idx = Time.now.to_date + 8 - begin_date
     
@@ -170,15 +170,18 @@ class CrawlerInfo < ActiveRecord::Base
        update_station_schedule_by_date(station, st_data, begin_date+idx-1,  base_href + "w" + idx.to_s + ".html")
     end
     
-    #update the st info
-    #st_data.updated_date = Time.now.to_date + 7
-    st_data.save    
   end
 
   def self.update_station_schedule_by_date(station, st_data, date, href)
     page = @agent.get(href)
+    programs = page.search('/html/body/div/div/div/ul/li')
 
-    page.search('/html/body/div/div/div/ul/li').each do |program|
+    if programs.size < 2
+      puts href + " empty!"
+      return
+    end
+
+    programs.each do |program|
       name = ""
       next_name = ""
       begin_time_str = ""
@@ -195,12 +198,23 @@ class CrawlerInfo < ActiveRecord::Base
         end
         begin_time = Time.parse(date.to_s + " " + begin_time_str + ":00 +0800")
         end_time = Time.parse(date.to_s + " " + end_time_str + ":00 +0800")
-        pro = TvProgram.create(:name => name, :description => name)
-        TvProgramship.create(:tv_station => st_data, :tv_program => pro, :begin => begin_time, :end => end_time)
-        puts name + " : " + begin_time_str + "~" + end_time_str
-      end
 
+        #try to find same program in database
+        tv_pros = TvProgram.where(:name => name).all
+        
+        if tv_pros.empty?
+          pro = TvProgram.create(:name => name, :description => name)
+        else
+          pro = tv_pros[0]
+        end
+        
+        TvProgramship.create(:tv_station => st_data, :tv_program => pro, :begin => begin_time, :end => end_time)
+      end
     end
+
+    #update the st info
+    st_data.updated_date = date
+    st_data.save
   end
 
   def self.get_program_info!(program, name, time, episode)

@@ -1,5 +1,7 @@
 <%= @station.name %>
 <%= simple_format(@station.description) %>
+<br>
+<%= "updated date : " + @station.updated_date.to_s %>
 <% @programs.each do |programship, program| %>
   <li>
     <%= link_to program.name, tv_program_path(program) %>
