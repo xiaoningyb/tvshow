@@ -21,9 +21,9 @@ test:
 production:
   adapter: postgresql
   encoding: unicode
-  database: d8e1e961c1c4b43569a2fc0a26d8adc62
-  username: u79aeb9a5a7a84d7a9908fd66399ea28e
-  password: pb503841e08f74adfb9276a1c8d98e810
+  database: d4b624c62d9ba4389a95f97622fde2919
+  username: uc2423f2b5d97413ca1cc3322ec7bbee0
+  password: p1d0de0629c4f4bd6abf1ef74ac24ce1a
   pool: 5
   timeout: 5000
   port: 10000
