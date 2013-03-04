@@ -6,6 +6,9 @@ class CreateTvGroupships < ActiveRecord::Migration
 
       t.timestamps
     end
+
+    add_index :tv_groupships, :tv_group_id
+    add_index :tv_groupships, :tv_station_id
   end
 
   def self.down

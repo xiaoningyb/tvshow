@@ -10,6 +10,11 @@ class CreateDiscussRelationships < ActiveRecord::Migration
 
       t.timestamps
     end
+
+
+    add_index :discuss_relationships, :src_id, :unique => true
+    add_index :discuss_relationships, :quote_id, :unique => true
+
   end
 
   def self.down

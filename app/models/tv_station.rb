@@ -11,12 +11,8 @@ class TvStation < ActiveRecord::Base
   #get programs
   def get_programs
     programs = {}
-    self.tv_programs.each do |program|
-      self.tv_programships.each do |programship|
-        if program.id == programship.tv_program_id
-          programs[programship] = program
-        end
-      end
+    self.tv_programships.where("tv_station_id = ?", self.id).each do |programship|
+      programs[programship] = TvProgram.find(programship.tv_program.id)
     end
     return programs
   end
@@ -24,14 +20,8 @@ class TvStation < ActiveRecord::Base
   #get programs
   def get_programs_by_time(time)
     programs = {}
-    self.tv_programs.each do |program|
-      self.tv_programships.each do |programship|
-        if program.id == programship.tv_program_id
-          if programship.begin <= time and time <= programship.end
-            programs[programship] = program
-          end
-        end
-      end
+    self.tv_programships.where("tv_station_id = ? and begin <= ? and ? <= end", self.id, time, time).each do |programship|
+      programs[programship] = TvProgram.find(programship.tv_program.id)        
     end
     return programs
   end
@@ -39,14 +29,8 @@ class TvStation < ActiveRecord::Base
   #get programs
   def get_programs_by_interval(start_time, end_time)
     programs = {}
-    self.tv_programs.each do |program|
-      self.tv_programships.each do |programship|
-        if program.id == programship.tv_program_id
-          if programship.begin >= start_time and programship.begin <= end_time
-            programs[programship] = program
-          end
-        end
-      end
+    self.tv_programships.where("tv_station_id = ? and begin >= ? and begin <= ?", self.id, start_time, end_time).each do |programship|
+      programs[programship] = TvProgram.find(programship.tv_program.id)
     end
     return programs
   end
@@ -54,14 +38,11 @@ class TvStation < ActiveRecord::Base
   #get programs
   def get_programs_by_offset(date_offset)
     programs = {}
-    self.tv_programs.each do |program|
-      self.tv_programships.each do |programship|
-        if program.id == programship.tv_program_id
-          if programship.begin >= (Date.today + date_offset).to_time and programship.begin <= (Date.today + date_offset + 1).to_time
-            programs[programship] = program
-          end
-        end
-      end
+    self.tv_programships.where("tv_station_id = ? and begin >= ? and begin <= ?", 
+                               self.id, 
+                               (Date.today + date_offset).to_time, 
+                               (Date.today + date_offset + 1).to_time).each do |programship|
+      programs[programship] = TvProgram.find(programship.tv_program.id)
     end
     return programs
   end

@@ -36,6 +36,9 @@ ActiveRecord::Schema.define(:version => 20130226091143) do
     t.datetime "updated_at",     :null => false
   end
 
+  add_index "discuss_programships", ["discuss_id"], :name => "index_discuss_programships_on_discuss_id", :unique => true
+  add_index "discuss_programships", ["tv_programs_id"], :name => "index_discuss_programships_on_tv_programs_id", :unique => true
+
   create_table "discuss_relationships", :force => true do |t|
     t.integer  "src_id",                    :null => false
     t.integer  "quote_id",                  :null => false
@@ -44,6 +47,9 @@ ActiveRecord::Schema.define(:version => 20130226091143) do
     t.datetime "created_at",                :null => false
     t.datetime "updated_at",                :null => false
   end
+
+  add_index "discuss_relationships", ["quote_id"], :name => "index_discuss_relationships_on_quote_id", :unique => true
+  add_index "discuss_relationships", ["src_id"], :name => "index_discuss_relationships_on_src_id", :unique => true
 
   create_table "discusses", :force => true do |t|
     t.string   "topic",                        :null => false
@@ -80,6 +86,9 @@ ActiveRecord::Schema.define(:version => 20130226091143) do
     t.datetime "updated_at",    :null => false
   end
 
+  add_index "tv_groupships", ["tv_group_id"], :name => "index_tv_groupships_on_tv_group_id"
+  add_index "tv_groupships", ["tv_station_id"], :name => "index_tv_groupships_on_tv_station_id"
+
   create_table "tv_programs", :force => true do |t|
     t.string   "name",                         :null => false
     t.text     "description"
@@ -101,6 +110,9 @@ ActiveRecord::Schema.define(:version => 20130226091143) do
     t.datetime "created_at",    :null => false
     t.datetime "updated_at",    :null => false
   end
+
+  add_index "tv_programships", ["tv_program_id"], :name => "index_tv_programships_on_tv_program_id"
+  add_index "tv_programships", ["tv_station_id"], :name => "index_tv_programships_on_tv_station_id"
 
   create_table "tv_stations", :force => true do |t|
     t.string   "name",         :null => false
@@ -124,6 +136,9 @@ ActiveRecord::Schema.define(:version => 20130226091143) do
     t.datetime "updated_at",    :null => false
   end
 
+  add_index "user_programships", ["tv_program_id"], :name => "index_user_programships_on_tv_program_id", :unique => true
+  add_index "user_programships", ["user_id"], :name => "index_user_programships_on_user_id", :unique => true
+
   create_table "user_relationships", :force => true do |t|
     t.integer  "user_id",     :null => false
     t.integer  "follower_id", :null => false
@@ -132,6 +147,9 @@ ActiveRecord::Schema.define(:version => 20130226091143) do
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
   end
+
+  add_index "user_relationships", ["follower_id"], :name => "index_user_relationships_on_follower_id"
+  add_index "user_relationships", ["user_id"], :name => "index_user_relationships_on_user_id"
 
   create_table "users", :force => true do |t|
     t.string   "name",                                   :null => false

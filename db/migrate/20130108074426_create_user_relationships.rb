@@ -8,6 +8,9 @@ class CreateUserRelationships < ActiveRecord::Migration
 
       t.timestamps
     end
+
+    add_index :user_relationships, :user_id
+    add_index :user_relationships, :follower_id
   end
 
  def self.down

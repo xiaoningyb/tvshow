@@ -18,6 +18,9 @@ class CreateDiscusses < ActiveRecord::Migration
 
       t.timestamps
     end
+
+    add_index :discusses, :user_id
+    add_index :discusses, :tv_program_id
   end
 
   def self.down

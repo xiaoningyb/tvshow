@@ -8,5 +8,8 @@ class CreateDiscussProgramships < ActiveRecord::Migration
 
       t.timestamps
     end
+    
+    add_index :discuss_programships, :discuss_id, :unique => true
+    add_index :discuss_programships, :tv_programs_id, :unique => true
   end
 end

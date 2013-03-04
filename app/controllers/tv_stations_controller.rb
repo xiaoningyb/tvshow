@@ -33,11 +33,17 @@ class TvStationsController < ApplicationController
   end
 
   def index_detail(params)
-    @stations = TvStation.all
+    if params[:start] != nil
+      start = params[:start].to_i
+    else
+      start = 0
+    end
+    @stations = TvStation.limit(50).offset(start).all
     @station_infos = []
     @stations.each do |station|
       @station_infos << self.get_program_now(station)
     end
+    @station_infos.to_json
     respond_to do |format|
       format.xml { render :xml => @station_infos.to_xml }
       format.json { render :json => @station_infos.to_json }
