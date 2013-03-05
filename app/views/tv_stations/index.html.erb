@@ -1,4 +1,6 @@
 <ul>
+<%= "Total Station Number = " + @stations.size.to_s %>
+<br>
 <% @stations.each do |station| %>
   <li>
     <%= link_to station.name, tv_station_path(station) %>

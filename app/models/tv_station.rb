@@ -19,7 +19,7 @@ class TvStation < ActiveRecord::Base
 
   #get programs
   def get_programs_by_time(time)
-    programs = {}
+    programs = {}    
     self.tv_programships.where("tv_station_id = ? and begin <= ? and ? <= end", self.id, time, time).each do |programship|
       programs[programship] = TvProgram.find(programship.tv_program.id)        
     end

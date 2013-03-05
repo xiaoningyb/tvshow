@@ -13,6 +13,9 @@ MOVIES_KEY_WORDS = Set["电影", "剧场", "HBO", "CINEMAX", "Movie", "電影", 
 
 PROGRAM_NAME_CHOP_NAME = Set["译制片:", "故事片:", "电视剧:"]
 
+TV_STATION_NAME_KEY_WORDS = "卫视"
+TV_STATION_EN_NAME_KEY_WORDS = "CCTV"
+
 class CrawlerInfo < ActiveRecord::Base
   attr_accessible :begin, :crawl_link_counter, :crawl_page_counter, :end, :group_counter, :new_group_counter, 
                   :new_program_counter, :new_station_counter, :program_counter, :station_counter
@@ -94,23 +97,29 @@ class CrawlerInfo < ActiveRecord::Base
 
   def self.add_new_station_to_group(stations, group_name)
     stations.each do |station|
-      if TvStation.where(:en_name => station[:en_name]).all.empty?
-        puts station[:name] + ", en_name = " + station[:en_name] + ", url = " +  station[:url]
-        station = TvStation.create(:name => station[:name], :en_name => station[:en_name], :description => station[:name])
-        @station_add_num = @station_add_num + 1
-        
-        group = TvGroup.where(:en_name => group_name)[0]
-        group.tv_stations << station
-        
-        if self.is_sports_tv?(station[:name])
-          group = TvGroup.where(:en_name => "sports_tv")[0]
+
+      if station[:name].include?(TV_STATION_NAME_KEY_WORDS) || station[:en_name].include?(TV_STATION_EN_NAME_KEY_WORDS)
+        if TvStation.where(:en_name => station[:en_name]).all.empty?
+          #create new group
+          puts "added new tv : " + station[:name] + ", en_name = " + station[:en_name] + ", url = " +  station[:url]
+          station = TvStation.create(:name => station[:name], :en_name => station[:en_name], :description => station[:name])
+          @station_add_num = @station_add_num + 1
+          
+          #add to group
+          group = TvGroup.where(:en_name => group_name)[0]
           group.tv_stations << station
-        elsif self.is_movie_tv?(station[:name])
-          group = TvGroup.where(:en_name => "movie_tv")[0]
-          group.tv_stations << station
+          
+          #for sports/movie group
+          if self.is_sports_tv?(station[:name])
+            group = TvGroup.where(:en_name => "sports_tv")[0]
+            group.tv_stations << station
+          elsif self.is_movie_tv?(station[:name])
+            group = TvGroup.where(:en_name => "movie_tv")[0]
+            group.tv_stations << station
+          end
+        else
+          #puts station[:en_name] + " has been added."
         end
-      else
-        #puts station[:en_name] + " has been added."
       end
 
     end
@@ -138,11 +147,15 @@ class CrawlerInfo < ActiveRecord::Base
     stations.each do |station|
       #get tv station info
       st_data = TvStation.where(:en_name => station[:en_name]).all[0]
-
-      #check if need to updated the programs
-      if not (st_data.updated_date != nil) && (st_data.updated_date >= Time.now.to_date + 7)
-        self.update_station_schedule(station, st_data)        
+      
+      #if station exist
+      if st_data != nil
+        #check if need to updated the programs
+        if not (st_data.updated_date != nil) && (st_data.updated_date >= Time.now.to_date + 7)
+          self.update_station_schedule(station, st_data)        
+        end
       end
+
     end
   end
   
