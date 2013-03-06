@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  tv_program_id: 1
+  user_id: 1
+  time: 2013-03-06 10:48:23
+
+two:
+  tv_program_id: 1
+  user_id: 1
+  time: 2013-03-06 10:48:23

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130226091143) do
+ActiveRecord::Schema.define(:version => 20130306024823) do
 
   create_table "crawler_infos", :force => true do |t|
     t.datetime "begin"
@@ -68,6 +68,9 @@ ActiveRecord::Schema.define(:version => 20130226091143) do
     t.datetime "created_at",                   :null => false
     t.datetime "updated_at",                   :null => false
   end
+
+  add_index "discusses", ["tv_program_id"], :name => "index_discusses_on_tv_program_id"
+  add_index "discusses", ["user_id"], :name => "index_discusses_on_user_id"
 
   create_table "tv_groups", :force => true do |t|
     t.string   "name",        :null => false
@@ -127,11 +130,19 @@ ActiveRecord::Schema.define(:version => 20130226091143) do
     t.datetime "updated_at",   :null => false
   end
 
+  create_table "user_checkinships", :force => true do |t|
+    t.integer  "tv_program_id"
+    t.integer  "user_id"
+    t.datetime "time"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
+  end
+
   create_table "user_programships", :force => true do |t|
     t.integer  "user_id",       :null => false
     t.integer  "tv_program_id", :null => false
     t.integer  "type",          :null => false
-    t.time     "time",          :null => false
+    t.datetime "time",          :null => false
     t.datetime "created_at",    :null => false
     t.datetime "updated_at",    :null => false
   end
@@ -163,6 +174,7 @@ ActiveRecord::Schema.define(:version => 20130226091143) do
     t.integer  "msg_count",              :default => 0,  :null => false
     t.integer  "discuss_count",          :default => 0,  :null => false
     t.integer  "watch_count",            :default => 0,  :null => false
+    t.integer  "checkin_count",          :default => 0,  :null => false
     t.integer  "followee_count",         :default => 0,  :null => false
     t.integer  "follower_count",         :default => 0,  :null => false
     t.integer  "version",                :default => 0,  :null => false

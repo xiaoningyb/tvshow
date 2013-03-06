@@ -26,6 +26,15 @@
 <% end %>
 <br/>
 
+<%= "checkin(" + @user.checkin_programs.size.to_s + ") : " %>
+<% @user.checkin_programs.each do |program| %>
+  <li>
+    <%= link_to program.name, tv_program_path(program) %>
+  </li>
+<% end %>
+<br/>
+
+
 <%= "followee(" + @user.followee_count.to_s + ") : " %>
 <% @user.get_followees().each do |followee| %>
   <li>

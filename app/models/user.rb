@@ -9,8 +9,8 @@ class User < ActiveRecord::Base
 
   # accessible (or protected) attributes
   attr_accessible :email, :password, :password_confirmation, :remember_me, :authentication_token
-  attr_accessible :name, :address, :age, :id_card, :image,  :qq, :telephone, :version, 
-                  :weibo, :watch_count, :discuss_count, :followee_count, :follower_count, :msg_count, :discusses
+  attr_accessible :name, :address, :age, :id_card, :image,  :qq, :telephone, :version, :weibo,  :discusses, 
+                  :checkin_count, :discuss_count, :watch_count, :followee_count, :follower_count, :msg_count
 
   #for relationship with user  
   has_many :follower_relationships, :class_name => "UserRelationship"
@@ -19,7 +19,11 @@ class User < ActiveRecord::Base
   has_many :followee_relationships, :class_name => "UserRelationship", :foreign_key => "follower_id"
   has_many :followees, :through => :followee_relationships, :source => :user, :uniq => true  
 
-  #for relationship with tv_program
+  #for watch relation with tv_program
+  has_many :user_checkinships, :dependent => :destroy
+  has_many :checkin_programs, :through => :user_checkinships, :source => :tv_program,  :uniq => true
+
+  #for checkin relation with tv_program
   has_many :user_programships, :dependent => :destroy
   has_many :tv_programs, :through => :user_programships, :uniq => true
 
@@ -48,6 +52,14 @@ class User < ActiveRecord::Base
 
   def get_watch_programs
     return self.tv_programs
+  end
+
+  def has_checkin(program)
+    return self.checkin_programs.include?(program)
+  end
+
+  def get_checkin_programs
+    return self.checkin_programs
   end
 
   def get_discusses

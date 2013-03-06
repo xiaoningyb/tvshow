@@ -22,6 +22,23 @@
 <% end %>
 <br/>
 
+<% if current_user != nil %>
+  <% if current_user.has_checkin(@program) %>
+    <%= form_tag(user_checkinship_path, :method => 'delete') do %>
+      <%= hidden_field_tag 'user', current_user.id %>
+      <%= hidden_field_tag 'program', @program.id %>
+      <%= submit_tag("uncheckin") %>
+    <% end %>
+  <% else %>
+    <%= form_tag(user_checkinships_path, :method => 'post') do %>
+      <%= hidden_field_tag 'user', current_user.id %>
+      <%= hidden_field_tag 'program', @program.id %>
+      <%= submit_tag("checkin") %>
+    <% end %>
+  <% end %>
+<% end %>
+<br/>
+
 <br>
 <%= "讨论条数:" + @program.discusses.size.to_s %>
 <% @program.discusses.sort!{|x, y| y.time <=> x.time} %>
@@ -43,3 +60,12 @@
     <%= link_to user.name, user_path(user) %>
   </li>
 <% end %>
+
+<br>
+<%= "checkin:" + @program.checkin_count.to_s %>
+<% @program.checkin_users.each do |user| %>
+  <li>
+    <%= link_to user.name, user_path(user) %>
+  </li>
+<% end %>
+

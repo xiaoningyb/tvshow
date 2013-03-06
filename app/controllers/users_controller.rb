@@ -37,6 +37,8 @@ class UsersController < ApplicationController
       show_discusses(params)
     elsif ((params[:cmd] != nil) && (params[:cmd] == "watch_programs"))
       show_watch_programs(params)
+    elsif ((params[:cmd] != nil) && (params[:cmd] == "checkin_programs"))
+      show_checkin_programs(params)
     else
       show_simple(params)
     end
@@ -97,6 +99,17 @@ class UsersController < ApplicationController
     end
   end
 
+  #show user watch programs
+  def show_checkin_programs(params)
+    @user = User.find(params[:id])
+
+    respond_to do |format|
+      format.html # show.html.erb
+      format.xml { render :xml => @user.get_checkin_programs.to_xml }
+      format.json { render :json => @user.get_checkin_programs.to_json }
+    end
+  end
+
   #show user detail information
   def show_detail(params)
     @user = User.find(params[:id])
@@ -104,6 +117,7 @@ class UsersController < ApplicationController
     @user[:followees] = @user.get_followees
     @user[:discusses] = @user.get_discusses
     @user[:watch_programs] = @user.get_watch_programs
+    @user[:checkin_programs] = @user.get_checkin_programs
 
     respond_to do |format|
       format.html # show.html.erb
