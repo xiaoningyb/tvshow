@@ -30,6 +30,9 @@ class User < ActiveRecord::Base
   #for relationship with discuss
   has_many :discusses
 
+  #for relationship with discuss comments
+  has_many :discuss_comments
+
   def get_followees   
     return self.followees      
   end
@@ -64,6 +67,14 @@ class User < ActiveRecord::Base
 
   def get_discusses
     return self.discusses
+  end
+
+  def get_comment(discuss)
+    return self.discuss_comments.where(:discuss_id => discuss.id)
+  end
+
+  def get_comments
+    return self.discuss_comments
   end
   
 end

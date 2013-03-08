@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130306024823) do
+ActiveRecord::Schema.define(:version => 20130307083554) do
 
   create_table "crawler_infos", :force => true do |t|
     t.datetime "begin"
@@ -25,6 +25,15 @@ ActiveRecord::Schema.define(:version => 20130306024823) do
     t.integer  "crawl_link_counter"
     t.datetime "created_at",          :null => false
     t.datetime "updated_at",          :null => false
+  end
+
+  create_table "discuss_comments", :force => true do |t|
+    t.integer  "discuss_id"
+    t.integer  "user_id"
+    t.integer  "comment_type"
+    t.text     "content"
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
   end
 
   create_table "discuss_programships", :force => true do |t|

@@ -1,5 +1,6 @@
 class Discuss < ActiveRecord::Base
-  attr_accessible :topic, :discuss_type, :content, :time, :location, :image, :like, :dislike, :neutrality, :src_id, :quote_count, :quotes, :srcs, :tv_program, :user, :tv_program_id, :user_id
+  attr_accessible :topic, :discuss_type, :content, :time, :location, :image, :src_id, :quote_count, :quotes, :srcs, :tv_program, :user, :tv_program_id, :user_id,
+                  :like, :dislike, :neutrality
 
   #for relationship with discuss
   has_many :quote_relationships, :class_name => "DiscussRelationship", :foreign_key => "src_id"
@@ -13,5 +14,8 @@ class Discuss < ActiveRecord::Base
 
   #for relationship with user
   belongs_to :user
+
+  #for relationship with discuss comments
+  has_many :discuss_comments
 
 end

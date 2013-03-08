@@ -24,6 +24,7 @@ Tvshow::Application.routes.draw do
   resources :user_relationships,    :only => [:create, :destroy]
   resources :user_programships,     :only => [:create, :destroy]
   resources :user_checkinships,     :only => [:create, :destroy]
+  resources :discuss_commentships,  :only => [:create, :destroy]
   resources :token_authentications, :only => [:create, :destroy]
   resources :shake, :only => [:index]
 

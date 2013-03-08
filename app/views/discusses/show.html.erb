@@ -12,7 +12,55 @@
 <br/>
 <%= link_to @user.name, user_path(@user) %>
 <br/>
+<%= "like" + @discuss.like.to_s %>
+<br/>
+<%= "unlike" + @discuss.dislike.to_s %>
+<br/>
 <%= simple_format(@discuss.content) %>
+<br/>
+<% if current_user != nil %>
+<% comment = current_user.get_comment(@discuss)[0] %>
+  <% if comment != nil  %>
+    <% if comment.comment_type == -1 %>
+      <%= form_tag(discuss_commentships_path, :method => 'update') do %>
+        <%= hidden_field_tag 'user', current_user.id %>
+        <%= hidden_field_tag 'discuss', @discuss.id %>
+        <%= hidden_field_tag 'discuss_comment', comment.id %>
+        <%= hidden_field_tag 'comment_type', '1' %>
+        <%= submit_tag('like') %>
+      <% end %>
+    <% else %>
+      <%= form_tag(discuss_commentships_path, :method => 'update') do %>
+        <%= hidden_field_tag 'user', current_user.id %>
+        <%= hidden_field_tag 'discuss', @discuss.id %>
+        <%= hidden_field_tag 'discuss_comment', comment.id %>
+        <%= hidden_field_tag 'comment_type', '-1' %>
+        <%= submit_tag('unlike') %>
+      <% end %>
+    <% end %>
+    <%= form_tag(discuss_commentship_path, :method => 'delete') do %>
+      <%= hidden_field_tag 'user', current_user.id %>
+      <%= hidden_field_tag 'discuss', @discuss.id %>
+      <%= hidden_field_tag 'discuss_comment', comment.id %>
+      <%= hidden_field_tag 'comment_type', '0' %>
+      <%= submit_tag('remove') %>
+    <% end %>  
+  <% else %>
+    <%= form_tag(discuss_commentships_path, :method => 'post') do %>
+      <%= hidden_field_tag 'user', current_user.id %>
+      <%= hidden_field_tag 'discuss', @discuss.id %>
+      <%= hidden_field_tag 'comment_type', '1' %>
+      <%= submit_tag("like") %>
+    <% end %>
+    <%= form_tag(discuss_commentships_path, :method => 'post') do %>
+      <%= hidden_field_tag 'user', current_user.id %>
+      <%= hidden_field_tag 'discuss', @discuss.id %>
+      <%= hidden_field_tag 'comment_type', '-1' %>
+      <%= submit_tag("unlike") %>
+    <% end %>
+  <% end %>
+<% end %>
+<br/>
 
 <% @discuss.quotes.each do |quote| %>
   <li>
