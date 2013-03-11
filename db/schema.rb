@@ -45,8 +45,8 @@ ActiveRecord::Schema.define(:version => 20130307083554) do
     t.datetime "updated_at",     :null => false
   end
 
-  add_index "discuss_programships", ["discuss_id"], :name => "index_discuss_programships_on_discuss_id", :unique => true
-  add_index "discuss_programships", ["tv_programs_id"], :name => "index_discuss_programships_on_tv_programs_id", :unique => true
+  add_index "discuss_programships", ["discuss_id"], :name => "index_discuss_programships_on_discuss_id"
+  add_index "discuss_programships", ["tv_programs_id"], :name => "index_discuss_programships_on_tv_programs_id"
 
   create_table "discuss_relationships", :force => true do |t|
     t.integer  "src_id",                    :null => false
@@ -57,8 +57,8 @@ ActiveRecord::Schema.define(:version => 20130307083554) do
     t.datetime "updated_at",                :null => false
   end
 
-  add_index "discuss_relationships", ["quote_id"], :name => "index_discuss_relationships_on_quote_id", :unique => true
-  add_index "discuss_relationships", ["src_id"], :name => "index_discuss_relationships_on_src_id", :unique => true
+  add_index "discuss_relationships", ["quote_id"], :name => "index_discuss_relationships_on_quote_id"
+  add_index "discuss_relationships", ["src_id"], :name => "index_discuss_relationships_on_src_id"
 
   create_table "discusses", :force => true do |t|
     t.string   "topic",                        :null => false
@@ -156,8 +156,8 @@ ActiveRecord::Schema.define(:version => 20130307083554) do
     t.datetime "updated_at",    :null => false
   end
 
-  add_index "user_programships", ["tv_program_id"], :name => "index_user_programships_on_tv_program_id", :unique => true
-  add_index "user_programships", ["user_id"], :name => "index_user_programships_on_user_id", :unique => true
+  add_index "user_programships", ["tv_program_id"], :name => "index_user_programships_on_tv_program_id"
+  add_index "user_programships", ["user_id"], :name => "index_user_programships_on_user_id"
 
   create_table "user_relationships", :force => true do |t|
     t.integer  "user_id",     :null => false
