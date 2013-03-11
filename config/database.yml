@@ -28,3 +28,14 @@ production:
   timeout: 5000
   port: 10000
   host: 127.0.0.1
+
+tvshafa:
+  adapter: postgresql
+  encoding: unicode
+  database: dc1772102c9f0484f86c7e8b7058c3e67
+  username: ub34c937582954bbb99d2d829f2fe9eb3
+  password: p7234aeb8492f455dbf59c7e6ecb77504
+  pool: 5
+  timeout: 5000
+  port: 10000
+  host: 127.0.0.1

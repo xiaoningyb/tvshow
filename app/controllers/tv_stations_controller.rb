@@ -38,7 +38,7 @@ class TvStationsController < ApplicationController
     else
       start = 0
     end
-    @stations = TvStation.limit(50).offset(start).all
+    @stations = TvStation.limit(10).offset(start).all
     @station_infos = []
     @stations.each do |station|
       @station_infos << self.get_program_now(station)

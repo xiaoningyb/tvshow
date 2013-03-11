@@ -12,8 +12,8 @@ class CreateDiscussRelationships < ActiveRecord::Migration
     end
 
 
-    add_index :discuss_relationships, :src_id, :unique => true
-    add_index :discuss_relationships, :quote_id, :unique => true
+    add_index :discuss_relationships, :src_id
+    add_index :discuss_relationships, :quote_id
 
   end
 

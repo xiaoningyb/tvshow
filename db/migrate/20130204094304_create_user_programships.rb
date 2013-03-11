@@ -10,8 +10,8 @@ class CreateUserProgramships < ActiveRecord::Migration
       t.timestamps
     end
 
-    add_index :user_programships, :user_id, :unique => true
-    add_index :user_programships, :tv_program_id, :unique => true
+    add_index :user_programships, :user_id
+    add_index :user_programships, :tv_program_id
 
   end
 
