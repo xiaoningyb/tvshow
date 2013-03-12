@@ -43,7 +43,7 @@ class TvStationsController < ApplicationController
     @stations.each do |station|
       @station_infos << self.get_program_now(station)
     end
-    @station_infos.to_json
+
     respond_to do |format|
       format.xml { render :xml => @station_infos.to_xml }
       format.json { render :json => @station_infos.to_json }
