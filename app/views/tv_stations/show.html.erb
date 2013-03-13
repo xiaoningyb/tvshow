@@ -6,7 +6,7 @@
   <li>
     <%= link_to program.name, tv_program_path(program) %>
     <br>
-    <%= "(" + programship[:begin].to_s + "~" + programship[:end].to_s + ")" %>
+    <%= "(" + programship[:begin].getlocal.to_s + "~" + programship[:end].getlocal.to_s + ")" %>
     <br>
     <%= link_to 'edit', edit_tv_program_path(program) %>
     <%= button_to 'delete', tv_program_path(program), :method => :delete %>
