@@ -110,7 +110,7 @@ class TvStationsController < ApplicationController
     @programs = @station.get_programs_by_offset(date_offset)
 
     @programs_format = self.format_json(@station, @programs)    
-    @programs_format[:date] = Time.now.getlocal.to_date
+    @programs_format[:date] = Time.now.to_date
 
     respond_to do |format|
       format.html # show.html.erb

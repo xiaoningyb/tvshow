@@ -40,8 +40,8 @@ class TvStation < ActiveRecord::Base
     programs = {}
     self.tv_programships.where("tv_station_id = ? and begin >= ? and begin <= ?", 
                                self.id, 
-                               (Time.now.getlocal.to_date + date_offset).to_time, 
-                               (Time.now.getlocal.to_date + date_offset + 1).to_time).each do |programship|
+                               (Time.now.to_date + date_offset).to_time, 
+                               (Time.now.to_date + date_offset + 1).to_time).each do |programship|
       programs[programship] = TvProgram.find(programship.tv_program.id)
     end
     return programs
