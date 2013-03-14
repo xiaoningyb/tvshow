@@ -20,7 +20,7 @@ class TvStation < ActiveRecord::Base
   #get programs
   def get_programs_by_time(time)
     programs = {}    
-    self.tv_programships.where("tv_station_id = ? and begin <= ? and ? <= 'end'", self.id, time, time).each do |programship|
+    self.tv_programships.where("tv_station_id = ? and begin_time <= ? and ? <= end_time", self.id, time, time).each do |programship|
       programs[programship] = TvProgram.find(programship.tv_program.id)        
     end
     return programs
@@ -29,7 +29,7 @@ class TvStation < ActiveRecord::Base
   #get programs
   def get_programs_by_interval(start_time, end_time)
     programs = {}
-    self.tv_programships.where("tv_station_id = ? and begin >= ? and begin <= ?", self.id, start_time, end_time).each do |programship|
+    self.tv_programships.where("tv_station_id = ? and begin_time >= ? and begin_time <= ?", self.id, start_time, end_time).each do |programship|
       programs[programship] = TvProgram.find(programship.tv_program.id)
     end
     return programs
@@ -40,7 +40,7 @@ class TvStation < ActiveRecord::Base
     programs = {}
     begin_time = DateTime.parse((Time.now.in_time_zone('Beijing').to_date + date_offset).to_s + " 00:00:00 +0800")
     end_time   = DateTime.parse((Time.now.in_time_zone('Beijing').to_date + date_offset + 1).to_s + " 00:00:00 +0800")
-    self.tv_programships.where("tv_station_id = ? and begin >= ? and begin <= ?", 
+    self.tv_programships.where("tv_station_id = ? and begin_time >= ? and begin_time <= ?", 
                                self.id, 
                                begin_time, 
                                end_time).each do |programship|

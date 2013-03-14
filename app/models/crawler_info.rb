@@ -17,7 +17,7 @@ TV_STATION_NAME_KEY_WORDS = "卫视"
 TV_STATION_EN_NAME_KEY_WORDS = "CCTV"
 
 class CrawlerInfo < ActiveRecord::Base
-  attr_accessible :begin, :crawl_link_counter, :crawl_page_counter, :end, :group_counter, :new_group_counter, 
+  attr_accessible :begin_time, :crawl_link_counter, :crawl_page_counter, :end_time, :group_counter, :new_group_counter, 
                   :new_program_counter, :new_station_counter, :program_counter, :station_counter
 
   def self.start_crawl
@@ -221,7 +221,7 @@ class CrawlerInfo < ActiveRecord::Base
           pro = tv_pros[0]
         end
         
-        TvProgramship.create(:tv_station => st_data, :tv_program => pro, :begin => begin_time, :end => end_time)
+        TvProgramship.create(:tv_station => st_data, :tv_program => pro, :begin_time => begin_time, :end_time => end_time)
       end
     end
 

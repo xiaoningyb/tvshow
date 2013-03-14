@@ -157,9 +157,12 @@ class TvStationsController < ApplicationController
     #format programs info
     programs_format = []
     programs_info.each do |programship, program|
-      program_format = { :program_id => program.id, :name => program.name, :description => program.description, :episode => program.episode, 
-                         :image => program.image, :key_word => program.key_word, :begin => programship.begin, :end => programship.end, 
-                         :watch_count => program.watch_count, :discuss_count => program.discuss_count, :checkin_count => program.checkin_count}
+      program_format = { :program_id => program.id, :name => program.name, 
+                         :description => program.description, :episode => program.episode, 
+                         :image => program.image, :key_word => program.key_word, 
+                         :begin => programship.begin_time, :end => programship.end_time, 
+                         :watch_count => program.watch_count, :discuss_count => program.discuss_count, 
+                         :checkin_count => program.checkin_count}
       programs_format << program_format
     end
 

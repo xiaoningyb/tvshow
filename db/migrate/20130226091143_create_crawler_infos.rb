@@ -1,8 +1,8 @@
 class CreateCrawlerInfos < ActiveRecord::Migration
   def self.up
     create_table :crawler_infos do |t|
-      t.datetime :begin
-      t.datetime :end
+      t.datetime :begin_time
+      t.datetime :end_time
       t.integer :group_counter
       t.integer :new_group_counter
       t.integer :station_counter

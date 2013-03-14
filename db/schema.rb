@@ -13,8 +13,8 @@
 ActiveRecord::Schema.define(:version => 20130307083554) do
 
   create_table "crawler_infos", :force => true do |t|
-    t.datetime "begin"
-    t.datetime "end"
+    t.datetime "begin_time"
+    t.datetime "end_time"
     t.integer  "group_counter"
     t.integer  "new_group_counter"
     t.integer  "station_counter"
@@ -117,8 +117,8 @@ ActiveRecord::Schema.define(:version => 20130307083554) do
   create_table "tv_programships", :force => true do |t|
     t.integer  "tv_station_id", :null => false
     t.integer  "tv_program_id", :null => false
-    t.datetime "begin",         :null => false
-    t.datetime "end",           :null => false
+    t.datetime "begin_time",    :null => false
+    t.datetime "end_time",      :null => false
     t.datetime "created_at",    :null => false
     t.datetime "updated_at",    :null => false
   end

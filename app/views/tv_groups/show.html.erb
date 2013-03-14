@@ -8,7 +8,7 @@
       <% @station_cur_programs[station].each do |programship, program| %>
         <%= link_to program.name, tv_program_path(program) %>
 	<%= "watch(" + program.watch_count.to_s + "), discuss(" + program.discuss_count.to_s + "), checkin(" + program.checkin_count.to_s + "), " %>
-	<%= "time(" + programship.begin.to_s + "~" + programship.end.to_s + ")" %>
+	<%= "time(" + programship.begin_time.to_s + "~" + programship.end_time.to_s + ")" %>
 	<br>
       <% end %>      
     <% end %>
