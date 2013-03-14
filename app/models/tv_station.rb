@@ -38,10 +38,12 @@ class TvStation < ActiveRecord::Base
   #get programs
   def get_programs_by_offset(date_offset)
     programs = {}
+    begin_time = DateTime.parse((Time.now.in_time_zone('Beijing').to_date + date_offset).to_s + " 00:00:00 +0800")
+    end_time   = DateTime.parse((Time.now.in_time_zone('Beijing').to_date + date_offset + 1).to_s + " 00:00:00 +0800")
     self.tv_programships.where("tv_station_id = ? and begin >= ? and begin <= ?", 
                                self.id, 
-                               (Time.now.to_date + date_offset).to_time, 
-                               (Time.now.to_date + date_offset + 1).to_time).each do |programship|
+                               begin_time, 
+                               end_time).each do |programship|
       programs[programship] = TvProgram.find(programship.tv_program.id)
     end
     return programs
