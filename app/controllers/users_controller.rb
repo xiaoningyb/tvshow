@@ -39,6 +39,10 @@ class UsersController < ApplicationController
       show_watch_programs(params)
     elsif ((params[:cmd] != nil) && (params[:cmd] == "checkin_programs"))
       show_checkin_programs(params)
+    elsif ((params[:cmd] != nil) && (params[:cmd] == "followers_detail"))
+      show_followers_detail(params)
+    elsif ((params[:cmd] != nil) && (params[:cmd] == "followees_detail"))
+      show_followees_detail(params)
     else
       show_simple(params)
     end
@@ -74,6 +78,40 @@ class UsersController < ApplicationController
       format.html # show.html.erb
       format.xml { render :xml => @user.get_followees.to_xml }
       format.json { render :json => @user.get_followees.to_json }
+    end
+  end
+
+  #show user followers detail
+  def show_followers_detail(params)
+    @user = User.find(params[:id])
+
+    followers_detail = []
+    @user.get_followers.each do |follower|     
+      follower[:latest_checkin] = follower.get_checkin_programs.order("updated_at").last
+      followers_detail << follower
+    end
+
+    respond_to do |format|
+      format.html # show.html.erb
+      format.xml { render :xml => followers_detail.to_xml }
+      format.json { render :json => followers_detail.to_json }
+    end
+  end
+
+  #show user followees detail
+  def show_followees_detail(params)
+    @user = User.find(params[:id])
+
+    followees_detail = []
+    @user.get_followees.each do |followee|
+      followee[:latest_checkin] = followee.get_checkin_programs.order("updated_at").last
+      followees_detail << follower
+    end
+
+    respond_to do |format|
+      format.html # show.html.erb
+      format.xml { render :xml => followees_detail.to_xml }
+      format.json { render :json => followees_detail.to_json }
     end
   end
 
