@@ -105,7 +105,7 @@ class UsersController < ApplicationController
     followees_detail = []
     @user.get_followees.each do |followee|
       followee[:latest_checkin] = followee.get_checkin_programs.order("updated_at").last
-      followees_detail << follower
+      followees_detail << followee
     end
 
     respond_to do |format|
