@@ -50,7 +50,7 @@ class TvProgramsController < ApplicationController
   #show detail tv info
   def show_detail(params)
     @program = TvProgram.find(params[:id])
-    program_format = format_detail_json(@program, @program.discusses.last(10))
+    program_format = format_detail_json(@program, @program.discusses)
 
     respond_to do |format|
       format.html # show.html.erb
@@ -94,16 +94,14 @@ class TvProgramsController < ApplicationController
 
   #format json output function
   def format_detail_json(program, discusses)   
-    program[:discusses] = []
+    program[:latest_discusses] = []
     discusses.sort!{|x, y| y.time <=> x.time}
     discusses.each do |discuss|
       discuss[:user_name] = discuss.user.name
       discuss[:user_img] = discuss.user.image
-      program[:discusses] << discuss.to_json
-      puts discuss.content
-    end
-    
-    puts program[:discusses].to_json
+      program[:latest_discusses] << discuss      
+    end    
+
     return program
   end
 
