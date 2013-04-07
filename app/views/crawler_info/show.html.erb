@@ -1,0 +1,22 @@
+
+<% if @info.end_time == nil %>
+  <%= @info.begin_time.to_s +  " ~~  now" %>
+<% else %>
+  <%= @info.begin_time.to_s +  " ~~ " +  @info.end_time.to_s%>
+<% end %>
+<br>
+<%= "Find Group : " + @info.group_counter.to_s %>
+<br>
+<%= "Add New Group : " + @info.new_group_counter.to_s %>
+<br>
+<%= "Find Station : " + @info.station_counter.to_s %>
+<br>
+<%= "Add New Station : " + @info.new_station_counter.to_s %>
+<br>
+<%= "Find Program : " + @info.program_counter.to_s %>
+<br>
+<%= "Add New Program : " + @info.new_program_counter.to_s %>
+<br>
+<p>
+  <%= link_to 'back to index', crawler_info_index_path.to_s %>
+</p>

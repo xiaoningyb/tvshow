@@ -15,16 +15,16 @@ ActiveRecord::Schema.define(:version => 20130307083554) do
   create_table "crawler_infos", :force => true do |t|
     t.datetime "begin_time"
     t.datetime "end_time"
-    t.integer  "group_counter"
-    t.integer  "new_group_counter"
-    t.integer  "station_counter"
-    t.integer  "new_station_counter"
-    t.integer  "program_counter"
-    t.integer  "new_program_counter"
-    t.integer  "crawl_page_counter"
-    t.integer  "crawl_link_counter"
-    t.datetime "created_at",          :null => false
-    t.datetime "updated_at",          :null => false
+    t.integer  "group_counter",       :default => 0
+    t.integer  "new_group_counter",   :default => 0
+    t.integer  "station_counter",     :default => 0
+    t.integer  "new_station_counter", :default => 0
+    t.integer  "program_counter",     :default => 0
+    t.integer  "new_program_counter", :default => 0
+    t.integer  "crawl_page_counter",  :default => 0
+    t.integer  "crawl_link_counter",  :default => 0
+    t.datetime "created_at",                         :null => false
+    t.datetime "updated_at",                         :null => false
   end
 
   create_table "discuss_comments", :force => true do |t|

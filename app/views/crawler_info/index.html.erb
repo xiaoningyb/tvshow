@@ -1,0 +1,8 @@
+<ul>
+<% @infos.each do |info| %>
+  <li>
+    <%= link_to info.begin_time, crawler_info_path(info) %>
+  </li>
+<% end %>
+</ul>
+

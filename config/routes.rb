@@ -26,7 +26,8 @@ Tvshow::Application.routes.draw do
   resources :user_checkinships,     :only => [:create, :destroy]
   resources :discuss_commentships,  :only => [:create, :destroy]
   resources :token_authentications, :only => [:create, :destroy]
-  resources :shake, :only => [:index]
+  resources :shake,                 :only => [:index]
+  resources :crawler_info,          :only => [:index, :show]
 
   devise_for :users, :controllers => { :sessions => "sessions" }
   devise_scope :user do

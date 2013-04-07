@@ -8,5 +8,9 @@ scheduler = Rufus::Scheduler.start_new
 scheduler.every '4d', :first_in => '1s' do
   crawler = WebCawler::Cntv.new
 
-  crawler.start_crawl
+  crawler.start_crawl_stations
+
+  crawler.start_crawl_programs
+
+  crawler.end_crawl_programs
 end
