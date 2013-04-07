@@ -113,6 +113,7 @@ module WebCawler
 
       while (station.updated_date <= Time.now.to_date + 3)
         crawl_date = station.updated_date + 1
+        @crawl_info.set_current_station(station.name + "(" + crawl_date.to_s + ")")
         puts "update data :" + station.updated_date.to_s
         url = "#{CNTV_BASE_URL}/index.php?action=epg-list&date=#{crawl_date.to_s}&channel=#{station.en_name}&mode="
         
@@ -168,6 +169,7 @@ module WebCawler
         end_time = Time.parse(date.to_s + " " + end_time_str + ":00 +0800")
         TvProgramship.create(:tv_station => st, :tv_program => pro, :begin_time => begin_time, :end_time => end_time)
         @crawl_info.inc_new_program_counter
+        @crawl_info.set_current_program(pro.name)
 
         puts begin_time.to_s + " ~ " +  end_time.to_s + " : " + name
 

@@ -2,7 +2,8 @@
 
 class CrawlerInfo < ActiveRecord::Base
   attr_accessible :begin_time, :crawl_link_counter, :crawl_page_counter, :end_time, :group_counter, :new_group_counter, 
-                  :new_program_counter, :new_station_counter, :program_counter, :station_counter  
+                  :new_program_counter, :new_station_counter, :program_counter, :station_counter, :current_crawl_station,
+                  :current_crawl_program
 
   def begin_crawl
     self.begin_time = Time.now
@@ -41,6 +42,16 @@ class CrawlerInfo < ActiveRecord::Base
 
   def inc_new_program_counter
     self.new_program_counter += 1
+    self.save
+  end
+
+  def set_current_station(station)
+    self.current_crawl_station = station
+    self.save
+  end
+
+  def set_current_program(program)
+    self.current_crawl_program = program
     self.save
   end
 
