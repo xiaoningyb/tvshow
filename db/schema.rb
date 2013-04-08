@@ -23,6 +23,8 @@ ActiveRecord::Schema.define(:version => 20130307083554) do
     t.integer  "new_program_counter",   :default => 0
     t.integer  "crawl_page_counter",    :default => 0
     t.integer  "crawl_link_counter",    :default => 0
+    t.integer  "crawl_station_counter", :default => 0
+    t.integer  "crawl_failed_counter",  :default => 0
     t.string   "current_crawl_station"
     t.string   "current_crawl_program"
     t.datetime "created_at",                           :null => false

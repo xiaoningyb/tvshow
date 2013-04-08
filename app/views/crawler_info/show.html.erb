@@ -18,11 +18,18 @@
 <%= "Add New Program : " + @info.new_program_counter.to_s %>
 <br>
 <br>
-<%= "Current Crawl Station : " + @info.current_crawl_station.to_s %>
+<%= "Current Crawl Station : " + @info.current_crawl_station.to_s + ", Total " + @info.crawl_station_counter.to_s + "/" + TvStation.all.size.to_s %>
 <br>
 <br>
 <%= "Current Crawl Program : " + @info.current_crawl_program.to_s %>
 <br>
+<br>
+<%= "Current Crawl Link : " + @info.crawl_link_counter.to_s %>
+<br>
+<br>
+<%= "Current Crawl Failed : " + @info.crawl_failed_counter.to_s %>
+<br>
+
 <p>
   <%= link_to 'back to index', crawler_info_index_path.to_s %>
 </p>

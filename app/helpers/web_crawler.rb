@@ -98,8 +98,7 @@ module WebCawler
       TvStation.all.each do |station|        
         if station != nil
           #check if need to updated the programs
-          sleep(10)
-          puts "Start the crawl the program in station : " + station.name
+          sleep(5)
           update_station_schedule(station)
         end
       end
@@ -111,10 +110,11 @@ module WebCawler
         station.updated_date = Time.now.to_date - 3
       end
 
+      @crawl_info.inc_crawl_station_counter
       while (station.updated_date <= Time.now.to_date + 3)
         crawl_date = station.updated_date + 1
         @crawl_info.set_current_station(station.name + "(" + crawl_date.to_s + ")")
-        puts "update data :" + station.updated_date.to_s
+        @crawl_info.inc_crawl_link_counter
         url = "#{CNTV_BASE_URL}/index.php?action=epg-list&date=#{crawl_date.to_s}&channel=#{station.en_name}&mode="
         
         puts "start crawl " + url
@@ -126,14 +126,17 @@ module WebCawler
         end
         
         if page.content == "0"
-          puts "crawl #{url} failed!"
+          @crawl_info.inc_crawl_failed_counter
+          if @crawl_info.crawl_failed_counter > 100
+            return
+          end
         else
           if parse_station_schedule(page, station, crawl_date)
             station.updated_date = crawl_date
             station.save
           end
         end        
-        sleep(10)
+        sleep(5)
       end      
     end
 
