@@ -40,7 +40,6 @@ module WebCawler
         index += 1
       end
 
-      puts "Total find " + @station_find_num.to_s + ", add " + @station_add_num.to_s + " new stations."
     end
 
     def add_new_stations(name, en_name, group_name)
@@ -148,21 +147,20 @@ module WebCawler
         next_name = ""
         begin_time_str = ""
         end_time_str = ""
-        episode = "-1"
-        next_episode = "-1"
+        episode = nil
 
         @crawl_info.inc_program_counter
-        get_program_info!(program, name, begin_time_str, episode)
+        get_program_info!(program, name, begin_time_str)
         if (idx < (programs.size-1))
-          get_program_info!(programs[idx+1], next_name, end_time_str, next_episode)
+          get_program_info!(programs[idx+1], next_name, end_time_str)
         else
           end_time_str = '23:59'
         end
 
         #try to remove useless description for name and episode
-        description = name
+        episode = get_real_episode(name)
         name = get_real_name(name)
-        #episode = get_real_episode(name)
+        description = name
 
         #try to find same program in database
         tv_pros = TvProgram.where(:name => name).all        
@@ -175,7 +173,11 @@ module WebCawler
         #create the program
         begin_time = Time.parse(date.to_s + " " + begin_time_str + ":00 +0800")
         end_time = Time.parse(date.to_s + " " + end_time_str + ":00 +0800")
-        TvProgramship.create(:tv_station => st, :tv_program => pro, :begin_time => begin_time, :end_time => end_time)
+        if episode != nil
+          TvProgramship.create(:tv_station => st, :tv_program => pro, :begin_time => begin_time, :end_time => end_time, :episode => episode.to_i)
+        else
+          TvProgramship.create(:tv_station => st, :tv_program => pro, :begin_time => begin_time, :end_time => end_time, :episode => -1)
+        end
         @crawl_info.inc_new_program_counter
         @crawl_info.set_current_program(pro.name)
 
@@ -185,7 +187,7 @@ module WebCawler
       end
     end
 
-    def get_program_info!(program, name, time, episode)
+    def get_program_info!(program, name, time)
       #puts program
       program_str = program.content
       program_str = program_str[program_str.index(":")-2 .. program_str.length].strip
@@ -195,7 +197,6 @@ module WebCawler
     end
 
     def get_real_name(name)
-      puts name
       #remove the classic
       if (m = /电视剧：/.match(name))
         name = m.pre_match + m.post_match
@@ -242,8 +243,31 @@ module WebCawler
       end
 
       return name
+    end    
+
+    def get_real_episode(name)
+      #for the "1/12" which is end of word
+      if (m = /\d*\/\d*$/.match(name))
+        return /\//.match(m.to_s).pre_match
+      end
+
+      #for the number which is end of word, eg "名字1"
+      if (m = /\d+$/.match(name))
+        return m.to_s
+      end
+
+      #remove the "(*)" which is end of word
+      if (m = /\(\d+\)$/.match(name))
+        return /\d+/.match(m.to_s).to_s
+      end
+
+      #remove the "（1）" which is end of word
+      if (m = /（\d+）$/.match(name))
+        return /\d+/.match(m.to_s).to_s
+      end
+
+      return nil
     end
-    
     
   end
 end

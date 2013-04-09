@@ -7,6 +7,9 @@
     <%= link_to program.name, tv_program_path(program) %>
     <br>
     <%= "(" + programship[:begin_time].to_s + "~" + programship[:end_time].to_s + ")" %>
+    <% if programship[:episode] != nil && programship[:episode].to_i != -1 %>
+      <%= "episode = " + programship[:episode].to_s %>
+    <% end %>
     <br>
     <%= link_to 'edit', edit_tv_program_path(program) %>
     <%= button_to 'delete', tv_program_path(program), :method => :delete %>

@@ -123,6 +123,7 @@ ActiveRecord::Schema.define(:version => 20130307083554) do
     t.integer  "tv_program_id", :null => false
     t.datetime "begin_time",    :null => false
     t.datetime "end_time",      :null => false
+    t.integer  "episode"
     t.datetime "created_at",    :null => false
     t.datetime "updated_at",    :null => false
   end

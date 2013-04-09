@@ -3,8 +3,9 @@ class CreateTvProgramships < ActiveRecord::Migration
     create_table :tv_programships do |t|
       t.column :tv_station_id, :integer, :null => false
       t.column :tv_program_id, :integer, :null => false
-      t.column :begin_time, :datetime, :null => false 
-      t.column :end_time, :datetime, :null => false 
+      t.column :begin_time, :datetime,   :null => false 
+      t.column :end_time, :datetime,     :null => false 
+      t.column :episode, :integer, :default => -1
 
       t.timestamps
     end
