@@ -148,8 +148,8 @@ module WebCawler
         next_name = ""
         begin_time_str = ""
         end_time_str = ""
-        episode = ""
-        next_episode = ""
+        episode = "-1"
+        next_episode = "-1"
 
         @crawl_info.inc_program_counter
         get_program_info!(program, name, begin_time_str, episode)
@@ -159,10 +159,15 @@ module WebCawler
           end_time_str = '23:59'
         end
 
+        #try to remove useless description for name and episode
+        description = name
+        name = get_real_name(name)
+        #episode = get_real_episode(name)
+
         #try to find same program in database
         tv_pros = TvProgram.where(:name => name).all        
         if tv_pros.empty?
-          pro = TvProgram.create(:name => name, :description => name)
+          pro = TvProgram.create(:name => name, :description => description)
         else
           pro = tv_pros[0]
         end
@@ -188,6 +193,57 @@ module WebCawler
       time.replace(program_str[0 .. program_str.index(" ")-1])
       name.replace(program_str[program_str.index(" ")+1 .. program_str.length])
     end
+
+    def get_real_name(name)
+      puts name
+      #remove the classic
+      if (m = /电视剧：/.match(name))
+        name = m.pre_match + m.post_match
+        return get_real_name(name)
+      end
+
+      #remove the flag
+      if (m = /（转播）|（重播）|（直播）|（首播）|转播|重播|直播|首播/.match(name))
+        name = m.pre_match + m.post_match
+        return get_real_name(name)
+      end      
+
+      #remove the "1/12" which end of word
+      if (m = /\d*\/\d*$/.match(name))
+        name = m.pre_match
+        return get_real_name(name)
+      end
+
+      #remove the "(*)" which end of word
+      if (m = /\(.*\)$/.match(name))
+        name = m.pre_match
+        return get_real_name(name)
+      end
+
+      #remove the "（1）" which end of word
+      if (m = /（.*）$/.match(name))
+        name = m.pre_match
+        return get_real_name(name)
+      end
+      
+      #remove the number which end of word, eg "名字1"
+      if (m = /\d+$/.match(name))
+        name = m.pre_match
+        return get_real_name(name)
+      end
+      
+      #must put it in last check without recusive
+      #remove the ":" or "：", eg "名字："
+      if (m = /[:：]$/.match(name))
+        name = m.pre_match
+      end
+      if (m = /^[:：]/.match(name))
+        name = m.post_match
+      end
+
+      return name
+    end
+    
     
   end
 end
