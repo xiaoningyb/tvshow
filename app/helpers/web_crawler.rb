@@ -208,32 +208,32 @@ module WebCawler
         return get_real_name(name)
       end      
 
-      #remove the "1/12" which end of word
+      #remove the "1/12" which is end of word
       if (m = /\d*\/\d*$/.match(name))
         name = m.pre_match
         return get_real_name(name)
       end
 
-      #remove the "(*)" which end of word
+      #remove the "(*)" which is end of word
       if (m = /\(.*\)$/.match(name))
         name = m.pre_match
         return get_real_name(name)
       end
 
-      #remove the "（1）" which end of word
+      #remove the "（1）" which is end of word
       if (m = /（.*）$/.match(name))
         name = m.pre_match
         return get_real_name(name)
       end
       
-      #remove the number which end of word, eg "名字1"
+      #remove the number which is end of word, eg "名字1"
       if (m = /\d+$/.match(name))
         name = m.pre_match
         return get_real_name(name)
       end
       
       #must put it in last check without recusive
-      #remove the ":" or "：", eg "名字："
+      #remove the ":" or "：", eg ":名字："
       if (m = /[:：]$/.match(name))
         name = m.pre_match
       end
