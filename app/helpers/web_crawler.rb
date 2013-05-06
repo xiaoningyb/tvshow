@@ -130,9 +130,14 @@ module WebCawler
             return
           end
         else
-          if parse_station_schedule(page, station, crawl_date)
-            station.updated_date = crawl_date
-            station.save
+          begin
+            if parse_station_schedule(page, station, crawl_date)
+              station.updated_date = crawl_date
+              station.save
+          end
+          rescue
+            @crawl_info.inc_crawl_failed_counter
+            puts "parse_station_schedule error"
           end
         end        
         sleep(5)
@@ -149,39 +154,44 @@ module WebCawler
         end_time_str = ""
         episode = nil
 
-        @crawl_info.inc_program_counter
-        get_program_info!(program, name, begin_time_str)
-        if (idx < (programs.size-1))
-          get_program_info!(programs[idx+1], next_name, end_time_str)
-        else
-          end_time_str = '23:59'
-        end
+        begin
+          @crawl_info.inc_program_counter
+          get_program_info!(program, name, begin_time_str)
+          if (idx < (programs.size-1))
+            get_program_info!(programs[idx+1], next_name, end_time_str)
+          else
+            end_time_str = '23:59'
+          end
+          
+          #try to remove useless description for name and episode
+          episode = get_real_episode(name)
+          name = get_real_name(name)
+          description = name
+          
+          #try to find same program in database
+          tv_pros = TvProgram.where(:name => name).all        
+          if tv_pros.empty?
+            pro = TvProgram.create(:name => name, :description => description)
+          else
+            pro = tv_pros[0]
+          end
+          
+          #create the program
+          begin_time = Time.parse(date.to_s + " " + begin_time_str + ":00 +0800")
+          end_time = Time.parse(date.to_s + " " + end_time_str + ":00 +0800")
+          if episode != nil
+            TvProgramship.create(:tv_station => st, :tv_program => pro, :begin_time => begin_time, :end_time => end_time, :episode => episode.to_i)
+          else
+            TvProgramship.create(:tv_station => st, :tv_program => pro, :begin_time => begin_time, :end_time => end_time, :episode => -1)
+          end
+          @crawl_info.inc_new_program_counter
+          @crawl_info.set_current_program(pro.name)
 
-        #try to remove useless description for name and episode
-        episode = get_real_episode(name)
-        name = get_real_name(name)
-        description = name
-
-        #try to find same program in database
-        tv_pros = TvProgram.where(:name => name).all        
-        if tv_pros.empty?
-          pro = TvProgram.create(:name => name, :description => description)
-        else
-          pro = tv_pros[0]
+          puts begin_time.to_s + " ~ " +  end_time.to_s + " : " + name
+        rescue
+          @crawl_info.inc_crawl_failed_counter
+          puts "get_program_info error"
         end
-        
-        #create the program
-        begin_time = Time.parse(date.to_s + " " + begin_time_str + ":00 +0800")
-        end_time = Time.parse(date.to_s + " " + end_time_str + ":00 +0800")
-        if episode != nil
-          TvProgramship.create(:tv_station => st, :tv_program => pro, :begin_time => begin_time, :end_time => end_time, :episode => episode.to_i)
-        else
-          TvProgramship.create(:tv_station => st, :tv_program => pro, :begin_time => begin_time, :end_time => end_time, :episode => -1)
-        end
-        @crawl_info.inc_new_program_counter
-        @crawl_info.set_current_program(pro.name)
-
-        puts begin_time.to_s + " ~ " +  end_time.to_s + " : " + name
 
         idx += 1
       end
@@ -204,7 +214,7 @@ module WebCawler
       end
 
       #remove the flag
-      if (m = /（转播）|（重播）|（直播）|（首播）|转播|重播|直播|首播/.match(name))
+      if (m = /（转播）|（重播）|（直播）|（首播）|（录播）|转播|重播|直播|首播|录播|实况录像|现场/.match(name))
         name = m.pre_match + m.post_match
         return get_real_name(name)
       end      
@@ -215,14 +225,38 @@ module WebCawler
         return get_real_name(name)
       end
 
-      #remove the "(*)" which is end of word
-      if (m = /\(.*\)$/.match(name))
+      #remove the "(第.*集)" which is end of word
+      if (m = /\(第.*集\)$/.match(name))
+        name = m.pre_match
+        return get_real_name(name)
+      end
+
+      #remove the "(第.*集)" which is end of word
+      if (m = /（第.*集）$/.match(name))
+        name = m.pre_match
+        return get_real_name(name)
+      end
+
+      #remove the "(1)" which is end of word
+      if (m = /\(\d*\)$/.match(name))
         name = m.pre_match
         return get_real_name(name)
       end
 
       #remove the "（1）" which is end of word
-      if (m = /（.*）$/.match(name))
+      if (m = /（\d*）$/.match(name))
+        name = m.pre_match
+        return get_real_name(name)
+      end
+
+      #remove the "(1-12)" which is end of word
+      if (m = /\(\d+-\d+\)$/.match(name))
+        name = m.pre_match
+        return get_real_name(name)
+      end
+
+      #remove the "（1-12）" which is end of word
+      if (m = /（\d+-\d+）$/.match(name))
         name = m.pre_match
         return get_real_name(name)
       end
@@ -235,10 +269,10 @@ module WebCawler
       
       #must put it in last check without recusive
       #remove the ":" or "：", eg ":名字："
-      if (m = /[:：]$/.match(name))
+      if (m = /[:：-_]$/.match(name))
         name = m.pre_match
       end
-      if (m = /^[:：]/.match(name))
+      if (m = /^[:：-_]/.match(name))
         name = m.post_match
       end
 
