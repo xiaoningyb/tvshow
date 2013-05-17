@@ -36,6 +36,12 @@
       <%= submit_tag("checkin") %>
     <% end %>
   <% end %>
+  <br>
+  <%= form_tag(new_crawl_program_content_path, :method => 'get') do %>
+    <%= hidden_field_tag 'user', current_user.id %>
+    <%= hidden_field_tag 'program', @program.id %>
+    <%= submit_tag("crawl_program") %>
+  <% end %>
 <% end %>
 <br/>
 

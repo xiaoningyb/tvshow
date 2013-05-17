@@ -269,10 +269,10 @@ module WebCawler
       
       #must put it in last check without recusive
       #remove the ":" or "：", eg ":名字："
-      if (m = /[:：-_]$/.match(name))
+      if (m = /[:：\-\_]$/.match(name))
         name = m.pre_match
       end
-      if (m = /^[:：-_]/.match(name))
+      if (m = /^[:：\-\_]/.match(name))
         name = m.post_match
       end
 
