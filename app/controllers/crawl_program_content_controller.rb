@@ -1,11 +1,14 @@
 class CrawlProgramContentController < ApplicationController
     
-  #new tv station using POST method
+  #new page for crawling infomation about tv_program
   def create
-    # @program = TvProgram.new(params[:program])
-    # @program.save
-    
-    redirect_to :action => :index
+    @program = TvProgram.find(params[:tv_program][:id])
+    @program.transaction do 
+      @program.update_attributes(:name => params[:tv_program][:name])
+      @program.update_attributes(:description => params[:tv_program][:description])
+    end
+
+    redirect_to :controller=>"tv_programs", :action => :show, :id => @program
   end
 
   #new page for crawl info
@@ -18,7 +21,6 @@ class CrawlProgramContentController < ApplicationController
       format.xml { render :xml => program.to_xml }
       format.json { render :json => program.to_json }
     end
-
   end
 
 end

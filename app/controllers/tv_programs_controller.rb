@@ -25,6 +25,17 @@ class TvProgramsController < ApplicationController
     redirect_to :action => :index
   end
 
+  def edit
+    @program = TvProgram.find(params[:program])
+    @program.transaction do 
+      @program.update_attributes(:name => params[:name])
+      @program.update_attributes(:description => params[:description])
+    end
+    
+    redirect_to :action => :index
+  end
+
+
   #show tv group info
   def show
     if (params[:cmd] != nil) && (params[:cmd] == "detail")

@@ -1,12 +1,14 @@
-
-<%= form_for @program, :url => crawl_program_content_index_path do |f| %>
-    <%= f.label :name, "Name" %>
-    <%= f.text_field :name %>    
-    <%= f.label :description, "Description" %>
-    <br>
-    <%= f.text_area :description %>
-    
-    <%= f.submit "Create" %>
+<%= form_for @program, :html => { :method => :post }, :url => crawl_program_content_index_path do |f| %>
+  <%= f.hidden_field :id %>
+  <%= f.label :name, "Name" %>
+  <br>
+  <%= f.text_field :name %>    
+  <br>
+  <%= f.label :description, "Description" %>
+  <br>
+  <%= f.text_area :description %>
+  <br>
+  <%= f.submit "Save" %>
 <% end %>
 
 
