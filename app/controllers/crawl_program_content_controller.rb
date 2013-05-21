@@ -15,7 +15,11 @@ class CrawlProgramContentController < ApplicationController
   def new
     @user = User.find(params[:user])
     @program = TvProgram.find(params[:program])
-  
+
+    crawler = CrawlProgramContentHelper::Baike.new
+
+    crawler.start_crawl_keyword(@program.name)
+
     respond_to do |format|
       format.html # new.html.erb
       format.xml { render :xml => program.to_xml }
