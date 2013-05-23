@@ -5,25 +5,59 @@ module CrawlProgramContentHelper
     def start_crawl_keyword(keyword)
       #create agent
       @agent = Mechanize.new
+      @result = {:description => "", :image_url => ""}
 
-      #file info
+      #fill agent info
       @agent.request_headers['Referer'] = BAIKE_BASE_URL
       @agent.user_agent_alias = 'Mac Safari'
 
-      #find group info
-      url = BAIKE_BASE_URL + '/search?word=' + URL_encode(keyword) + '&submit=%E8%BF%9B%E5%85%A5%E8%AF%8D%E6%9D%A1&uid=08371E472DF23E320426A716C6767656&ssid=&st=1&bk_fr=srch&bd_page_type=1'
-      page = @agent.get(url)
+      #get search url
+      url = BAIKE_BASE_URL + '/search?word=' + keyword
+      url = URI::escape(url)
       
-      puts page.content
+      #get search result
+      page = @agent.get(url)
 
-    end
-    
-    def URL_decode(str)
-      str.gsub!(/%[a-fA-F0-9]{2}/) { |x| x = x[1..2].hex.chr }
+      #find final_url
+      page.search('meta').each do |content|
+        if (content['http-equiv'] != nil) && content['http-equiv'] == 'Refresh' && (content['content'] != nil) 
+          final_url = /\d+;URL=/.match(content['content']).post_match
+          if not final_url.empty?
+            crawl_page(BAIKE_BASE_URL + final_url)
+          end
+        end
+      end
+
+      puts "content = " + @result[:description]
+      puts "image_url = " + @result[:image_url]
+
+      return @result
     end
 
-    def URL_encode(str)
-      str.gsub!(/[^\w$&\-+.,\/:;=?@]/) { |x| x = format("%%%x", x[0]) }
+    def crawl_page(url)
+      #get page result
+      page = @agent.get(url)
+
+      #get baike card
+      page.search('html/body/div/div').each do |classic|
+        if(classic['class'] == 'card')
+          parse_baike_card(classic)
+        end
+      end
+    end
+
+    def parse_baike_card(content)
+      content.search('p').each do |paragraph|
+        @result[:description] += paragraph.text
+      end
+      @result[:description].gsub!(' ','')
+      @result[:description].gsub!(/\t/, '')
+
+      content.search('div').each do |paragraph|
+        if paragraph['class'] == "img-box"
+          @result[:image_url] = paragraph.search('a/img')[0]['src']
+        end
+      end
     end
     
   end

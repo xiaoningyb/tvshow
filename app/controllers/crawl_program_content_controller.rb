@@ -18,7 +18,9 @@ class CrawlProgramContentController < ApplicationController
 
     crawler = CrawlProgramContentHelper::Baike.new
 
-    crawler.start_crawl_keyword(@program.name)
+    result = crawler.start_crawl_keyword(@program.name)
+    
+    @program.description = result[:description]
 
     respond_to do |format|
       format.html # new.html.erb
