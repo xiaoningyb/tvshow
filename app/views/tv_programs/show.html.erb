@@ -3,6 +3,10 @@
 <% else %>
   <%= @program.name + "(" +  @program.episode.to_s + ")" %>
 <% end %>
+<% if @program.image and not @program.image.empty? %>
+  <br/>
+  <img src="data:image/jpg;base64,<%=@program.image %>">
+<% end %>
 <%= simple_format(@program.description) %> 
 
 <% if current_user != nil %>

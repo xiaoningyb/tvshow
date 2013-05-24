@@ -6,6 +6,7 @@ class CrawlProgramContentController < ApplicationController
     @program.transaction do 
       @program.update_attributes(:name => params[:tv_program][:name])
       @program.update_attributes(:description => params[:tv_program][:description])
+      @program.update_attributes(:image => params[:tv_program][:image])
     end
 
     redirect_to :controller=>"tv_programs", :action => :show, :id => @program
@@ -21,6 +22,7 @@ class CrawlProgramContentController < ApplicationController
     result = crawler.start_crawl_keyword(@program.name)
     
     @program.description = result[:description]
+    @program.image = result[:image]
 
     respond_to do |format|
       format.html # new.html.erb

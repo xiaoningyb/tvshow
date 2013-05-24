@@ -27,10 +27,7 @@ module CrawlProgramContentHelper
           end
         end
       end
-
-      puts "content = " + @result[:description]
-      puts "image_url = " + @result[:image_url]
-
+      
       return @result
     end
 
@@ -56,6 +53,7 @@ module CrawlProgramContentHelper
       content.search('div').each do |paragraph|
         if paragraph['class'] == "img-box"
           @result[:image_url] = paragraph.search('a/img')[0]['src']
+          @result[:image] = Base64.encode64(@agent.get(@result[:image_url]).body_io.string)
         end
       end
     end

@@ -1,3 +1,6 @@
+
+<img src="data:image/jpg;base64,<%=@program.image %>">
+
 <%= form_for @program, :html => { :method => :post }, :url => crawl_program_content_index_path do |f| %>
   <%= f.hidden_field :id %>
   <%= f.label :name, "Name" %>
@@ -8,7 +11,10 @@
   <br>
   <%= f.text_area :description %>
   <br>
+  <%= f.label :image, "Image" %>
+  <br>
+  <%= f.text_area :image %>
+  <br>
   <%= f.submit "Save" %>
 <% end %>
-
 
