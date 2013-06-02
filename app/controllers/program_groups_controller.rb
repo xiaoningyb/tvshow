@@ -1,0 +1,2 @@
+class ProgramGroupsController < ApplicationController
+end

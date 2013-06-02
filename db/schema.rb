@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130307083554) do
+ActiveRecord::Schema.define(:version => 20130602094720) do
 
   create_table "crawler_infos", :force => true do |t|
     t.datetime "begin_time"
@@ -85,6 +85,18 @@ ActiveRecord::Schema.define(:version => 20130307083554) do
   add_index "discusses", ["tv_program_id"], :name => "index_discusses_on_tv_program_id"
   add_index "discusses", ["user_id"], :name => "index_discusses_on_user_id"
 
+  create_table "program_groups", :force => true do |t|
+    t.string   "name"
+    t.string   "description"
+    t.binary   "image"
+    t.string   "key_word"
+    t.integer  "group_type"
+    t.time     "interval"
+    t.integer  "total_episode"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
+  end
+
   create_table "tv_groups", :force => true do |t|
     t.string   "name",        :null => false
     t.string   "en_name",     :null => false
@@ -106,26 +118,28 @@ ActiveRecord::Schema.define(:version => 20130307083554) do
   add_index "tv_groupships", ["tv_station_id"], :name => "index_tv_groupships_on_tv_station_id"
 
   create_table "tv_programs", :force => true do |t|
-    t.string   "name",                         :null => false
+    t.string   "name",                            :null => false
     t.text     "description"
     t.binary   "image"
     t.string   "key_word"
     t.integer  "episode"
-    t.integer  "watch_count",   :default => 0
-    t.integer  "discuss_count", :default => 0
-    t.integer  "checkin_count", :default => 0
-    t.datetime "created_at",                   :null => false
-    t.datetime "updated_at",                   :null => false
+    t.integer  "group_type",       :default => 0
+    t.integer  "program_group_id"
+    t.integer  "watch_count",      :default => 0
+    t.integer  "discuss_count",    :default => 0
+    t.integer  "checkin_count",    :default => 0
+    t.datetime "created_at",                      :null => false
+    t.datetime "updated_at",                      :null => false
   end
 
   create_table "tv_programships", :force => true do |t|
-    t.integer  "tv_station_id", :null => false
-    t.integer  "tv_program_id", :null => false
-    t.datetime "begin_time",    :null => false
-    t.datetime "end_time",      :null => false
-    t.integer  "episode"
-    t.datetime "created_at",    :null => false
-    t.datetime "updated_at",    :null => false
+    t.integer  "tv_station_id",                 :null => false
+    t.integer  "tv_program_id",                 :null => false
+    t.datetime "begin_time",                    :null => false
+    t.datetime "end_time",                      :null => false
+    t.integer  "episode",       :default => -1
+    t.datetime "created_at",                    :null => false
+    t.datetime "updated_at",                    :null => false
   end
 
   add_index "tv_programships", ["tv_program_id"], :name => "index_tv_programships_on_tv_program_id"

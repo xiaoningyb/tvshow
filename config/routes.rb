@@ -20,6 +20,7 @@ Tvshow::Application.routes.draw do
   resources :tv_programs
   resources :users
   resources :discusses
+  resources :program_groups     
   resources :discuss_relationships, :only => [:new, :create, :destroy]
   resources :user_relationships,    :only => [:create, :destroy]
   resources :user_programships,     :only => [:create, :destroy]

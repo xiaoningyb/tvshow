@@ -1,5 +1,7 @@
 class TvProgram < ActiveRecord::Base
-  attr_accessible :description, :episode, :image, :key_word, :name, :watch_count, :discuss_count, :checkin_count, :discusses
+  attr_accessible :description, :episode, :image, :key_word, :name, 
+                  :watch_count, :discuss_count, :checkin_count, :discusses,
+                  :group_type, :program_group_id, :program_group
 
   #for relationship with tv_station
   has_many :tv_programships, :dependent => :destroy
@@ -15,4 +17,7 @@ class TvProgram < ActiveRecord::Base
 
   #for relationship with discuss
   has_many :discusses
+
+  #for relationship with program_group
+  belongs_to :program_group
 end

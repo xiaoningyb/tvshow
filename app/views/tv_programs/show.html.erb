@@ -9,6 +9,11 @@
 <% end %>
 <%= simple_format(@program.description) %> 
 
+<br>
+<% if @program.group_type != 0 %>
+    <%= link_to "program group : " + @program.program_group.name, program_group_path(@program.program_group) %>
+<% end %>
+
 <% if current_user != nil %>
   <% if current_user.has_watch(@program) %>
     <%= form_tag(user_programship_path, :method => 'delete') do %>

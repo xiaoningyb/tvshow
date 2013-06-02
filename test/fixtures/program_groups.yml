@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  name: MyString
+  description: MyString
+  image: 
+  key_word: MyString
+  type: 1
+  interval: 2013-06-02 17:47:20
+  total_episode: 1
+
+two:
+  name: MyString
+  description: MyString
+  image: 
+  key_word: MyString
+  type: 1
+  interval: 2013-06-02 17:47:20
+  total_episode: 1
