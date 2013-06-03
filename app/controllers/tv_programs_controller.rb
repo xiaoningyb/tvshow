@@ -12,12 +12,12 @@ class TvProgramsController < ApplicationController
     end
   end
 
-  #new tv station, it will be deprecated
+  #new tv program, it will be deprecated
   def new
     @program = TvProgram.new
   end
   
-  #new tv station using POST method
+  #new tv program using POST method
   def create
     @program = TvProgram.new(params[:program])
     @program.save
@@ -35,8 +35,7 @@ class TvProgramsController < ApplicationController
     redirect_to :action => :index
   end
 
-
-  #show tv group info
+  #show tv program info
   def show
     if (params[:cmd] != nil) && (params[:cmd] == "detail")
       show_detail(params)

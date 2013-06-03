@@ -1,4 +1,4 @@
-<% if @program.episode = 0 %>
+<% if @program.episode == nil %>
   <%= @program.name %>
 <% else %>
   <%= @program.name + "(" +  @program.episode.to_s + ")" %>

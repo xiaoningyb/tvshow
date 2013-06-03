@@ -1,0 +1,19 @@
+<% if @program_group.total_episode == nil %>
+  <%= @program_group.name %>
+<% else %>
+  <%= @program_group.name + "(" +  @program.total_episode.to_s + ")" %>
+<% end %>
+<% if @program_group.image and not @program_group.image.empty? %>
+  <br/>
+  <img src="data:image/jpg;base64,<%=@program_group.image %>">
+<% end %>
+<%= simple_format(@program_group.description) %> 
+
+<br>
+<%= "related tv program:" + @program_group.tv_programs.size.to_s %>
+<% @program_group.tv_programs.each do |tv_program| %>
+  <li>
+    <%= link_to tv_program.name, tv_program_path(tv_program) %>
+  </li>
+<% end %>
+

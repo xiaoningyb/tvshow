@@ -51,3 +51,5 @@ cctv.tv_stations << cctv1
 group = ProgramGroup.create(:name => "新闻30分", :description => "新闻30分", :group_type => 1)
 tv = TvProgram.create(:name => "新闻30分(20130601)", :description => "新闻30分", :group_type => 1, :program_group => group )
 TvProgramship.create(:tv_station => cctv1, :tv_program => tv, :begin_time => Time.now, :end_time =>  Time.now + 1 * 3600)
+tv = TvProgram.create(:name => "新闻30分(20130602)", :description => "新闻30分", :group_type => 1, :program_group => group )
+TvProgramship.create(:tv_station => cctv1, :tv_program => tv, :begin_time => Time.now, :end_time =>  Time.now + 1 * 3600)
