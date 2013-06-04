@@ -159,11 +159,12 @@ ActiveRecord::Schema.define(:version => 20130602094720) do
   end
 
   create_table "user_checkinships", :force => true do |t|
-    t.integer  "tv_program_id"
     t.integer  "user_id"
     t.datetime "time"
-    t.datetime "created_at",    :null => false
-    t.datetime "updated_at",    :null => false
+    t.integer  "program_id"
+    t.string   "program_type"
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
   end
 
   create_table "user_programships", :force => true do |t|

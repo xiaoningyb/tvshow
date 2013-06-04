@@ -12,7 +12,7 @@ class TvProgram < ActiveRecord::Base
   has_many :users, :through => :user_programships, :uniq => true
 
   #for relationship with user
-  has_many :user_checkinships, :dependent => :destroy
+  has_many :user_checkinships, :dependent => :destroy, :as => :program
   has_many :checkin_users, :through => :user_checkinships, :source => :user, :uniq => true
 
   #for relationship with discuss

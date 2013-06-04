@@ -19,11 +19,11 @@ class User < ActiveRecord::Base
   has_many :followee_relationships, :class_name => "UserRelationship", :foreign_key => "follower_id"
   has_many :followees, :through => :followee_relationships, :source => :user, :uniq => true  
 
-  #for watch relation with tv_program
-  has_many :user_checkinships, :dependent => :destroy
-  has_many :checkin_programs, :through => :user_checkinships, :source => :tv_program,  :uniq => true
-
   #for checkin relation with tv_program
+  has_many :user_checkinships, :dependent => :destroy
+  has_many :checkin_programs, :through => :user_checkinships, :source => :program, :source_type => 'TvProgram', :uniq => true
+
+  #for watch relation with tv_program
   has_many :user_programships, :dependent => :destroy
   has_many :tv_programs, :through => :user_programships, :uniq => true
 

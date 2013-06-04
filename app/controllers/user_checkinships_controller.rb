@@ -29,7 +29,7 @@ class UserCheckinshipsController < ApplicationController
       user.update_attributes(:checkin_count => user.checkin_count.next)
       user.update_attributes(:version => user.version.next)
       program.update_attributes(:checkin_count => program.checkin_count.next)
-      UserCheckinship.create(:user => user, :tv_program => program, :time => Time.now)
+      UserCheckinship.create(:user => user, :program => program, :time => Time.now)
     end
   end
 
