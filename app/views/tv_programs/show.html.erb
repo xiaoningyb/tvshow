@@ -35,13 +35,13 @@
   <% if current_user.has_checkin(@program) %>
     <%= form_tag(user_checkinship_path, :method => 'delete') do %>
       <%= hidden_field_tag 'user', current_user.id %>
-      <%= hidden_field_tag 'program', @program.id %>
+      <%= hidden_field_tag 'tv_program', @program.id %>
       <%= submit_tag("uncheckin") %>
     <% end %>
   <% else %>
     <%= form_tag(user_checkinships_path, :method => 'post') do %>
       <%= hidden_field_tag 'user', current_user.id %>
-      <%= hidden_field_tag 'program', @program.id %>
+      <%= hidden_field_tag 'tv_program', @program.id %>
       <%= submit_tag("checkin") %>
     <% end %>
   <% end %>

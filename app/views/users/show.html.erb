@@ -26,14 +26,21 @@
 <% end %>
 <br/>
 
-<%= "checkin(" + @user.checkin_programs.size.to_s + ") : " %>
-<% @user.checkin_programs.each do |program| %>
+<%= "checkin tv program(" + @user.checkin_tv_programs.size.to_s + ") : " %>
+<% @user.checkin_tv_programs.each do |program| %>
   <li>
     <%= link_to program.name, tv_program_path(program) %>
   </li>
 <% end %>
 <br/>
 
+<%= "checkin program group(" + @user.checkin_program_groups.size.to_s + ") : " %>
+<% @user.checkin_program_groups.each do |program| %>
+  <li>
+    <%= link_to program.name, program_group_path(program) %>
+  </li>
+<% end %>
+<br/>
 
 <%= "followee(" + @user.followee_count.to_s + ") : " %>
 <% @user.get_followees().each do |followee| %>

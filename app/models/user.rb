@@ -19,9 +19,15 @@ class User < ActiveRecord::Base
   has_many :followee_relationships, :class_name => "UserRelationship", :foreign_key => "follower_id"
   has_many :followees, :through => :followee_relationships, :source => :user, :uniq => true  
 
-  #for checkin relation with tv_program
+  #for checkin relationship with tv_program
   has_many :user_checkinships, :dependent => :destroy
-  has_many :checkin_programs, :through => :user_checkinships, :source => :program, :source_type => 'TvProgram', :uniq => true
+  has_many :checkin_tv_programs, :through => :user_checkinships, :source => :program, 
+           :source_type => 'TvProgram', :uniq => true
+
+  #for checkin relationship with program_group
+  has_many :user_checkinships, :dependent => :destroy
+  has_many :checkin_program_groups, :through => :user_checkinships, :source => :program, 
+           :source_type => 'ProgramGroup', :uniq => true
 
   #for watch relation with tv_program
   has_many :user_programships, :dependent => :destroy
@@ -58,7 +64,7 @@ class User < ActiveRecord::Base
   end
 
   def has_checkin(program)
-    return self.checkin_programs.include?(program)
+    return self.checkin_tv_programs.include?(program) || self.checkin_program_groups.include?(program) 
   end
 
   def get_checkin_programs

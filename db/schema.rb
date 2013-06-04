@@ -86,15 +86,18 @@ ActiveRecord::Schema.define(:version => 20130602094720) do
   add_index "discusses", ["user_id"], :name => "index_discusses_on_user_id"
 
   create_table "program_groups", :force => true do |t|
-    t.string   "name"
-    t.string   "description"
+    t.string   "name",                         :null => false
+    t.text     "description"
     t.binary   "image"
     t.string   "key_word"
     t.integer  "group_type"
     t.time     "interval"
     t.integer  "total_episode"
-    t.datetime "created_at",    :null => false
-    t.datetime "updated_at",    :null => false
+    t.integer  "watch_count",   :default => 0
+    t.integer  "discuss_count", :default => 0
+    t.integer  "checkin_count", :default => 0
+    t.datetime "created_at",                   :null => false
+    t.datetime "updated_at",                   :null => false
   end
 
   create_table "tv_groups", :force => true do |t|

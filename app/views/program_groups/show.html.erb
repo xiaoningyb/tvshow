@@ -17,3 +17,33 @@
   </li>
 <% end %>
 
+<% if current_user != nil %>
+  <% if current_user.has_checkin(@program_group) %>
+    <%= form_tag(user_checkinship_path, :method => 'delete') do %>
+      <%= hidden_field_tag 'user', current_user.id %>
+      <%= hidden_field_tag 'program_group', @program_group.id %>
+      <%= submit_tag("uncheckin") %>
+    <% end %>
+  <% else %>
+    <%= form_tag(user_checkinships_path, :method => 'post') do %>
+      <%= hidden_field_tag 'user', current_user.id %>
+      <%= hidden_field_tag 'program_group', @program_group.id %>
+      <%= submit_tag("checkin") %>
+    <% end %>
+  <% end %>
+  <br>
+  <%= form_tag(new_crawl_program_content_path, :method => 'get') do %>
+    <%= hidden_field_tag 'user', current_user.id %>
+    <%= hidden_field_tag 'program_group', @program_group.id %>
+    <%= submit_tag("crawl_program") %>
+  <% end %>
+<% end %>
+<br/>
+
+<br>
+<%= "checkin:" + @program_group.checkin_count.to_s %>
+<% @program_group.checkin_users.each do |user| %>
+  <li>
+    <%= link_to user.name, user_path(user) %>
+  </li>
+<% end %>
