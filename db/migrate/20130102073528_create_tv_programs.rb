@@ -2,6 +2,7 @@ class CreateTvPrograms < ActiveRecord::Migration
   def self.up
     create_table :tv_programs do |t|
       t.column :name,             :string,  :null => false
+      t.column :program_type,     :integer, :default => 0
       t.column :description,      :text
       t.column :image,            :binary
       t.column :key_word,         :string

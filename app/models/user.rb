@@ -70,7 +70,7 @@ class User < ActiveRecord::Base
   end
 
   def get_watch_programs
-    return self.tv_programs
+    return self.tv_programs + self.program_groups
   end
 
   def has_checkin_tv_program(program)
@@ -82,7 +82,7 @@ class User < ActiveRecord::Base
   end
 
   def get_checkin_programs
-    return self.checkin_programs
+    return self.checkin_tv_programs + self.checkin_program_groups
   end
 
   def get_discusses

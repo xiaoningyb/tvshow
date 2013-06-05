@@ -2,6 +2,7 @@ class CreateProgramGroups < ActiveRecord::Migration
   def change
     create_table :program_groups do |t|
       t.string   :name,           :null => false
+      t.integer  :program_type,   :default => 1
       t.text     :description
       t.binary   :image
       t.string   :key_word

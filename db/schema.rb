@@ -87,6 +87,7 @@ ActiveRecord::Schema.define(:version => 20130602094720) do
 
   create_table "program_groups", :force => true do |t|
     t.string   "name",                         :null => false
+    t.integer  "program_type",  :default => 1
     t.text     "description"
     t.binary   "image"
     t.string   "key_word"
@@ -122,6 +123,7 @@ ActiveRecord::Schema.define(:version => 20130602094720) do
 
   create_table "tv_programs", :force => true do |t|
     t.string   "name",                            :null => false
+    t.integer  "program_type",     :default => 0
     t.text     "description"
     t.binary   "image"
     t.string   "key_word"

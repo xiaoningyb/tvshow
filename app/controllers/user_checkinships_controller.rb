@@ -16,7 +16,7 @@ class UserCheckinshipsController < ApplicationController
     if (params["_method"] != nil) && (params["_method"] == "delete")
       UserCheckinshipsController.destroy_tv_program_relationship(user, program)
     else
-      UserCheckinshipsController.create_program_group_relationship(user, program)
+      UserCheckinshipsController.create_tv_program_relationship(user, program)
     end
     redirect_to :controller => "tv_programs", :action => :show, :id => program
   end
@@ -25,7 +25,7 @@ class UserCheckinshipsController < ApplicationController
     user = User.find(params[:user])
     program = ProgramGroup.find(params[:program_group])
     if (params["_method"] != nil) && (params["_method"] == "delete")
-      UserCheckinshipsController.destroy_tv_program_relationship(user, program)
+      UserCheckinshipsController.destroy_program_group_relationship(user, program)
     else
       UserCheckinshipsController.create_program_group_relationship(user, program)
     end
