@@ -15,16 +15,16 @@
 <% end %>
 
 <% if current_user != nil %>
-  <% if current_user.has_watch(@program) %>
+  <% if current_user.has_watch_tv_program(@program) %>
     <%= form_tag(user_programship_path, :method => 'delete') do %>
       <%= hidden_field_tag 'user', current_user.id %>
-      <%= hidden_field_tag 'program', @program.id %>
+      <%= hidden_field_tag 'tv_program', @program.id %>
       <%= submit_tag("unwatch") %>
     <% end %>
   <% else %>
     <%= form_tag(user_programships_path, :method => 'post') do %>
       <%= hidden_field_tag 'user', current_user.id %>
-      <%= hidden_field_tag 'program', @program.id %>
+      <%= hidden_field_tag 'tv_program', @program.id %>
       <%= submit_tag("watch") %>
     <% end %>
   <% end %>
@@ -32,7 +32,7 @@
 <br/>
 
 <% if current_user != nil %>
-  <% if current_user.has_checkin(@program) %>
+  <% if current_user.has_checkin_tv_program(@program) %>
     <%= form_tag(user_checkinship_path, :method => 'delete') do %>
       <%= hidden_field_tag 'user', current_user.id %>
       <%= hidden_field_tag 'tv_program', @program.id %>

@@ -29,9 +29,15 @@ class User < ActiveRecord::Base
   has_many :checkin_program_groups, :through => :user_checkinships, :source => :program, 
            :source_type => 'ProgramGroup', :uniq => true
 
-  #for watch relation with tv_program
+  #for watch relationship with tv_program
   has_many :user_programships, :dependent => :destroy
-  has_many :tv_programs, :through => :user_programships, :uniq => true
+  has_many :tv_programs, :through => :user_programships, :source => :program,
+           :source_type => 'TvProgram', :uniq => true
+
+  #for watch relationship with program_group
+  has_many :user_programships, :dependent => :destroy
+  has_many :program_groups, :through => :user_programships, :source => :program,
+           :source_type => 'ProgramGroup', :uniq => true
 
   #for relationship with discuss
   has_many :discusses
@@ -53,18 +59,26 @@ class User < ActiveRecord::Base
 
   def has_follower(user)
     return self.followers.include?(user)
+  end 
+
+  def has_watch_tv_program(program)
+    return self.tv_programs.include?(program)
   end
 
-  def has_watch(program)
-    return self.tv_programs.include?(program)
+  def has_watch_program_group(program)
+    return self.program_groups.include?(program) 
   end
 
   def get_watch_programs
     return self.tv_programs
   end
 
-  def has_checkin(program)
-    return self.checkin_tv_programs.include?(program) || self.checkin_program_groups.include?(program) 
+  def has_checkin_tv_program(program)
+    return self.checkin_tv_programs.include?(program)
+  end
+
+  def has_checkin_program_group(program)
+    return self.checkin_program_groups.include?(program) 
   end
 
   def get_checkin_programs

@@ -4,6 +4,10 @@ class ProgramGroup < ActiveRecord::Base
 
   has_many :tv_programs
 
+  #for watch relationship with user
+  has_many :user_programships, :dependent => :destroy, :as => :program
+  has_many :watch_users, :through => :user_programships, :source => :user, :uniq => true
+
   #for checkin relationship with user
   has_many :user_checkinships, :dependent => :destroy, :as => :program
   has_many :checkin_users, :through => :user_checkinships, :source => :user, :uniq => true

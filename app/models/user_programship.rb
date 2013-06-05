@@ -1,7 +1,8 @@
 class UserProgramship < ActiveRecord::Base
-  attr_accessible :program_id, :user_id, :tv_program, :user, :type, :time
+  attr_accessible :program_id, :program_type, :user_id, :program, :user, :time
 
-  #relationship between tv_station <-> tv_group
+  #watch relationship between tv_program <-> user
   belongs_to :user
-  belongs_to :tv_program
+  belongs_to :program, :polymorphic => true
+
 end

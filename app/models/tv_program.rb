@@ -7,11 +7,11 @@ class TvProgram < ActiveRecord::Base
   has_many :tv_programships, :dependent => :destroy
   has_many :tv_stations, :through => :tv_programships, :uniq => true
 
-  #for relationship with user
-  has_many :user_programships, :dependent => :destroy
-  has_many :users, :through => :user_programships, :uniq => true
+  #for watch relationship with user
+  has_many :user_programships, :dependent => :destroy, :as => :program
+  has_many :users, :through => :user_programships, :source => :user, :uniq => true
 
-  #for relationship with user
+  #for checkin relationship with user
   has_many :user_checkinships, :dependent => :destroy, :as => :program
   has_many :checkin_users, :through => :user_checkinships, :source => :user, :uniq => true
 

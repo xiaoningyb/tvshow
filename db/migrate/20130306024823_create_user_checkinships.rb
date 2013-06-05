@@ -1,5 +1,5 @@
 class CreateUserCheckinships < ActiveRecord::Migration
-  def change
+  def self.up
     create_table :user_checkinships do |t|
       t.integer :user_id
       t.datetime :time
@@ -7,5 +7,12 @@ class CreateUserCheckinships < ActiveRecord::Migration
 
       t.timestamps
     end
+
+    add_index :user_checkinships, :user_id
+    add_index :user_checkinships, :program_id
+  end
+
+ def self.down
+    drop_table :user_programships
   end
 end

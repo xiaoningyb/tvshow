@@ -170,16 +170,19 @@ ActiveRecord::Schema.define(:version => 20130602094720) do
     t.datetime "updated_at",   :null => false
   end
 
+  add_index "user_checkinships", ["program_id"], :name => "index_user_checkinships_on_program_id"
+  add_index "user_checkinships", ["user_id"], :name => "index_user_checkinships_on_user_id"
+
   create_table "user_programships", :force => true do |t|
-    t.integer  "user_id",       :null => false
-    t.integer  "tv_program_id", :null => false
-    t.integer  "type",          :null => false
-    t.datetime "time",          :null => false
-    t.datetime "created_at",    :null => false
-    t.datetime "updated_at",    :null => false
+    t.integer  "user_id",      :null => false
+    t.datetime "time",         :null => false
+    t.integer  "program_id"
+    t.string   "program_type"
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
   end
 
-  add_index "user_programships", ["tv_program_id"], :name => "index_user_programships_on_tv_program_id"
+  add_index "user_programships", ["program_id"], :name => "index_user_programships_on_program_id"
   add_index "user_programships", ["user_id"], :name => "index_user_programships_on_user_id"
 
   create_table "user_relationships", :force => true do |t|

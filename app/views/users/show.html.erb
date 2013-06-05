@@ -18,10 +18,18 @@
 <% end %>
 <br/>
 
-<%= "watch(" + @user.tv_programs.size.to_s + ") : " %>
+<%= "watch tv_program" + @user.tv_programs.size.to_s + ") : " %>
 <% @user.tv_programs.each do |program| %>
   <li>
     <%= link_to program.name, tv_program_path(program) %>
+  </li>
+<% end %>
+<br/>
+
+<%= "watch program group(" + @user.program_groups.size.to_s + ") : " %>
+<% @user.program_groups.each do |program| %>
+  <li>
+    <%= link_to program.name, program_group_path(program) %>
   </li>
 <% end %>
 <br/>
