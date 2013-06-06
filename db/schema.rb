@@ -65,24 +65,25 @@ ActiveRecord::Schema.define(:version => 20130602094720) do
   add_index "discuss_relationships", ["src_id"], :name => "index_discuss_relationships_on_src_id"
 
   create_table "discusses", :force => true do |t|
-    t.string   "topic",                        :null => false
-    t.integer  "user_id",                      :null => false
-    t.integer  "discuss_type",  :default => 0
-    t.text     "content",                      :null => false
-    t.datetime "time",                         :null => false
+    t.string   "topic",                       :null => false
+    t.integer  "user_id",                     :null => false
+    t.integer  "discuss_type", :default => 0
+    t.text     "content",                     :null => false
+    t.datetime "time",                        :null => false
     t.string   "location"
     t.binary   "image"
-    t.integer  "tv_program_id"
-    t.integer  "like",          :default => 0
-    t.integer  "dislike",       :default => 0
-    t.integer  "neutrality",    :default => 0
+    t.integer  "program_id"
+    t.string   "program_type"
+    t.integer  "like",         :default => 0
+    t.integer  "dislike",      :default => 0
+    t.integer  "neutrality",   :default => 0
     t.integer  "src_id"
-    t.integer  "quote_count",   :default => 0
-    t.datetime "created_at",                   :null => false
-    t.datetime "updated_at",                   :null => false
+    t.integer  "quote_count",  :default => 0
+    t.datetime "created_at",                  :null => false
+    t.datetime "updated_at",                  :null => false
   end
 
-  add_index "discusses", ["tv_program_id"], :name => "index_discusses_on_tv_program_id"
+  add_index "discusses", ["program_id"], :name => "index_discusses_on_program_id"
   add_index "discusses", ["user_id"], :name => "index_discusses_on_user_id"
 
   create_table "program_groups", :force => true do |t|

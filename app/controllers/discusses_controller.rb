@@ -19,6 +19,7 @@ class DiscussesController < ApplicationController
   
   #new discuss using POST method
   def create
+dsdsd
     @discuss = Discuss.new(params[:discuss])
     @discuss.time = Time.now
     @discuss.save

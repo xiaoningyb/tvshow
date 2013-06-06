@@ -8,7 +8,11 @@ class DiscussRelationshipsController < ApplicationController
     if params[:src] != nil
       @src = Discuss.find(params[:src])
     end
-    @program = TvProgram.find(params[:program])
+    if params[:program_type].to_i == 0
+      @program = TvProgram.find(params[:program])
+    elsif params[:program_type].to_i == 1
+      @program = ProgramGroup.find(params[:program])
+    end
   end
 
   def create
@@ -18,10 +22,18 @@ class DiscussRelationshipsController < ApplicationController
     if params[:src] != nil
       @src = Discuss.find(params[:src])
     end
-    @program = TvProgram.find(params[:program_id])
-    DiscussRelationshipsController.create_relationship(current_user, @src, @discuss, @program)
+    if params[:program_type].to_i == 0
+      @program = TvProgram.find(params[:program_id])
+      DiscussRelationshipsController.create_relationship(current_user, @src, @discuss, @program)
 
-    redirect_to :controller => "tv_programs", :action => :show, :id => @program
+      redirect_to :controller => "tv_programs", :action => :show, :id => @program
+    elsif params[:program_type].to_i == 1
+      @program = ProgramGroup.find(params[:program_id])
+      DiscussRelationshipsController.create_relationship(current_user, @src, @discuss, @program)
+
+      redirect_to :controller => "program_groups", :action => :show, :id => @program
+    end
+
   end
 
   def destory
@@ -38,7 +50,7 @@ class DiscussRelationshipsController < ApplicationController
 
     discuss.transaction do 
       user.update_attributes(:discuss_count => user.discuss_count.next)
-      discuss.update_attributes(:tv_program => program)
+      discuss.update_attributes(:program => program)
       discuss.update_attributes(:user => user)
       program.update_attributes(:discuss_count => program.discuss_count.next)
       if source != nil
@@ -58,7 +70,7 @@ class DiscussRelationshipsController < ApplicationController
 
     discuss.transaction do
       user.update_attributes(:discuss_count => (user.discuss_count-1) )
-      discuss.update_attributes(:tv_program => nil)
+      discuss.update_attributes(:program => nil)
       discuss.update_attributes(:user => nil)
       program.update_attributes(:discuss_count => (program.discuss_count-1) ) 
       if source != nil

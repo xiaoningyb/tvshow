@@ -1,4 +1,10 @@
-<%= "tv_program(" + @discuss.tv_program.name + ")" %>
+<% if  @discuss.program.program_type == 0 %>
+  <%= "tv_program : " %>
+  <%= link_to @discuss.program.name, tv_program_path(@discuss.program) %>
+<% elsif @discuss.program.program_type == 1 %>
+  <%= "program_group : " %>
+  <%= link_to @discuss.program.name, program_group_path(@discuss.program) %>
+<% end %>
 <br/>
 
 <% if (@discuss.discuss_type == 1) %>
@@ -69,5 +75,6 @@
 <% end %>
 
 <p>
-  <%= link_to 'reply discuss', {:controller =>'discuss_relationships', :action => 'new', :src => @discuss, :program => @discuss.tv_program} %>
+  <%= link_to 'reply discuss', {:controller =>'discuss_relationships', :action => 'new', :src => @discuss, 
+      :program_type => @discuss.program.program_type, :program => @discuss.program} %>
 </p>

@@ -8,19 +8,19 @@ class CreateDiscusses < ActiveRecord::Migration
       t.datetime :time,        :null => false 
       t.string :location
       t.binary :image
-      t.column :tv_program_id, :integer
+      t.belongs_to :program,   :polymorphic => true
 
-      t.column "like",         :integer,   :default => 0
-      t.column "dislike",      :integer,   :default => 0
-      t.column "neutrality",   :integer,   :default => 0 
-      t.column "src_id",       :integer
-      t.column "quote_count",  :integer,   :default => 0      
+      t.integer :like,         :default => 0
+      t.integer :dislike,      :default => 0
+      t.integer :neutrality,   :default => 0 
+      t.integer :src_id
+      t.integer :quote_count,  :default => 0
 
       t.timestamps
     end
 
     add_index :discusses, :user_id
-    add_index :discusses, :tv_program_id
+    add_index :discusses, :program_id
   end
 
   def self.down

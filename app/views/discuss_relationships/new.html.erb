@@ -1,5 +1,10 @@
 <%= form_for @discuss, :url => discuss_relationships_path do |f| %>
-  <%= f.label :program, "Re: TV Program (" + @program.name + ")" %>
+  <% if @program.program_type == 0%>
+    <%= f.label :program, "Re: TV Program (" + @program.name + ")" %>
+  <% else %>
+    <%= f.label :program, "Re: Program Group (" + @program.name + ")" %>
+  <% end %>
+  <%= hidden_field_tag :program_type, @program.program_type %>
   <%= hidden_field_tag :program_id, @program.id %>
   <%= hidden_field_tag 'discuss[user_id]', current_user.id %>
   <%= hidden_field_tag 'discuss[time]', Time.now %>

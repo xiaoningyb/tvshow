@@ -1,7 +1,7 @@
 <% if @program_group.total_episode == nil %>
   <%= @program_group.name %>
 <% else %>
-  <%= @program_group.name + "(" +  @program.total_episode.to_s + ")" %>
+  <%= @program_group.name + "(" +  @program_group.total_episode.to_s + ")" %>
 <% end %>
 <% if @program_group.image and not @program_group.image.empty? %>
   <br/>
@@ -56,6 +56,20 @@
   <% end %>
 <% end %>
 <br/>
+
+<br>
+<%= "讨论条数:" + @program_group.discusses.size.to_s %>
+<% @program_group.discusses.sort!{|x, y| y.time <=> x.time} %>
+<% @program_group.discusses.each do |discuss| %>
+  <li>
+    <%= link_to discuss.content, discuss_path(discuss) %>
+    <%= " by " %>
+    <%= link_to discuss.user.name, user_path(discuss.user) %>
+  </li>
+<% end %>
+<p>
+  <%= link_to 'new discuss', {:controller => 'discuss_relationships', :program_type => 1, :action => 'new', :program => @program_group.id} %>
+</p>
 
 <br>
 <%= "watch:" + @program_group.watch_count.to_s %>
