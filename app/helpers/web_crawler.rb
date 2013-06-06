@@ -130,15 +130,15 @@ module WebCawler
             return
           end
         else
-          begin
+          #begin
             if parse_station_schedule(page, station, crawl_date)
               station.updated_date = crawl_date
               station.save
-          end
-          rescue
-            @crawl_info.inc_crawl_failed_counter
-            puts "parse_station_schedule error"
-          end
+            end
+          #rescue
+          #  @crawl_info.inc_crawl_failed_counter
+          #  puts "parse_station_schedule error"
+          #end
         end        
         sleep(5)
       end      
@@ -154,7 +154,7 @@ module WebCawler
         end_time_str = ""
         episode = nil
 
-        begin
+        #begin
           @crawl_info.inc_program_counter
           get_program_info!(program, name, begin_time_str)
           if (idx < (programs.size-1))
@@ -165,15 +165,33 @@ module WebCawler
           
           #try to remove useless description for name and episode
           episode = get_real_episode(name)
-          name = get_real_name(name)
+          group_name = get_real_name(name)
           description = name
           
-          #try to find same program in database
-          tv_pros = TvProgram.where(:name => name).all        
-          if tv_pros.empty?
-            pro = TvProgram.create(:name => name, :description => description)
+          #try to add program in database and add for group
+          if group_name == name 
+            # add only program
+            tv_pros = TvProgram.where(:name => name).all        
+            if tv_pros.empty?
+              pro = TvProgram.create(:name => name, :description => description)
+            else
+              pro = tv_pros[0]
+            end
           else
-            pro = tv_pros[0]
+            # add program and group, TBD: get group type
+            pro_groups = ProgramGroup.where(:name => group_name).all        
+            if pro_groups.empty?              
+              pro_group = ProgramGroup.create(:name => group_name, :description => group_name, :group_type => 1)
+            else
+              pro_group = pro_groups[0]
+            end
+
+            tv_pros = TvProgram.where(:name => name).all        
+            if tv_pros.empty?
+              pro = TvProgram.create(:name => name, :description => description, :group_type => 1, :program_group => pro_group)
+            else
+              pro = tv_pros[0]
+            end            
           end
           
           #create the program
@@ -188,10 +206,10 @@ module WebCawler
           @crawl_info.set_current_program(pro.name)
 
           puts begin_time.to_s + " ~ " +  end_time.to_s + " : " + name
-        rescue
-          @crawl_info.inc_crawl_failed_counter
-          puts "get_program_info error"
-        end
+        #rescue
+        #  @crawl_info.inc_crawl_failed_counter
+        #  puts "get_program_info error with : " + name + " in " + begin_time_str
+        #end
 
         idx += 1
       end
@@ -260,6 +278,18 @@ module WebCawler
         name = m.pre_match
         return get_real_name(name)
       end
+
+      #remove the "(1/12)" which is end of word
+      if (m = /\(\d+\/\d+\)$/.match(name))
+        name = m.pre_match
+        return get_real_name(name)
+      end
+
+      #remove the "（1/12）" which is end of word
+      if (m = /（\d+\/\d+）$/.match(name))
+        name = m.pre_match
+        return get_real_name(name)
+      end      
       
       #remove the number which is end of word, eg "名字1"
       if (m = /\d+$/.match(name))
