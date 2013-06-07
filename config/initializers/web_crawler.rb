@@ -5,7 +5,7 @@ require 'web_crawler'
 scheduler = Rufus::Scheduler.start_new
 #CrawlerInfo.start_crawl
 
-scheduler.every '1d', :first_in => '5s' do
+scheduler.every '1d', :first_in => '5m' do
   crawler = WebCawler::Cntv.new
 
   crawler.start_crawl_stations
