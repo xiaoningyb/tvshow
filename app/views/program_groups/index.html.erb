@@ -1,0 +1,11 @@
+<ul>
+<%= "Total program group Number = " + @program_groups.size.to_s %>
+<br>
+<% @program_groups.each do |group| %>
+  <li>
+    <%= link_to group.name, program_group_path(group) %>
+  </li>
+<% end %>
+</ul>
+
+
