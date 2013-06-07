@@ -2,20 +2,33 @@ class CrawlProgramContentController < ApplicationController
     
   #new page for crawling infomation about tv_program
   def create
-    @program = TvProgram.find(params[:tv_program][:id])
-    @program.transaction do 
-      @program.update_attributes(:name => params[:tv_program][:name])
-      @program.update_attributes(:description => params[:tv_program][:description])
-      @program.update_attributes(:image => params[:tv_program][:image])
+    if params[:tv_program] != nil
+      @program = TvProgram.find(params[:tv_program][:id])
+      @program.transaction do 
+        @program.update_attributes(:name => params[:tv_program][:name])
+        @program.update_attributes(:description => params[:tv_program][:description])
+        @program.update_attributes(:image => params[:tv_program][:image])
+      end
+      redirect_to :controller=>"tv_programs", :action => :show, :id => @program
+    elsif params[:program_group] != nil
+      @program = ProgramGroup.find(params[:program_group][:id])
+      @program.transaction do 
+        @program.update_attributes(:name => params[:program_group][:name])
+        @program.update_attributes(:description => params[:program_group][:description])
+        @program.update_attributes(:image => params[:program_group][:image])
+      end
+      redirect_to :controller=>"program_groups", :action => :show, :id => @program
     end
-
-    redirect_to :controller=>"tv_programs", :action => :show, :id => @program
   end
 
   #new page for crawl info
   def new
     @user = User.find(params[:user])
-    @program = TvProgram.find(params[:program])
+    if params[:program_type].to_i == 0
+      @program = TvProgram.find(params[:program])
+    elsif params[:program_type].to_i == 1
+      @program = ProgramGroup.find(params[:program])
+    end
 
     crawler = CrawlProgramContentHelper::Baike.new
 

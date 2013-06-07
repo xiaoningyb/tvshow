@@ -3,6 +3,7 @@
 
 <%= form_for @program, :html => { :method => :post }, :url => crawl_program_content_index_path do |f| %>
   <%= f.hidden_field :id %>
+  <%= f.hidden_field :program_type %>
   <%= f.label :name, "Name" %>
   <br>
   <%= f.text_field :name %>    
