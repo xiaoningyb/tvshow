@@ -7,6 +7,7 @@ class CrawlProgramContentController < ApplicationController
       @program.transaction do 
         @program.update_attributes(:name => params[:tv_program][:name])
         @program.update_attributes(:description => params[:tv_program][:description])
+        @program.update_attributes(:key_word => params[:tv_program][:key_word]) if not params[:tv_program][:key_word].empty?
         @program.update_attributes(:image => params[:tv_program][:image])
       end
       redirect_to :controller=>"tv_programs", :action => :show, :id => @program
@@ -15,6 +16,7 @@ class CrawlProgramContentController < ApplicationController
       @program.transaction do 
         @program.update_attributes(:name => params[:program_group][:name])
         @program.update_attributes(:description => params[:program_group][:description])
+        @program.update_attributes(:key_word => params[:program_group][:key_word]) if not params[:program_group][:key_word].empty?
         @program.update_attributes(:image => params[:program_group][:image])
       end
       redirect_to :controller=>"program_groups", :action => :show, :id => @program
@@ -32,7 +34,11 @@ class CrawlProgramContentController < ApplicationController
 
     crawler = CrawlProgramContentHelper::Baike.new
 
-    result = crawler.start_crawl_keyword(@program.name)
+    if @program.key_word != nil and not @program.key_word.empty?
+      result = crawler.start_crawl_keyword(@program.key_word)
+    else
+      result = crawler.start_crawl_keyword(@program.name)
+    end
     
     @program.description = result[:description]
     @program.image = result[:image]

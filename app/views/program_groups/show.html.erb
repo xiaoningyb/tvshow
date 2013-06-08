@@ -8,6 +8,8 @@
   <img src="data:image/jpg;base64,<%=@program_group.image %>">
 <% end %>
 <%= simple_format(@program_group.description) %> 
+<br>
+<%= "Key word : " + @program_group.key_word.to_s %> 
 
 <br>
 <%= "related tv program:" + @program_group.tv_programs.size.to_s %>

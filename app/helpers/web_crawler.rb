@@ -166,14 +166,14 @@ module WebCawler
           #try to remove useless description for name and episode
           episode = get_real_episode(name)
           group_name = get_real_name(name)
-          description = name
+          description = name         
           
           #try to add program in database and add for group
           if group_name == name 
             # add only program
             tv_pros = TvProgram.where(:name => name).all        
             if tv_pros.empty?
-              pro = TvProgram.create(:name => name, :description => description)
+              pro = TvProgram.create(:name => name, :description => description, :key_word => group_name)
             else
               pro = tv_pros[0]
             end
@@ -181,14 +181,16 @@ module WebCawler
             # add program and group, TBD: get group type
             pro_groups = ProgramGroup.where(:name => group_name).all        
             if pro_groups.empty?              
-              pro_group = ProgramGroup.create(:name => group_name, :description => group_name, :group_type => 1)
+              pro_group = ProgramGroup.create(:name => group_name, :description => group_name, 
+                                              :key_word => group_name, :group_type => 1)
             else
               pro_group = pro_groups[0]
             end
 
             tv_pros = TvProgram.where(:name => name).all        
             if tv_pros.empty?
-              pro = TvProgram.create(:name => name, :description => description, :group_type => 1, :program_group => pro_group)
+              pro = TvProgram.create(:name => name, :description => description, :key_word => group_name, 
+                                     :episode => episode, :group_type => 1, :program_group => pro_group)
             else
               pro = tv_pros[0]
             end            

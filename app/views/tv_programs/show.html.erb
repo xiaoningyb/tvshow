@@ -8,6 +8,8 @@
   <img src="data:image/jpg;base64,<%=@program.image %>">
 <% end %>
 <%= simple_format(@program.description) %> 
+<br>
+<%= "Key word : " + @program.key_word.to_s %> 
 
 <br>
 <% if @program.group_type != 0 %>
