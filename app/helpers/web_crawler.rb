@@ -116,11 +116,11 @@ module WebCawler
         @crawl_info.inc_crawl_link_counter
         url = "#{CNTV_BASE_URL}/index.php?action=epg-list&date=#{crawl_date.to_s}&channel=#{station.en_name}&mode="
         
-        #puts "start crawl " + url
+        puts "start crawl " + url
         begin
           page = @agent.get(url)
         rescue Mechanize::ResponseReadError => e
-          puts "Mechanize::ResponseReadError"
+          puts "Mechanize::ResponseReadError : " + url
           page = e.force_parse
         end
         
@@ -135,9 +135,10 @@ module WebCawler
               station.updated_date = crawl_date
               station.save
             end
-          rescue
+          rescue => e
             @crawl_info.inc_crawl_failed_counter
             puts "parse_station_schedule error : " + station.name + " in " + crawl_date.to_s
+            puts e.backtrace
           end
         end        
         sleep(5)
@@ -208,9 +209,10 @@ module WebCawler
           @crawl_info.set_current_program(pro.name)
 
           #puts begin_time.to_s + " ~ " +  end_time.to_s + " : " + name
-        rescue
+        rescue => e
           @crawl_info.inc_crawl_failed_counter
           puts "get_program_info error with : " + name + " in " + begin_time_str
+          puts e.backtrace
         end
 
         idx += 1
@@ -246,53 +248,65 @@ module WebCawler
       end
 
       #remove the "(第.*集)" which is end of word
-      if (m = /\(第.*集\)$/.match(name))
-        name = m.pre_match
-        return get_real_name(name)
-      end
+      #if (m = /\(第.*集\)$/.match(name))
+      #  name = m.pre_match
+      #  return get_real_name(name)
+      #end
 
       #remove the "(第.*集)" which is end of word
-      if (m = /（第.*集）$/.match(name))
-        name = m.pre_match
-        return get_real_name(name)
-      end
+      #if (m = /（第.*集）$/.match(name))
+      #  name = m.pre_match
+      #  return get_real_name(name)
+      #end
 
       #remove the "(1)" which is end of word
-      if (m = /\(\d*\)$/.match(name))
-        name = m.pre_match
-        return get_real_name(name)
-      end
+      #if (m = /\(\d*\)$/.match(name))
+      #  name = m.pre_match
+      #  return get_real_name(name)
+      #end
 
       #remove the "（1）" which is end of word
-      if (m = /（\d*）$/.match(name))
-        name = m.pre_match
-        return get_real_name(name)
-      end
+      #if (m = /（\d*）$/.match(name))
+      #  name = m.pre_match
+      #  return get_real_name(name)
+      #end
 
       #remove the "(1-12)" which is end of word
-      if (m = /\(\d+-\d+\)$/.match(name))
-        name = m.pre_match
-        return get_real_name(name)
-      end
+      #if (m = /\(\d+-\d+\)$/.match(name))
+      #  name = m.pre_match
+      #  return get_real_name(name)
+      #end
 
       #remove the "（1-12）" which is end of word
-      if (m = /（\d+-\d+）$/.match(name))
-        name = m.pre_match
-        return get_real_name(name)
-      end
+      #if (m = /（\d+-\d+）$/.match(name))
+      #  name = m.pre_match
+      #  return get_real_name(name)
+      #end
 
       #remove the "(1/12)" which is end of word
-      if (m = /\(\d+\/\d+\)$/.match(name))
-        name = m.pre_match
+      #if (m = /\(\d+\/\d+\)$/.match(name))
+      #  name = m.pre_match
+      #  return get_real_name(name)
+      #end
+
+      #remove the "（1/12）" which is end of word
+      #if (m = /（\d+\/\d+）$/.match(name))
+      #  name = m.pre_match
+      #  return get_real_name(name)
+      #end
+
+      #remove the "（.+）" 
+      if (m = /（.+）$/.match(name))
+        name = m.pre_match + m.post_match
         return get_real_name(name)
       end
 
-      #remove the "（1/12）" which is end of word
-      if (m = /（\d+\/\d+）$/.match(name))
-        name = m.pre_match
+      #remove the "(.+)" 
+      if (m = /\(.+\)$/.match(name))
+        name = m.pre_match + m.post_match
         return get_real_name(name)
       end      
-      
+
       #remove the number which is end of word, eg "名字1"
       if (m = /\d+$/.match(name))
         name = m.pre_match
@@ -301,10 +315,10 @@ module WebCawler
       
       #must put it in last check without recusive
       #remove the ":" or "：", eg ":名字："
-      if (m = /[:：\-\_]$/.match(name))
+      if (m = /[:：.。\-\_]$/.match(name))
         name = m.pre_match
       end
-      if (m = /^[:：\-\_]/.match(name))
+      if (m = /^[:：.。\-\_]/.match(name))
         name = m.post_match
       end
 
