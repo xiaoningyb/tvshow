@@ -116,7 +116,7 @@ module WebCawler
         @crawl_info.inc_crawl_link_counter
         url = "#{CNTV_BASE_URL}/index.php?action=epg-list&date=#{crawl_date.to_s}&channel=#{station.en_name}&mode="
         
-        puts "start crawl " + url
+        #puts "start crawl " + url
         begin
           page = @agent.get(url)
         rescue Mechanize::ResponseReadError => e
@@ -130,15 +130,15 @@ module WebCawler
             return
           end
         else
-          #begin
+          begin
             if parse_station_schedule(page, station, crawl_date)
               station.updated_date = crawl_date
               station.save
             end
-          #rescue
-          #  @crawl_info.inc_crawl_failed_counter
-          #  puts "parse_station_schedule error"
-          #end
+          rescue
+            @crawl_info.inc_crawl_failed_counter
+            puts "parse_station_schedule error : " + station.name + " in " + crawl_date.to_s
+          end
         end        
         sleep(5)
       end      
@@ -154,7 +154,7 @@ module WebCawler
         end_time_str = ""
         episode = nil
 
-        #begin
+        begin
           @crawl_info.inc_program_counter
           get_program_info!(program, name, begin_time_str)
           if (idx < (programs.size-1))
@@ -205,11 +205,11 @@ module WebCawler
           @crawl_info.inc_new_program_counter
           @crawl_info.set_current_program(pro.name)
 
-          puts begin_time.to_s + " ~ " +  end_time.to_s + " : " + name
-        #rescue
-        #  @crawl_info.inc_crawl_failed_counter
-        #  puts "get_program_info error with : " + name + " in " + begin_time_str
-        #end
+          #puts begin_time.to_s + " ~ " +  end_time.to_s + " : " + name
+        rescue
+          @crawl_info.inc_crawl_failed_counter
+          puts "get_program_info error with : " + name + " in " + begin_time_str
+        end
 
         idx += 1
       end
