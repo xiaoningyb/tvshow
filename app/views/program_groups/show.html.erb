@@ -15,7 +15,7 @@
 <%= "related tv program:" + @program_group.tv_programs.size.to_s %>
 <% @program_group.tv_programs.each do |tv_program| %>
   <li>
-    <%= link_to tv_program.name, tv_program_path(tv_program) %>
+    <%= link_to tv_program.name + tv_program.tv_programships[0].begin_time.to_s, tv_program_path(tv_program) %>
   </li>
 <% end %>
 
@@ -56,6 +56,16 @@
     <%= hidden_field_tag 'program', @program_group.id %>
     <%= hidden_field_tag 'program_type', @program_group.program_type %>
     <%= submit_tag("crawl_program") %>
+  <% end %>
+<% end %>
+<br/>
+
+<% if current_user != nil and @program_group.type == 0 %>
+  <%= form_tag(edit_program_group, :method => 'get') do %>
+    <%= hidden_field_tag 'user', current_user.id %>
+    <%= hidden_field_tag 'program', @program_group.id %>
+    <%= hidden_field_tag 'program_type', @program_group.program_type %>
+    <%= submit_tag("edit_interval_program") %>
   <% end %>
 <% end %>
 <br/>

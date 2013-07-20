@@ -12,7 +12,7 @@
 <%= "Key word : " + @program.key_word.to_s %> 
 
 <br>
-<% if @program.group_type != 0 %>
+<% if @program.group_type != nil %>
     <%= link_to "program group : " + @program.program_group.name, program_group_path(@program.program_group) %>
 <% end %>
 

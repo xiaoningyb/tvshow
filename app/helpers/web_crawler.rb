@@ -171,12 +171,27 @@ module WebCawler
           
           #try to add program in database and add for group
           if group_name == name 
-            # add only program
-            tv_pros = TvProgram.where(:name => name).all        
+            # if the group name is same as program name, try to add interval program group
+            tv_pros = TvProgram.where(:name => name).all
+            pro_groups = ProgramGroup.where(:name => group_name).all  
             if tv_pros.empty?
+              # once program, for almost tv program
               pro = TvProgram.create(:name => name, :description => description, :key_word => group_name)
             else
-              pro = tv_pros[0]
+              # repeat program with same name, it means it is interval program, need to add it to program group
+              if pro_groups.empty?
+                pro_group = ProgramGroup.create(:name => group_name, :description => group_name, 
+                                                :key_word => group_name, :group_type => 0)
+                
+                # move the old tv_pros to group
+                tv_pros.each do |tv_pro|
+                  tv_pro.update_attributes(:group_type => 0, :program_group => pro_group)
+                end
+              else
+                pro_group = pro_groups[0]
+              end
+              pro = TvProgram.create(:name => name, :description => description, :key_word => group_name,
+                                     :group_type => 0, :program_group => pro_group)
             end
           else
             # add program and group, TBD: get group type
@@ -201,9 +216,11 @@ module WebCawler
           begin_time = Time.parse(date.to_s + " " + begin_time_str + ":00 +0800")
           end_time = Time.parse(date.to_s + " " + end_time_str + ":00 +0800")
           if episode != nil
-            TvProgramship.create(:tv_station => st, :tv_program => pro, :begin_time => begin_time, :end_time => end_time, :episode => episode.to_i)
+            TvProgramship.create(:tv_station => st, :tv_program => pro, :begin_time => begin_time, 
+                                 :end_time => end_time, :episode => episode.to_i)
           else
-            TvProgramship.create(:tv_station => st, :tv_program => pro, :begin_time => begin_time, :end_time => end_time, :episode => -1)
+            TvProgramship.create(:tv_station => st, :tv_program => pro, :begin_time => begin_time, 
+                                 :end_time => end_time, :episode => -1)
           end
           @crawl_info.inc_new_program_counter
           @crawl_info.set_current_program(pro.name)
@@ -226,6 +243,9 @@ module WebCawler
       
       time.replace(program_str[0 .. program_str.index(" ")-1])
       name.replace(program_str[program_str.index(" ")+1 .. program_str.length])
+      if(name.index(" ") != nil)
+        name.replace(name[0 .. name.index(" ")])
+      end
     end
 
     def get_real_name(name)
